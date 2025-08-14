@@ -666,7 +666,7 @@
                 formData.append('total', totalQuestions);
                 formData.append('timeSpent', `${Math.floor(timeSpent/60)}m ${timeSpent%60}s`);
 
-                if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyW5U7rr1G_fZE4hcWzaisBBHOt4IhtdO2gOBF8WV5ZB4D9rk_zv-K0SgDQcfjzv4fk/exec') {
+                if (SCRIPT_URL === 'VOTRE_URL_APPS_SCRIPT_ICI') {
                     verifyBtn.textContent = 'Configuration requise';
                     resultsDiv.innerHTML += "<br><small style='color:red'>L'URL du script Google n'a pas été configurée.</small>";
                     return;
