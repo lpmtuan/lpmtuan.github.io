@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Décrypte la stratégie !</title>
+  <style>
+    body { font-family: Arial, sans-serif; display: flex; margin: 0; height: 100vh; }
+    .column { padding: 20px; overflow-y: auto; }
+    .left { width: 50%; background-color: #f3f3f3; }
+    .right { width: 50%; }
+    .question { margin-bottom: 20px; }
+    .feedback { color: green; display: none; margin-top: 5px; }
+    .timer { font-size: 18px; font-weight: bold; color: #b30000; }
+    textarea { width: 100%; height: 100px; }
+    button { padding: 10px 20px; font-size: 16px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="column left">
+    <h2>Scénario</h2>
+    <p><strong>Jérémy</strong>, diplômé en marketing digital, cherche un emploi dans sa région. Il a repéré trois entreprises qui l’intéressent.</p>
+    <ul>
+      <li>Il a contacté un ancien professeur pour lui demander s’il connaît des professionnels dans ces entreprises.</li>
+      <li>Il a participé à un salon professionnel la semaine dernière.</li>
+      <li>Il a envoyé deux candidatures sans personnaliser ses lettres.</li>
+      <li>Il consulte régulièrement LinkedIn mais n’y publie rien.</li>
+      <li>Il a remercié par mail un professionnel rencontré au salon.</li>
+    </ul>
+    <p><strong>Objectif :</strong> Jérémy veut optimiser ses chances d’être recruté.</p>
+    <p class="timer">Temps restant : <span id="time">20:00</span></p>
+  </div>
+
+  <div class="column right">
+    <h2>Questions</h2>
+
+    <div class="question">
+      <label>1. Quelle est la bonne stratégie utilisée par Jérémy ?</label><br>
+      <input type="radio" name="q1" value="a"> a) Il contacte un professeur<br>
+      <input type="radio" name="q1" value="b"> b) Il évite LinkedIn<br>
+      <input type="radio" name="q1" value="c"> c) Il envoie des candidatures identiques<br>
+      <p class="feedback" id="f1">✔️ Bonne démarche pour activer son réseau relationnel.</p>
+    </div>
+
+    <div class="question">
+      <label>2. Que pourrait-il améliorer ?</label><br>
+      <input type="radio" name="q2" value="a"> a) Personnaliser ses lettres<br>
+      <input type="radio" name="q2" value="b"> b) Ne plus aller aux salons<br>
+      <input type="radio" name="q2" value="c"> c) Éviter les réseaux sociaux<br>
+      <p class="feedback" id="f2">✔️ Adapter sa lettre montre sa motivation pour chaque entreprise.</p>
+    </div>
+
+    <div class="question">
+      <label>3. À quoi sert un message de remerciement ?</label><br>
+      <input type="radio" name="q3" value="a"> a) À demander une recommandation tout de suite<br>
+      <input type="radio" name="q3" value="b"> b) À maintenir une relation professionnelle<br>
+      <input type="radio" name="q3" value="c"> c) À envoyer son CV sans attendre<br>
+      <p class="feedback" id="f3">✔️ Entretenir le lien permet de renforcer le réseau.</p>
+    </div>
+
+    <div class="question">
+      <label>4. Pourquoi publier sur LinkedIn peut-il être utile ?</label><br>
+      <input type="radio" name="q4" value="a"> a) Pour se faire connaître<br>
+      <input type="radio" name="q4" value="b"> b) Pour montrer ses loisirs<br>
+      <input type="radio" name="q4" value="c"> c) Pour critiquer les entreprises<br>
+      <p class="feedback" id="f4">✔️ Être actif améliore la visibilité professionnelle.</p>
+    </div>
+
+    <div class="question">
+      <label>5. Quelle combinaison est la plus efficace ?</label><br>
+      <input type="radio" name="q5" value="a"> a) Réseau + veille marché + candidatures ciblées<br>
+      <input type="radio" name="q5" value="b"> b) Réseau + candidatures massives<br>
+      <input type="radio" name="q5" value="c"> c) Recherche sans réseau<br>
+      <p class="feedback" id="f5">✔️ Il faut combiner plusieurs leviers pour optimiser sa recherche.</p>
+    </div>
+
+    <div class="question">
+      <label>6. Rédige ton plan d’action personnel (3 étapes) :</label><br>
+      <textarea placeholder="Ex : Identifier mes entreprises cibles, contacter un ancien camarade, publier sur LinkedIn..."></textarea>
+    </div>
+
+    <button onclick="checkAnswers()">Vérifier les réponses</button>
+
+    <script>
+      function checkAnswers() {
+        const answers = {
+          q1: 'a',
+          q2: 'a',
+          q3: 'b',
+          q4: 'a',
+          q5: 'a'
+        };
+        for (let q in answers) {
+          let selected = document.querySelector(`input[name="${q}"]:checked`);
+          if (selected && selected.value === answers[q]) {
+            document.getElementById("f" + q.slice(1)).style.display = "block";
+          } else {
+            document.getElementById("f" + q.slice(1)).style.display = "none";
+          }
+        }
+      }
+
+      // Timer 20 minutes
+      let totalSeconds = 20 * 60;
+      const timerElement = document.getElementById("time");
+      const interval = setInterval(() => {
+        let minutes = Math.floor(totalSeconds / 60);
+        let seconds = totalSeconds % 60;
+        timerElement.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        totalSeconds--;
+        if (totalSeconds < 0) {
+          clearInterval(interval);
+          alert("⏰ Temps écoulé !");
+        }
+      }, 1000);
+    </script>
+  </div>
+</body>
+</html>
