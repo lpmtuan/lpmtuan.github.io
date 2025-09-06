@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập trắc nghiệm: Truyền thông doanh nghiệp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .quiz-option:hover label {
+            background-color: #f0f4ff; /* Light blue on hover */
+        }
+        input[type="radio"]:checked + label {
+            background-color: #e0e7ff; /* Indigo-100 */
+            border-color: #6366f1; /* Indigo-500 */
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <main class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-4xl transition-all duration-500">
+
+        <!-- Quiz Header -->
+        <div id="quiz-header" class="text-center border-b pb-4 mb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Quiz</h1>
+            <p class="text-lg text-indigo-600">Học phần: Truyền thông doanh nghiệp và các tổ chức</p>
+        </div>
+        
+        <!-- Start Screen -->
+        <div id="start-screen" class="text-center py-8">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Hướng dẫn làm bài</h2>
+            <ul class="list-disc list-inside text-left max-w-md mx-auto space-y-2 mb-8">
+                <li>Thời gian làm bài: <span class="font-bold">30 phút</span>.</li>
+                <li>Tổng số câu hỏi: <span class="font-bold">24 câu</span>.</li>
+                <li>Bạn cần trả lời đúng <span class="font-bold">18/24 câu</span> để hoàn thành.</li>
+                <li>Bạn phải trả lời tất cả các câu hỏi trước khi nộp bài.</li>
+            </ul>
+            <button id="start-quiz-button" class="bg-indigo-600 text-white font-bold py-3 px-12 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-transform transform hover:scale-105">
+                Bắt đầu làm bài
+            </button>
+        </div>
+
+        <!-- Timer -->
+        <div id="timer-container" class="hidden sticky top-0 bg-white py-4 z-10 flex justify-center items-center gap-4 mb-4">
+             <div class="text-2xl font-bold text-gray-700 bg-gray-100 px-6 py-2 rounded-lg shadow-inner">
+                Thời gian còn lại: <span id="time" class="text-red-500">30:00</span>
+            </div>
+        </div>
+
+        <!-- Quiz Content -->
+        <div id="quiz-content" class="hidden">
+            <form id="quizForm">
+                <div id="questions-container" class="space-y-8">
+                    <!-- Questions will be injected here by JavaScript -->
+                </div>
+                <div class="mt-8 text-center">
+                    <button type="submit" class="w-full sm:w-auto bg-indigo-600 text-white font-bold py-3 px-12 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-transform transform hover:scale-105">
+                        Nộp bài
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="hidden text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Kết quả bài làm</h2>
+            <div id="score-container" class="bg-gray-100 p-6 rounded-lg mb-6 shadow-inner">
+                <p class="text-xl">Số câu đúng của bạn:</p>
+                <p id="score" class="text-5xl font-bold my-2"></p>
+                <p id="result-message" class="text-lg font-semibold"></p>
+            </div>
+
+            <!-- User Info Form (for passing students) -->
+            <div id="user-info-form" class="hidden text-left max-w-md mx-auto">
+                 <h3 class="text-xl font-bold text-center text-gray-800 mb-4">Vui lòng điền thông tin</h3>
+                <form id="studentInfo">
+                    <div class="mb-4">
+                        <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Họ và tên</label>
+                        <input type="text" id="fullName" name="fullName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="studentId" class="block text-sm font-medium text-gray-700 mb-1">Mã số sinh viên</label>
+                        <input type="text" id="studentId" name="studentId" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                     <div class="mt-6 text-center">
+                        <button type="button" onclick="alert('Thông tin đã được ghi nhận!')" class="w-full sm:w-auto bg-green-600 text-white font-bold py-2 px-8 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-transform transform hover:scale-105">
+                            Xác nhận
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Retry button (for failing students) -->
+            <button id="retry-button" class="hidden w-full sm:w-auto bg-gray-700 text-white font-bold py-3 px-12 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 transition-transform transform hover:scale-105">
+                Làm lại
+            </button>
+        </div>
+        
+        <!-- Error Message Popup -->
+        <div id="error-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-8 rounded-lg shadow-xl text-center">
+                <p class="text-lg font-semibold text-red-600 mb-4">Vui lòng trả lời tất cả các câu hỏi trước khi nộp bài!</p>
+                <button id="close-error-modal" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600">Đã hiểu</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            const quizData = [
+                { question: "Theo đề cương, học phần Truyền thông doanh nghiệp và các tổ chức là học phần thuộc nhóm nào?", options: { A: "Bắt buộc trong nhóm học phần nghiệp vụ", B: "Tự chọn trong nhóm học phần nền tảng", C: "Bắt buộc trong nhóm học phần thực hành" }, answer: "A" },
+                { question: "Theo mô tả tóm tắt học phần, nội dung nào sau đây KHÔNG phải là một trong những khái niệm cơ bản được lĩnh hội?", options: { A: "Truyền thông bên trong, truyền thông bên ngoài", B: "Kỹ thuật dựng phim và thiết kế đồ họa", C: "Kế hoạch và chiến lược truyền thông, truyền thông marketing" }, answer: "B" },
+                { question: "Trong Phần 1 của học phần, các đơn vị như \"agency truyền thông\" và \"báo chí\" được xác định là gì của đội ngũ truyền thông?", options: { A: "Các tác nhân nội bộ (les acteurs)", B: "Các bên đối thoại bên ngoài (les interlocuteurs externes)", C: "Các đối tượng mục tiêu (les cibles)" }, answer: "B" },
+                { question: "Hoạt động truyền thông nhằm xây dựng và duy trì mối quan hệ với giới báo chí thuộc loại hình nào được đề cập trong Phần 2?", options: { A: "Quan hệ công chúng và báo chí (les relations publiques et presse)", B: "Truyền thông tài chính (la communication financière)", C: "Truyền thông sự kiện (la communication événementielle)" }, answer: "A" },
+                { question: "\"Truyền thông nội bộ\" và \"truyền thông bên ngoài\" là những nội dung chi tiết thuộc phần nào của học phần?", options: { A: "Phần 1: Le monde des entreprises", B: "Phần 2: Les types de communication en entreprise", C: "Phần 4: La communication marketing" }, answer: "B" },
+                { question: "Nội dung chính của Phần 3 trong đề cương học phần tập trung vào vấn đề gì?", options: { A: "Các xu hướng vĩ mô của truyền thông", B: "Các loại hình truyền thông trong doanh nghiệp", C: "Các chiến lược và kế hoạch truyền thông" }, answer: "C" },
+                { question: "Theo đề cương, \"đối tượng, mục tiêu và kênh\" (les cibles, objectifs et canaux) là những yếu tố cốt lõi của nội dung nào?", options: { A: "Truyền thông thương hiệu", B: "Chiến lược và kế hoạch truyền thông", C: "Truyền thông kỹ thuật số" }, answer: "B" },
+                { question: "Các khái niệm \"truyền thông thương hiệu\" (la communication de marque) và \"truyền thông sản phẩm\" (la communication de produit) thuộc về phần nào?", options: { A: "Phần 4: Truyền thông marketing", B: "Phần 2: Các loại hình truyền thông", C: "Phần 5: Các xu hướng vĩ mô của truyền thông" }, answer: "A" },
+                { question: "Nội dung nào sau đây KHÔNG thuộc về \"Truyền thông Marketing\" (Phần 4) theo đề cương?", options: { A: "Quảng cáo (la publicité)", B: "Truyền thông tài chính (la communication financière)", C: "Marketing nội dung (le contenu marketing)" }, answer: "B" },
+                { question: "Chủ đề \"Trách nhiệm xã hội của doanh nghiệp\" (la responsabilité sociétale des entreprises) được trình bày trong phần nào của học phần?", options: { A: "Phần 2", B: "Phần 3", C: "Phần 5" }, answer: "C" },
+                { question: "Việc phân tích truyền thông dưới tác động của các mục tiêu phát triển bền vững (đạo đức, môi trường, đa dạng,...) thuộc về nội dung nào?", options: { A: "Các xu hướng vĩ mô của truyền thông (Les macro-tendances de la communication)", B: "Các loại hình truyền thông trong doanh nghiệp (Les types de communication)", C: "Thế giới doanh nghiệp và truyền thông (Le monde des entreprises et la communication)" }, answer: "A" },
+                { question: "Bài đánh giá cuối kỳ (A2) có tỉ trọng bao nhiêu phần trăm trong tổng điểm của học phần?", options: { A: "40%", B: "20%", C: "60%" }, answer: "C" },
+                { question: "Bài đánh giá quá trình A1.1 (tự luận) tập trung vào nội dung kiến thức của phần nào?", options: { A: "Phần 1 (Thế giới doanh nghiệp) và Phần 2 (Các loại hình truyền thông)", B: "Phần 3 (Chiến lược truyền thông) và Phần 4 (Truyền thông marketing)", C: "Tổng hợp cả 5 phần của học phần" }, answer: "A" },
+                { question: "Nội dung của bài đánh giá quá trình A1.2 KHÔNG bao gồm phần nào sau đây?", options: { A: "Các chiến lược và kế hoạch truyền thông", B: "Truyền thông marketing", C: "Các xu hướng vĩ mô của truyền thông" }, answer: "C" },
+                { question: "Theo quy định, nếu sinh viên không tham gia diễn đàn trên LMS thì sẽ bị xử lý như thế nào?", options: { A: "Bị cấm thi cuối kỳ", B: "Bị trừ 20% điểm quá trình của bài A1.1 và A1.2", C: "Bị trừ 20% tổng điểm học phần" }, answer: "B" },
+                { question: "\"Truyền thông sự kiện\" (la communication événementielle) được xếp vào phần nào trong nội dung chi tiết học phần?", options: { A: "Phần 2: Les types de communication en entreprise", B: "Phần 4: La communication marketing", C: "Phần 5: Les macro-tendances de la communication" }, answer: "A" },
+                { question: "Các chủ đề như \"loại hình, mục tiêu, cấu trúc và các tác nhân\" của doanh nghiệp được giới thiệu trong phần nào?", options: { A: "Phần 1", B: "Phần 3", C: "Phần 4" }, answer: "A" },
+                { question: "Hình thức đánh giá chung cho các bài kiểm tra A1.1, A1.2 và bài thi cuối kỳ A2 là gì?", options: { A: "Thuyết trình nhóm", B: "Vấn đáp", C: "Tự luận" }, answer: "C" },
+                { question: "Trong cấu trúc của các bài tự luận, phần trắc nghiệm khách quan chiếm tỉ lệ bao nhiêu?", options: { A: "10% - 30%", B: "20% - 40%", C: "50% - 70%" }, answer: "B" },
+                { question: "\"Quảng cáo\" và \"Marketing nội dung\" là hai nội dung được đề cập trong phần nào?", options: { A: "Quan hệ công chúng và báo chí", B: "Truyền thông nội bộ", C: "Truyền thông marketing" }, answer: "C" },
+                { question: "Loại hình truyền thông nào tập trung chủ yếu vào việc công bố các số liệu và kết quả kinh doanh của tổ chức?", options: { A: "Truyền thông kỹ thuật số", B: "Truyền thông tài chính", C: "Truyền thông sự kiện" }, answer: "B" },
+                { question: "Mục tiêu của học phần là giúp người học vận dụng kiến thức để hiểu và phân tích điều gì?", options: { A: "Quy trình vận hành của các agency quảng cáo", B: "Chiến lược quảng bá và phương thức truyền tải thông tin nội bộ", C: "Báo cáo tài chính và hiệu quả đầu tư" }, answer: "B" },
+                { question: "Các vấn đề như \"đạo đức, tính toàn diện, môi trường, sự đa dạng, dân chủ\" được xem là gì trong bối cảnh truyền thông hiện đại theo đề cương?", options: { A: "Tác động của các mục tiêu phát triển bền vững", B: "Các kênh truyền thông mới nổi", C: "Các rào cản trong truyền thông đa văn hóa" }, answer: "A" },
+                { question: "Thời lượng làm bài cho bài thi tự luận cuối kỳ A2 là bao nhiêu phút?", options: { A: "90 phút", B: "60 phút", C: "45 phút" }, answer: "A" }
+            ];
+
+            const PASSING_SCORE = 18;
+            const TOTAL_QUESTIONS = quizData.length;
+            
+            // --- DOM ELEMENTS ---
+            const startScreen = document.getElementById('start-screen');
+            const startQuizButton = document.getElementById('start-quiz-button');
+            const questionsContainer = document.getElementById('questions-container');
+            const quizForm = document.getElementById('quizForm');
+            const quizContent = document.getElementById('quiz-content');
+            const timerContainer = document.getElementById('timer-container');
+            const resultsScreen = document.getElementById('results-screen');
+            const scoreEl = document.getElementById('score');
+            const resultMessageEl = document.getElementById('result-message');
+            const userInfoForm = document.getElementById('user-info-form');
+            const retryButton = document.getElementById('retry-button');
+            const timeEl = document.getElementById('time');
+            const errorModal = document.getElementById('error-modal');
+            const closeErrorModalBtn = document.getElementById('close-error-modal');
+
+            let timerInterval;
+
+            // --- FUNCTIONS ---
+            
+            /**
+             * Renders quiz questions from the data array into the DOM.
+             */
+            function renderQuestions() {
+                let questionHTML = '';
+                quizData.forEach((q, index) => {
+                    questionHTML += `
+                        <div class="bg-gray-50 p-5 rounded-xl border border-gray-200">
+                            <p class="text-lg font-semibold text-gray-800 mb-4">
+                                <span class="text-indigo-600">Câu ${index + 1}:</span> ${q.question}
+                            </p>
+                            <div class="space-y-3">
+                    `;
+                    // Note: The options in the docx file were a,b,c. I am keeping the logic as A,B,C.
+                    // The labels will show the correct A,B,C from the options object keys.
+                    for (const key in q.options) {
+                        questionHTML += `
+                            <div class="quiz-option">
+                                <input type="radio" id="q${index}_${key}" name="q${index}" value="${key}" class="hidden">
+                                <label for="q${index}_${key}" class="block w-full text-left p-3 border-2 border-gray-200 rounded-lg cursor-pointer transition-colors duration-200">
+                                    <span class="font-bold mr-2">${key}.</span> ${q.options[key]}
+                                </label>
+                            </div>
+                        `;
+                    }
+                    questionHTML += `</div></div>`;
+                });
+                questionsContainer.innerHTML = questionHTML;
+            }
+
+            /**
+             * Starts the 30-minute countdown timer.
+             */
+            function startTimer() {
+                let time = 30 * 60;
+                
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                }
+
+                timerInterval = setInterval(() => {
+                    let minutes = Math.floor(time / 60);
+                    let seconds = time % 60;
+
+                    minutes = minutes < 10 ? '0' + minutes : minutes;
+                    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                    timeEl.textContent = `${minutes}:${seconds}`;
+
+                    if (time <= 0) {
+                        clearInterval(timerInterval);
+                        timeEl.textContent = "00:00";
+                        alert("Hết giờ làm bài! Bài của bạn sẽ được nộp tự động.");
+                        handleSubmit();
+                    }
+                    time--;
+                }, 1000);
+            }
+
+            /**
+             * Handles the quiz submission event.
+             */
+            function handleSubmit(event) {
+                if (event) event.preventDefault();
+
+                let score = 0;
+                let answeredQuestions = 0;
+
+                quizData.forEach((q, index) => {
+                    const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                    if (selectedOption) {
+                        answeredQuestions++;
+                        if (selectedOption.value === q.answer) {
+                            score++;
+                        }
+                    }
+                });
+
+                if (answeredQuestions < TOTAL_QUESTIONS) {
+                    errorModal.classList.remove('hidden');
+                    return;
+                }
+                
+                displayResults(score);
+            }
+
+            /**
+             * Displays the final results screen.
+             * @param {number} score - The number of correct answers.
+             */
+            function displayResults(score) {
+                clearInterval(timerInterval);
+                quizContent.classList.add('hidden');
+                timerContainer.classList.add('hidden');
+                resultsScreen.classList.remove('hidden');
+
+                scoreEl.textContent = `${score} / ${TOTAL_QUESTIONS}`;
+
+                if (score >= PASSING_SCORE) {
+                    scoreEl.className = 'text-5xl font-bold my-2 text-green-600';
+                    resultMessageEl.textContent = "Chúc mừng! Bạn đã hoàn thành bài tập.";
+                    resultMessageEl.className = 'text-lg font-semibold text-green-600';
+                    userInfoForm.classList.remove('hidden');
+                    retryButton.classList.add('hidden');
+                } else {
+                    scoreEl.className = 'text-5xl font-bold my-2 text-red-500';
+                    resultMessageEl.textContent = `Rất tiếc, bạn chưa đạt yêu cầu. Cần đạt ${PASSING_SCORE}/${TOTAL_QUESTIONS} để hoàn thành.`;
+                    resultMessageEl.className = 'text-lg font-semibold text-red-500';
+                    userInfoForm.classList.add('hidden');
+                    retryButton.classList.remove('hidden');
+                }
+            }
+
+            /**
+             * Resets the quiz for another attempt.
+             */
+            function resetQuiz() {
+                resultsScreen.classList.add('hidden');
+                startScreen.classList.remove('hidden');
+                quizForm.reset();
+            }
+            
+            /**
+            * Starts the quiz, hides start screen, shows questions and starts timer
+            */
+            function beginQuiz() {
+                startScreen.classList.add('hidden');
+                quizContent.classList.remove('hidden');
+                timerContainer.classList.remove('hidden');
+                startTimer();
+            }
+
+            // --- EVENT LISTENERS ---
+            startQuizButton.addEventListener('click', beginQuiz);
+            quizForm.addEventListener('submit', handleSubmit);
+            retryButton.addEventListener('click', resetQuiz);
+            closeErrorModalBtn.addEventListener('click', () => {
+                errorModal.classList.add('hidden');
+            });
+
+
+            // --- INITIALIZATION ---
+            renderQuestions();
+        });
+    </script>
+</body>
+</html>
