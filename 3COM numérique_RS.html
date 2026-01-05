@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>QCM – Communication numérique</title>
+<style>
+body{font-family:Arial, sans-serif;margin:40px;}
+.question{margin-bottom:18px;}
+button{padding:10px 18px;font-size:16px;}
+#resultat{margin-top:20px;font-weight:bold;}
+#corrige{display:none;margin-top:25px;}
+</style>
+</head>
+<body>
+
+<h2>La communication numérique - Réseaux sociaux et communautés</h2>
+<form id="qcm">
+
+<script>
+const questions = [
+["Les réseaux sociaux sont définis comme :",["Des logiciels","Des groupes d’applications Web 2.0","Des sites e-commerce"],"b"],
+["Une fonction essentielle est :",["Le partage de contenus","La facturation","Le stockage"],"a"],
+["Ils servent de vitrine car ils :",["Suppriment le site","Font seulement de la pub","Améliorent la visibilité"],"c"],
+["Le SMO correspond :",["Optimisation via réseaux sociaux","Sécurité","Maintenance"],"a"],
+["Communication instantanée car :",["Toujours payante","Diffusion en temps réel","Posts longs"],"b"],
+["Avantage majeur :",["Coût réduit","Complexité","Lenteur"],"a"],
+["Facebook et X sont :",["Spécialisés","Professionnels","Généralistes"],"c"],
+["Le bad buzz provient :",["Seulement médias","Multiples sources","Seulement clients"],"b"],
+["La veille sert à :",["Ignorer","Informer en temps réel","Supprimer"],"b"],
+["Objectif marketing :",["Fermer relation client","Développer notoriété","Diminuer trafic"],"b"],
+["Le Brand Content :",["Slogans","Contenu sans pression commerciale","Copie pub"],"b"],
+["Le SMO est :",["Indépendant SEO","Opposé SEA","Complémentaire SEO & SEA"],"c"],
+["La viralité :",["Diffusion comme virus","Campagne interne","Newsletter"],"a"],
+["Interagir implique :",["Être transparent","Supprimer critiques","Ignorer modérateurs"],"a"],
+["Mesurer influence :",["Nombre de locaux","Volume de partages","Prix produits"],"b"]
+];
+
+let html="";
+questions.forEach((q,i)=>{
+ html+=`<div class="question"><p>${i+1}. ${q[0]}</p>`;
+ ["a","b","c"].forEach((l,j)=>{
+   html+=`<label><input type="radio" name="q${i}" value="${l}"> ${l}. ${q[1][j]}</label><br>`;
+ });
+ html+="</div>";
+});
+document.write(html);
+</script>
+
+<button type="button" onclick="verifier()">Vérifiez vos réponses</button>
+</form>
+
+<div id="resultat"></div>
+
+<div id="corrige">
+<h3>Corrigé</h3>
+<ol>
+<li>b</li><li>a</li><li>c</li><li>a</li><li>b</li>
+<li>a</li><li>c</li><li>b</li><li>b</li><li>b</li>
+<li>b</li><li>c</li><li>a</li><li>a</li><li>b</li>
+</ol>
+</div>
+
+<script>
+function verifier(){
+ let score=0;
+ questions.forEach((q,i)=>{
+   let r=document.querySelector(`input[name="q${i}"]:checked`);
+   if(r && r.value===q[2]) score++;
+ });
+ document.getElementById("resultat").innerHTML="Votre score : "+score+" / 15";
+ document.getElementById("corrige").style.display="block";
+}
+</script>
+
+</body>
+</html>
