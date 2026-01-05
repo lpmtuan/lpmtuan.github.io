@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>QCM – Rédaction Web</title>
+<style>
+body{font-family:Arial;margin:40px;}
+.question{margin-bottom:15px;}
+.correct{background:#b6f2b6;}
+#score{margin-top:20px;font-weight:bold;}
+#corrige{margin-top:30px;display:none;}
+</style>
+</head>
+<body>
+
+<h2>La communication numérique – La rédaction Web</h2>
+<form id="qcm"></form>
+
+<button onclick="verifier()">Vérifiez vos réponses</button>
+<div id="score"></div>
+
+<div id="corrige">
+<h3>Corrigé</h3>
+<ol>
+<li>a. Produire du contenu efficace pour lecteurs et moteurs</li>
+<li>b. Produire du contenu ciblé et optimisé</li>
+<li>b. La présence de mots-clés</li>
+<li>a. Le persona</li>
+<li>c. 8 secondes</li>
+<li>a. Clair – Consistant – Concis</li>
+<li>b. 20 à 25 mots</li>
+<li>a. Du langage oral</li>
+<li>c. Créer un champ lexical autour du mot-clé</li>
+<li>a. Gratuit</li>
+<li>b. Faire une pause et se relire</li>
+<li>a. Au titre bleu dans Google</li>
+<li>c. 155 caractères</li>
+<li>a. L’ADN de la page</li>
+<li>b. 300 mots</li>
+<li>a. 1 à 2 %</li>
+<li>b. Structurer le contenu</li>
+<li>b. De relier les pages du site</li>
+<li>a. Des sources de qualité</li>
+<li>c. Récompensé</li>
+</ol>
+</div>
+
+<script>
+const questions=[
+["La rédaction web vise principalement à :","a","Produire du contenu efficace pour lecteurs et moteurs","b","Créer des affiches","c","Gérer des bases"],
+["La rédaction SEO consiste à :","a","Rédiger uniquement pour Google","b","Produire du contenu ciblé et optimisé","c","Supprimer mots-clés"],
+["Google analyse notamment :","a","La couleur","b","La présence de mots-clés","c","La taille serveur"],
+["Avant de rédiger, il faut définir :","a","Le persona","b","Le logo","c","Le budget"],
+["Attention moyenne :","a","20 secondes","b","30 secondes","c","8 secondes"],
+["Les 3C :","a","Clair–Consistant–Concis","b","Court–Complexe–Cohérent","c","Coloré–Créatif–Commercial"],
+["Une phrase web fait :","a","40 mots","b","20 à 25 mots","c","60 mots"],
+["La rédaction moderne est proche :","a","Langage oral","b","Langage juridique","c","Langage académique"],
+["Le cocon sémantique sert à :","a","Réduire mots","b","Ajouter images","c","Créer champ lexical"],
+["Mot convertissant :","a","Gratuit","b","Lent","c","Inutile"],
+["Avant finalisation :","a","Publier direct","b","Pause et relecture","c","Changer thème"],
+["Titre SEO :","a","Titre bleu Google","b","Titre menu","c","URL"],
+["Méta description max :","a","100","b","300","c","155"],
+["L’URL est :","a","ADN page","b","Publicité","c","Menu"],
+["Longueur mini SEO :","a","100 mots","b","300 mots","c","2000 mots"],
+["Densité mot-clé :","a","1 à 2 %","b","10 %","c","20 %"],
+["Balises Hn servent à :","a","Décorer","b","Structurer","c","Images"],
+["Maillage interne :","a","Bloquer Google","b","Relier pages","c","Supprimer pages"],
+["Liens externes vers :","a","Sources qualité","b","Pages sans rapport","c","Pages vides"],
+["Site généreux en sources :","a","Pénalisé","b","Ignoré","c","Récompensé"]
+];
+const bonnes=["a","b","b","a","c","a","b","a","c","a","b","a","c","a","b","a","b","b","a","c"];
+let form=document.getElementById("qcm");
+questions.forEach((q,i)=>{
+ let d=document.createElement("div");
+ d.className="question";
+ d.innerHTML=`<p>${i+1}. ${q[0]}</p>
+ <label><input type="radio" name="q${i}" value="a"> a. ${q[2]}</label><br>
+ <label><input type="radio" name="q${i}" value="b"> b. ${q[4]}</label><br>
+ <label><input type="radio" name="q${i}" value="c"> c. ${q[6]}</label>`;
+ form.appendChild(d);
+});
+function verifier(){
+ let score=0;
+ questions.forEach((q,i)=>{
+  let rep=document.querySelector('input[name="q'+i+'"]:checked');
+  let bonnesRep=document.querySelectorAll('input[name="q'+i+'"]');
+  bonnesRep.forEach(r=>{
+    if(r.value===bonnes[i]) r.parentElement.classList.add("correct");
+  });
+  if(rep && rep.value===bonnes[i]) score++;
+ });
+ document.getElementById("score").innerHTML="Votre score : "+score+" / 20";
+ document.getElementById("corrige").style.display="block";
+}
+</script>
+
+</body>
+</html>
