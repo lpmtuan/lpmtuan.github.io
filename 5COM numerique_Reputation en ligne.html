@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>QCM – E-réputation</title>
+<style>
+body{font-family:Arial;margin:40px;}
+.question{margin-bottom:15px;}
+.correct{background:#b6f2b6;}
+#score{margin-top:20px;font-weight:bold;}
+#corrige{margin-top:30px;display:none;}
+</style>
+</head>
+<body>
+
+<h2>La communication numérique - E-réputation</h2>
+<form id="qcm"></form>
+
+<button onclick="verifier()">Vérifiez vos réponses</button>
+<div id="score"></div>
+
+<div id="corrige">
+<h3>Corrigé</h3>
+<ol>
+<li>a. À l’image perçue d’une entité sur Internet</li>
+<li>b. 88 %</li>
+<li>c. Des amplificateurs d’opinion</li>
+<li>a. La différenciation sur un marché saturé</li>
+<li>b. Aligner promesses et réalité</li>
+<li>c. Google Alerts</li>
+<li>a. La perte de confiance</li>
+<li>b. La veille</li>
+<li>c. L’usage des micro-influenceurs pour renforcer l’image</li>
+<li>b. Dialoguer avec sincérité</li>
+</ol>
+</div>
+
+<script>
+const questions=[
+["L’e-réputation correspond :","a","À l’image perçue d’une entité sur Internet","b","Au chiffre d’affaires","c","À un outil"],
+["Part des internautes consultant les avis :","a","50 %","b","88 %","c","30 %"],
+["Rôle des influenceurs :","a","Créateurs techniques","b","Journalistes","c","Amplificateurs d’opinion"],
+["Enjeu majeur :","a","Différenciation","b","Réduction budget","c","Gestion stock"],
+["La cohérence signifie :","a","Multiplier messages","b","Aligner promesses et réalité","c","Automatiser réponses"],
+["Outil gratuit simple :","a","Mention","b","Hootsuite","c","Google Alerts"],
+["Risque principal :","a","Perte de confiance","b","Hausse trafic","c","Meilleure notoriété"],
+["Première étape :","a","Action","b","Veille","c","Analyse"],
+["Cas Danone :","a","Supprimer pub","b","Refuser influenceurs","c","Micro-influenceurs"],
+["Recommandation clé :","a","Ignorer avis","b","Dialoguer avec sincérité","c","Supprimer commentaires"]
+];
+const bonnes=["a","b","c","a","b","c","a","b","c","b"];
+let form=document.getElementById("qcm");
+questions.forEach((q,i)=>{
+ let d=document.createElement("div");
+ d.className="question";
+ d.innerHTML=`<p>${i+1}. ${q[0]}</p>
+ <label><input type="radio" name="q${i}" value="a"> a. ${q[2]}</label><br>
+ <label><input type="radio" name="q${i}" value="b"> b. ${q[4]}</label><br>
+ <label><input type="radio" name="q${i}" value="c"> c. ${q[6]}</label>`;
+ form.appendChild(d);
+});
+function verifier(){
+ let score=0;
+ questions.forEach((q,i)=>{
+  document.querySelectorAll('input[name="q'+i+'"]').forEach(r=>{
+    if(r.value===bonnes[i]) r.parentElement.classList.add("correct");
+  });
+  let rep=document.querySelector('input[name="q'+i+'"]:checked');
+  if(rep && rep.value===bonnes[i]) score++;
+ });
+ document.getElementById("score").innerHTML="Votre score : "+score+" / 10";
+ document.getElementById("corrige").style.display="block";
+}
+</script>
+
+</body>
+</html>
