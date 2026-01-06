@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>QCM – Droit civil & droit pénal</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:900px;margin:auto;padding:20px;background:#eef2f7}
+h1{text-align:center}
+.question{background:#fff;padding:15px;margin:12px 0;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+label{display:block;margin:4px 0}
+.good{background:#c8f7c5}
+.bad{background:#f7c5c5}
+button{padding:12px 22px;font-size:16px;border:none;border-radius:6px;background:#007acc;color:#fff;cursor:pointer}
+#score{margin-top:15px;font-size:18px;font-weight:bold}
+.corrige{margin-top:25px;background:#fff;padding:15px;border-radius:10px}
+</style>
+</head>
+<body>
+
+<h1>Droit civil & droit pénal</h1>
+<form id="qcm"></form>
+
+<button onclick="verifier()">Vérifiez vos réponses</button>
+<div id="score"></div>
+<div id="corrige" class="corrige"></div>
+
+<script>
+const questions = [
+["Le droit civil règle principalement :",["les relations entre particuliers","les relations entre l’État et la société","les sanctions pénales"],0],
+["Le principe de l’équité correspond à :",["la responsabilité civile","l’égalité entre les personnes","le libre arbitre"],1],
+["Le principe de la bonne foi implique :",["la loyauté et l’honnêteté","la liberté contractuelle","la sanction pénale"],0],
+["Le droit des personnes concerne :",["uniquement les biens","les droits politiques","l’état et la capacité des individus"],2],
+["Le Pacs relève du droit :",["de la famille","pénal","des biens"],0],
+["Une obligation est avant tout :",["un devoir moral","un lien juridique entre personnes","une sanction"],1],
+["La source principale des obligations est :",["le contrat","la coutume","la jurisprudence"],0],
+["Le contrat est défini comme :",["une sanction légale","un acte administratif","un accord de volontés"],2],
+["Le droit des biens règle les rapports entre :",["l’État et les citoyens","les personnes et les biens","les entreprises et les salariés"],1],
+["Le patrimoine comprend :",["uniquement l’actif","uniquement le passif","un actif et un passif"],2],
+["La responsabilité civile vise à :",["punir un délinquant","réparer un dommage","emprisonner une personne"],1],
+["Le droit pénal sanctionne :",["les litiges familiaux","les contrats non respectés","les infractions"],2],
+["Une infraction comporte notamment :",["un élément matériel","un élément commercial","un élément fiscal"],0],
+["Le principe de légalité signifie :",["toute infraction doit être prévue par la loi","tout juge est libre de créer des peines","toute faute est civile"],0],
+["Une contravention est :",["une infraction grave","une infraction moyenne","une infraction légère"],2],
+["Un délit est puni par :",["une simple amende","une amende et/ou prison","uniquement la prison à vie"],1],
+["Le crime est puni par :",["une peine légère","une amende maximale","une peine de prison lourde"],2],
+["Le tribunal de police juge :",["les crimes","les délits","les contraventions"],2],
+["Le travail d’intérêt général est une peine :",["principale","alternative","complémentaire"],1],
+["L’amnistie a pour effet :",["d’augmenter la peine","d’annuler poursuites et peines","de renforcer la sanction"],1]
+];
+
+const form=document.getElementById("qcm");
+questions.forEach((q,i)=>{
+let div=document.createElement("div");
+div.className="question";
+let html=`<p><strong>${i+1}. ${q[0]}</strong></p>`;
+q[1].forEach((r,j)=>{
+html+=`<label><input type="radio" name="q${i}" value="${j}"> ${r}</label>`;
+});
+div.innerHTML=html;
+form.appendChild(div);
+});
+
+function verifier(){
+let score=0;
+let corr="<h2>Corrigé</h2><ul>";
+questions.forEach((q,i)=>{
+const radios=document.getElementsByName("q"+i);
+radios.forEach(r=>{
+r.parentElement.classList.remove("good","bad");
+if(parseInt(r.value)===q[2]) r.parentElement.classList.add("good");
+});
+if(radios[q[2]].checked) score++;
+corr+=`<li>${i+1}. ${q[0]} <strong>${q[1][q[2]]}</strong></li>`;
+});
+document.getElementById("score").innerText="Score : "+score+" / 20";
+document.getElementById("corrige").innerHTML=corr+"</ul>";
+}
+</script>
+
+</body>
+</html>
