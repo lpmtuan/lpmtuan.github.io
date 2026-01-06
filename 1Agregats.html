@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>QCM – Agrégats économiques</title>
+<style>
+body{font-family:Arial, sans-serif;max-width:900px;margin:auto;padding:20px;background:#f4f7fb}
+h1{text-align:center}
+.question{background:#fff;padding:15px;margin:12px 0;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,.1)}
+.good{background:#c8f7c5}
+.bad{background:#f7c5c5}
+button{padding:12px 20px;font-size:16px;border:none;border-radius:6px;background:#0077cc;color:#fff;cursor:pointer}
+#score{font-weight:bold;margin-top:15px;font-size:18px}
+.corrige{margin-top:25px;background:#fff;padding:15px;border-radius:8px}
+</style>
+</head>
+<body>
+
+<h1>Les agrégats économiques</h1>
+<form id="qcm">
+
+<script>
+const questions = [
+["Le PIB correspond à :",["la somme des valeurs ajoutées","la valeur des biens intermédiaires","le revenu disponible des ménages"],0],
+["Le PIB prend en compte :",["les services domestiques non rémunérés","les biens et services finals","le bénévolat associatif"],1],
+["Le PNB se distingue du PIB par :",["le territoire","la nature des biens","les agents"],0],
+["Le PIB est :",["un indicateur de bien-être","un indicateur de niveau de bonheur","un agrégat mesurant l’activité économique"],2],
+["Faire appel à un jardinier professionnel :",["ne modifie pas le PIB","augmente le PIB","diminue le PIB"],1],
+["Le « travail au noir » est :",["pris en compte dans le PIB","comptabilisé dans le PNB uniquement","exclu du calcul du PIB"],2],
+["L’inflation est :",["une baisse continue des prix","une hausse continue du niveau général des prix","une hausse ponctuelle des salaires"],1],
+["Une inflation de 4–5 % est dite :",["galopante","rampante","hyperinflation"],1],
+["Une inflation supérieure à 30 % peut être qualifiée de :",["ouverte ou galopante","rampante","déflationniste"],0],
+["La déflation correspond à :",["un ralentissement de l’inflation","une stagnation des prix","une baisse continue du niveau général des prix"],2],
+["La désinflation est :",["une autre forme de déflation","un ralentissement de l’inflation","une hausse rapide des prix"],1],
+["Parmi les causes de l’inflation, on trouve :",["la monnaie","l’épargne","la démographie"],0],
+["Une augmentation du SMIC est une cause liée :",["à la demande","au coût","aux importations"],1],
+["Un effet positif de l’inflation est de :",["développer l’économie","réduire le pouvoir d’achat","bloquer la consommation"],0],
+["Un effet négatif est de :",["favoriser l’investissement","alléger la dette","diminuer les revenus fixes"],2],
+["La déflation est dangereuse car :",["elle favorise la consommation","il est difficile d’en sortir","elle stimule l’investissement"],1],
+["Le PIB par habitant permet :",["de mesurer la croissance","de comparer les niveaux de vie","d’évaluer la production industrielle"],1],
+["L’IDH prend en compte :",["le revenu seul","la production","l’espérance de vie, l’éducation et le revenu"],2],
+["Le PIB est mesuré :",["en pourcentage","en indices","en unités monétaires"],2],
+["La production est égale à :",["consommation intermédiaire + valeur ajoutée","importations + exportations","revenus + épargne"],0]
+];
+
+let html="";
+questions.forEach((q,i)=>{
+html+=`<div class="question" id="q${i}">
+<p><strong>${i+1}. ${q[0]}</strong></p>`;
+q[1].forEach((r,j)=>{
+html+=`<label><input type="radio" name="q${i}" value="${j}"> ${r}</label><br>`;
+});
+html+="</div>";
+});
+document.write(html);
+</script>
+
+</form>
+
+<button onclick="verifier()">Vérifiez vos réponses</button>
+<div id="score"></div>
+<div id="corrige" class="corrige"></div>
+
+<script>
+function verifier(){
+let score=0;
+let corrigeHTML="<h2>Corrigé</h2><ul>";
+questions.forEach((q,i)=>{
+const bonnes=q[2];
+const radios=document.getElementsByName("q"+i);
+radios.forEach(r=>{
+r.parentElement.classList.remove("good","bad");
+if(parseInt(r.value)===bonnes) r.parentElement.classList.add("good");
+});
+if(radios[bonnes].checked) score++;
+corrigeHTML+=`<li>${i+1}. ${q[0]} <strong>${q[1][bonnes]}</strong></li>`;
+});
+document.getElementById("score").innerText="Score : "+score+" / 20";
+document.getElementById("corrige").innerHTML=corrigeHTML+"</ul>";
+}
+</script>
+
+</body>
+</html>
