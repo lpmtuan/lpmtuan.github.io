@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>QCM – Systèmes juridiques & sources du droit</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:900px;margin:auto;padding:20px;background:#eef2f7}
+h1{text-align:center}
+.question{background:#fff;padding:15px;margin:12px 0;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+label{display:block;margin:4px 0}
+.good{background:#c8f7c5}
+.bad{background:#f7c5c5}
+button{padding:12px 22px;font-size:16px;border:none;border-radius:6px;background:#007acc;color:#fff;cursor:pointer}
+#score{margin-top:15px;font-size:18px;font-weight:bold}
+.corrige{margin-top:25px;background:#fff;padding:15px;border-radius:10px}
+</style>
+</head>
+<body>
+
+<h1>Systèmes juridiques & sources du droit</h1>
+<form id="qcm"></form>
+
+<button onclick="verifier()">Vérifiez vos réponses</button>
+<div id="score"></div>
+<div id="corrige" class="corrige"></div>
+
+<script>
+const questions = [
+["Le droit civil se caractérise par une origine :",["continentale européenne","asiatique","religieuse"],0],
+["La common law est issue du système :",["romain","anglo-saxon","germanique"],1],
+["Dans la common law, la principale source du droit est :",["la Constitution","la coutume","la jurisprudence"],2],
+["Dans le système de droit civil, le rôle principal revient :",["aux juges","au corps législatif","aux avocats"],1],
+["La France relève principalement du système :",["de common law","mixte","de droit civil"],2],
+["Le droit français se divise en :",["droit économique et social","droit public et droit privé","droit national et international"],1],
+["Le droit public concerne surtout :",["les relations entre particuliers","la famille","l’organisation de l’État"],2],
+["Le droit privé règle principalement :",["les relations entre personnes privées","la politique étrangère","le fonctionnement des administrations"],0],
+["La Constitution est une source du droit de rang :",["inférieur à la loi","égal au règlement","supérieur aux lois"],2],
+["Les traités internationaux sont situés :",["au-dessus des règlements","au-dessous des lois","au même niveau que les circulaires"],0],
+["La jurisprudence correspond :",["aux décisions des tribunaux","aux lois votées","aux décrets"],0],
+["La coutume est :",["une règle écrite","une pratique répétée reconnue","un acte administratif"],1],
+["La doctrine est constituée par :",["les commentaires des juristes","les décisions des ministres","les lois votées"],0],
+["Un contrat est une source du droit de type :",["institutionnel","législatif","conventionnel"],2],
+["Les règlements comprennent notamment :",["les circulaires","les décrets et arrêtés","la Constitution"],1],
+["La réglementation européenne s’impose :",["uniquement aux entreprises","aux États membres","aux collectivités locales seulement"],1],
+["Les lois sont :",["rédigées par les juges","proposées par les citoyens","votées par le Parlement"],2],
+["Une circulaire est :",["un acte administratif d’application","une loi constitutionnelle","un traité international"],0],
+["Dans la hiérarchie des normes, les règlements sont :",["supérieurs à la Constitution","inférieurs aux lois","équivalents aux traités"],1],
+["Les textes juridiques comprennent :",["uniquement les lois","uniquement la jurisprudence","Constitution, lois et règlements"],2]
+];
+
+const form=document.getElementById("qcm");
+questions.forEach((q,i)=>{
+let div=document.createElement("div");
+div.className="question";
+div.id="q"+i;
+let html=`<p><strong>${i+1}. ${q[0]}</strong></p>`;
+q[1].forEach((r,j)=>{
+html+=`<label><input type="radio" name="q${i}" value="${j}"> ${r}</label>`;
+});
+div.innerHTML=html;
+form.appendChild(div);
+});
+
+function verifier(){
+let score=0;
+let corr="<h2>Corrigé</h2><ul>";
+questions.forEach((q,i)=>{
+const radios=document.getElementsByName("q"+i);
+radios.forEach(r=>{
+r.parentElement.classList.remove("good","bad");
+if(parseInt(r.value)===q[2]) r.parentElement.classList.add("good");
+});
+if(radios[q[2]].checked) score++;
+corr+=`<li>${i+1}. ${q[0]} <strong>${q[1][q[2]]}</strong></li>`;
+});
+document.getElementById("score").innerText="Score : "+score+" / 20";
+document.getElementById("corrige").innerHTML=corr+"</ul>";
+}
+</script>
+
+</body>
+</html>
