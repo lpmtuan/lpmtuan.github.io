@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>QCM – Population active & Droit du travail</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:900px;margin:auto;padding:20px;background:#eef3f7}
+h1{text-align:center}
+.question{background:#fff;padding:15px;margin:12px 0;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+label{display:block;margin:4px 0}
+.good{background:#c8f7c5}
+.bad{background:#f7c5c5}
+button{padding:12px 22px;font-size:16px;border:none;border-radius:6px;background:#0077cc;color:#fff;cursor:pointer}
+#score{margin-top:15px;font-size:18px;font-weight:bold}
+.corrige{margin-top:25px;background:#fff;padding:15px;border-radius:10px}
+</style>
+</head>
+<body>
+
+<h1>Le monde et le droit du travail</h1>
+<form id="qcm"></form>
+
+<button onclick="verifier()">Vérifiez vos réponses</button>
+<div id="score"></div>
+<div id="corrige" class="corrige"></div>
+
+<script>
+const questions = [
+["Un actif est une personne :",["de moins de 15 ans","de 15 ans ou plus exerçant ou cherchant une activité","qui ne travaille jamais"],1],
+["Une personne inactive :",["cherche un emploi","est forcément retraitée","n’a pas d’emploi et n’en cherche pas"],2],
+["La population active comprend :",["uniquement les salariés","actifs occupés et chômeurs","tous les habitants"],1],
+["Un chômeur est une personne :",["sans emploi, disponible et en recherche","sans emploi mais inactive","retraitée"],0],
+["La population en âge de travailler :",["est identique à la population active","exclut les chômeurs","est différente de la population active"],2],
+["Le taux d’activité mesure la proportion :",["de chômeurs dans la population active","d’actifs dans la population totale","d’actifs occupés dans la population active"],1],
+["Le taux d’emploi correspond à la proportion :",["d’actifs occupés dans la population totale","de chômeurs dans la population active","d’inactifs dans la population totale"],0],
+["Le taux de chômage est la proportion :",["d’inactifs dans la population active","de chômeurs dans la population active","de chômeurs dans la population totale"],1],
+["Les catégories socioprofessionnelles sont classées selon :",["l’âge uniquement","le revenu seulement","le métier et la qualification"],2],
+["Les cadres appartiennent à :",["professions intermédiaires","cadres et professions intellectuelles supérieures","employés"],1],
+["La féminisation signifie :",["baisse des hommes actifs","hausse du nombre total d’actifs","hausse de la part des femmes actives"],2],
+["Le vieillissement correspond à :",["augmentation du nombre de retraités","baisse des diplômes","hausse des emplois jeunes"],0],
+["Un enjeu majeur est :",["financement des retraites","baisse du commerce","hausse de la consommation"],0],
+["Le solde migratoire influence :",["les salaires","la population active","la durée du travail"],1],
+["Le droit du travail organise :",["seulement la formation","les relations entre employeur et salarié","uniquement les contrats publics"],1],
+["Le Code du travail est une source :",["contractuelle","jurisprudentielle","législative"],2],
+["Le CDI est un contrat :",["à durée déterminée","temporaire","à durée indéterminée"],2],
+["Le Smic correspond à :",["une prime","la rémunération minimale","une indemnité chômage"],1],
+["La démission est :",["à l’initiative du salarié","à l’initiative du juge","collective"],0],
+["La rupture conventionnelle est :",["imposée par l’employeur","décidée par le salarié seul","acceptée par les deux parties"],2]
+];
+
+const form=document.getElementById("qcm");
+questions.forEach((q,i)=>{
+let div=document.createElement("div");
+div.className="question";
+div.id="q"+i;
+let html=`<p><strong>${i+1}. ${q[0]}</strong></p>`;
+q[1].forEach((r,j)=>{
+html+=`<label><input type="radio" name="q${i}" value="${j}"> ${r}</label>`;
+});
+div.innerHTML=html;
+form.appendChild(div);
+});
+
+function verifier(){
+let score=0;
+let corr="<h2>Corrigé</h2><ul>";
+questions.forEach((q,i)=>{
+const radios=document.getElementsByName("q"+i);
+radios.forEach(r=>{
+r.parentElement.classList.remove("good","bad");
+if(parseInt(r.value)===q[2]) r.parentElement.classList.add("good");
+});
+if(radios[q[2]].checked) score++;
+corr+=`<li>${i+1}. ${q[0]} <strong>${q[1][q[2]]}</strong></li>`;
+});
+document.getElementById("score").innerText="Score : "+score+" / 20";
+document.getElementById("corrige").innerHTML=corr+"</ul>";
+}
+</script>
+
+</body>
+</html>
