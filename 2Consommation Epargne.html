@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>QCM – Consommation & Épargne</title>
+<style>
+body{font-family:Arial, sans-serif;max-width:900px;margin:auto;padding:20px;background:#f0f4f8}
+h1{text-align:center}
+.question{background:#fff;padding:15px;margin:12px 0;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+label{display:block;margin:4px 0}
+.good{background:#c9f7c9}
+.bad{background:#f7c9c9}
+button{padding:12px 22px;font-size:16px;border:none;border-radius:6px;background:#007acc;color:#fff;cursor:pointer}
+#score{margin-top:15px;font-size:18px;font-weight:bold}
+.corrige{margin-top:25px;background:#fff;padding:15px;border-radius:10px}
+</style>
+</head>
+<body>
+
+<h1>Consommation & Épargne</h1>
+<form id="qcm"></form>
+
+<button onclick="verifier()">Vérifiez vos réponses</button>
+<div id="score"></div>
+<div id="corrige" class="corrige"></div>
+
+<script>
+const questions = [
+["La consommation est une opération qui consiste à :",["satisfaire des besoins par des biens ou services","stocker des richesses","produire des biens intermédiaires"],0],
+["Les biens consommés :",["se transforment en capital","disparaissent plus ou moins rapidement","restent toujours durables"],1],
+["La consommation collective est :",["financée uniquement par les ménages","toujours marchande","dispensée par l’État ou la Sécurité sociale"],2],
+["La consommation individuelle concerne surtout :",["les biens et services marchands","les services publics gratuits","les biens produits par l’État"],0],
+["La consommation finale sert à :",["produire un autre bien","satisfaire directement un besoin","constituer une épargne"],1],
+["La consommation intermédiaire correspond à :",["l’achat pour un usage personnel","un service public gratuit","l’utilisation d’un bien pour produire un autre bien"],2],
+["La consommation marchande :",["concerne des échanges sur un marché","est toujours gratuite","n’a pas de prix"],0],
+["La consommation non marchande est souvent :",["vendue à prix élevé","gratuite ou à prix modique","réservée aux entreprises"],1],
+["Le revenu disponible est un déterminant :",["technologique","environnemental","économique"],2],
+["Le marketing influence surtout les déterminants :",["économiques","sociodémographiques","institutionnels"],1],
+["L’innovation technologique est un déterminant :",["économique","institutionnel","techno-environnemental"],2],
+["La structure de la consommation désigne :",["la part de l’épargne","la répartition des dépenses des ménages","le niveau de production nationale"],1],
+["Les coefficients budgétaires servent à mesurer :",["la part de chaque poste de dépense","le niveau d’inflation","le taux d’intérêt"],0],
+["Un bien avec une élasticité-revenu e > 1 est un bien :",["inférieur","normal","supérieur"],2],
+["Un bien inférieur est caractérisé par :",["e < 0","0 < e < 1","e > 1"],0],
+["L’épargne est :",["la totalité du revenu","la part du revenu non consommée","une dépense publique"],1],
+["L’achat d’un logement est une forme d’épargne :",["financière","monétaire","non financière"],2],
+["Les liquidités et placements sont une épargne :",["non financière","financière","collective"],1],
+["L’inflation influence l’épargne comme déterminant :",["institutionnel","technologique","économique"],2],
+["Le système de retraite est un déterminant :",["institutionnel","économique","sociodémographique"],0]
+];
+
+const form=document.getElementById("qcm");
+questions.forEach((q,i)=>{
+let div=document.createElement("div");
+div.className="question";
+div.id="q"+i;
+let html=`<p><strong>${i+1}. ${q[0]}</strong></p>`;
+q[1].forEach((r,j)=>{
+html+=`<label><input type="radio" name="q${i}" value="${j}"> ${r}</label>`;
+});
+div.innerHTML=html;
+form.appendChild(div);
+});
+
+function verifier(){
+let score=0;
+let corr="<h2>Corrigé</h2><ul>";
+questions.forEach((q,i)=>{
+const radios=document.getElementsByName("q"+i);
+radios.forEach(r=>{
+r.parentElement.classList.remove("good","bad");
+if(parseInt(r.value)===q[2]) r.parentElement.classList.add("good");
+});
+if(radios[q[2]].checked) score++;
+corr+=`<li>${i+1}. ${q[0]} <strong>${q[1][q[2]]}</strong></li>`;
+});
+document.getElementById("score").innerText="Score : "+score+" / 20";
+document.getElementById("corrige").innerHTML=corr+"</ul>";
+}
+</script>
+
+</body>
+</html>
