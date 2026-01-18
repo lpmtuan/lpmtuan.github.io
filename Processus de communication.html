@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Exercices – Processus de communication</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f8;
+    margin:20px;
+}
+h1,h2{
+    color:#2c3e50;
+}
+.exercise{
+    background:#ffffff;
+    padding:20px;
+    margin-bottom:30px;
+    border-radius:8px;
+    box-shadow:0 0 5px rgba(0,0,0,0.1);
+}
+.question{
+    margin-bottom:15px;
+}
+.correct{color:green;font-weight:bold;}
+.incorrect{color:red;font-weight:bold;}
+.score{
+    margin-top:15px;
+    font-weight:bold;
+}
+button{
+    margin-top:10px;
+    margin-right:10px;
+    padding:8px 15px;
+    cursor:pointer;
+}
+select,input{
+    padding:5px;
+}
+.assoc-row{
+    margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Les éléments du processus de communication</h1>
+
+<!-- ================= QCM ================= -->
+<div class="exercise" id="qcm">
+<h2>Exercice 1 - Choisissez la bonne réponse.</h2>
+
+<div class="question" data-answer="b">
+1. Qui envoie le message dans une communication ?
+<br>
+<label><input type="radio" name="q1" value="a"> Le récepteur</label><br>
+<label><input type="radio" name="q1" value="b"> L’émetteur</label><br>
+<label><input type="radio" name="q1" value="c"> Le canal</label><br>
+<label><input type="radio" name="q1" value="d"> Le bruit</label>
+</div>
+
+<div class="question" data-answer="c">
+2. Comment s’appelle la transformation du message par l’émetteur ?
+<br>
+<label><input type="radio" name="q2" value="a"> Décodage</label><br>
+<label><input type="radio" name="q2" value="b"> Réponse</label><br>
+<label><input type="radio" name="q2" value="c"> Encodage</label><br>
+<label><input type="radio" name="q2" value="d"> Feed-back</label>
+</div>
+
+<div class="question" data-answer="a">
+3. Quel élément transporte le message ?
+<br>
+<label><input type="radio" name="q3" value="a"> Le canal</label><br>
+<label><input type="radio" name="q3" value="b"> Le contexte</label><br>
+<label><input type="radio" name="q3" value="c"> Le bruit</label><br>
+<label><input type="radio" name="q3" value="d"> La réponse</label>
+</div>
+
+<div class="question" data-answer="d">
+4. Que fait le récepteur avec le message ?
+<br>
+<label><input type="radio" name="q4" value="a"> Il l’encode</label><br>
+<label><input type="radio" name="q4" value="b"> Il le transmet</label><br>
+<label><input type="radio" name="q4" value="c"> Il l’interrompt</label><br>
+<label><input type="radio" name="q4" value="d"> Il le décode</label>
+</div>
+
+<div class="question" data-answer="b">
+5. Comment appelle-t-on les perturbations dans la communication ?
+<br>
+<label><input type="radio" name="q5" value="a"> Les canaux</label><br>
+<label><input type="radio" name="q5" value="b"> Les bruits</label><br>
+<label><input type="radio" name="q5" value="c"> Les réponses</label><br>
+<label><input type="radio" name="q5" value="d"> Les messages</label>
+</div>
+
+<div class="question" data-answer="c">
+6. Qu’est-ce que le feed-back ?
+<br>
+<label><input type="radio" name="q6" value="a"> Le message initial</label><br>
+<label><input type="radio" name="q6" value="b"> Le bruit</label><br>
+<label><input type="radio" name="q6" value="c"> Le retour du récepteur</label><br>
+<label><input type="radio" name="q6" value="d"> Le contexte</label>
+</div>
+
+<div class="question" data-answer="a">
+7. Dans un restaurant, qui est l’émetteur quand le client se plaint ?
+<br>
+<label><input type="radio" name="q7" value="a"> Le client</label><br>
+<label><input type="radio" name="q7" value="b"> Le serveur</label><br>
+<label><input type="radio" name="q7" value="c"> Le plat</label><br>
+<label><input type="radio" name="q7" value="d"> Le bruit</label>
+</div>
+
+<div class="question" data-answer="d">
+8. Le langage des signes est un exemple de :
+<br>
+<label><input type="radio" name="q8" value="a"> Bruit</label><br>
+<label><input type="radio" name="q8" value="b"> Décodage</label><br>
+<label><input type="radio" name="q8" value="c"> Feed-back</label><br>
+<label><input type="radio" name="q8" value="d"> Canal de communication</label>
+</div>
+
+<div class="question" data-answer="b">
+9. Quel élément influence la communication globale ?
+<br>
+<label><input type="radio" name="q9" value="a"> Le message uniquement</label><br>
+<label><input type="radio" name="q9" value="b"> Le contexte</label><br>
+<label><input type="radio" name="q9" value="c"> Le canal seul</label><br>
+<label><input type="radio" name="q9" value="d"> Le feed-back uniquement</label>
+</div>
+
+<div class="question" data-answer="c">
+10. Lors d’une réunion d’équipe, que font les participants ?
+<br>
+<label><input type="radio" name="q10" value="a"> Ils restent passifs</label><br>
+<label><input type="radio" name="q10" value="b"> Ils créent du bruit</label><br>
+<label><input type="radio" name="q10" value="c"> Ils posent des questions</label><br>
+<label><input type="radio" name="q10" value="d"> Ils encodent le message</label>
+</div>
+
+<button onclick="checkQCM()">Vérifiez vos réponses</button>
+<button onclick="resetQCM()">Réinitialiser l’exercice</button>
+<div class="score" id="qcmScore"></div>
+</div>
+
+<!-- ================= LACUNAIRE ================= -->
+<div class="exercise" id="lacunaire">
+<h2>Exercice 2 – Complétez avec un mot dans la liste.</h2>
+
+<p>
+La communication comprend un <input data-answer="émetteur"> qui encode un <input data-answer="message">,
+transmis par un <input data-answer="canal"> vers un <input data-answer="récepteur">.
+Celui-ci réalise le <input data-answer="décodage"> et peut envoyer un <input data-answer="feed-back">.
+</p>
+
+<p><strong>Mots à utiliser :</strong> feed-back, émetteur, canal, récepteur, décodage, message</p>
+
+<button onclick="checkLacunaire()">Vérifiez vos réponses</button>
+<button onclick="resetLacunaire()">Réinitialiser l’exercice</button>
+<div class="score" id="lacScore"></div>
+</div>
+
+<!-- ================= ASSOCIATION ================= -->
+<div class="exercise" id="association">
+<h2>Exercice 3 – Trouvez la définition correcte.</h2>
+
+<div class="assoc-row">
+Émetteur :
+<select data-answer="Celui qui envoie le message">
+<option value="">---</option>
+<option>Celui qui reçoit le message</option>
+<option>Celui qui envoie le message</option>
+<option>Le support de transmission</option>
+</select>
+</div>
+
+<div class="assoc-row">
+Canal :
+<select data-answer="Support utilisé pour transmettre le message">
+<option value="">---</option>
+<option>Le retour du récepteur</option>
+<option>Support utilisé pour transmettre le message</option>
+<option>La perturbation</option>
+</select>
+</div>
+
+<div class="assoc-row">
+Bruit :
+<select data-answer="Perturbation de la communication">
+<option value="">---</option>
+<option>Perturbation de la communication</option>
+<option>Le message codé</option>
+<option>Le contexte</option>
+</select>
+</div>
+
+<div class="assoc-row">
+Feed-back :
+<select data-answer="Réaction du récepteur">
+<option value="">---</option>
+<option>Réaction du récepteur</option>
+<option>Canal utilisé</option>
+<option>Message initial</option>
+</select>
+</div>
+
+<div class="assoc-row">
+Contexte :
+<select data-answer="Environnement de la communication">
+<option value="">---</option>
+<option>Message envoyé</option>
+<option>Environnement de la communication</option>
+<option>Bruit sonore</option>
+</select>
+</div>
+
+<button onclick="checkAssoc()">Vérifiez vos réponses</button>
+<button onclick="resetAssoc()">Réinitialiser l’exercice</button>
+<div class="score" id="assocScore"></div>
+</div>
+
+<script>
+function checkQCM(){
+    const questions=document.querySelectorAll("#qcm .question");
+    let score=0;
+    for(let q of questions){
+        const answer=q.dataset.answer;
+        const checked=q.querySelector("input:checked");
+        if(!checked){alert("Veuillez répondre à toutes les questions.");return;}
+        if(checked.value===answer){score++;checked.parentElement.classList.add("correct");}
+        else{checked.parentElement.classList.add("incorrect");}
+    }
+    document.getElementById("qcmScore").textContent="Score : "+score+"/10";
+}
+
+function resetQCM(){
+    document.querySelectorAll("#qcm input").forEach(i=>i.checked=false);
+    document.querySelectorAll("#qcm label").forEach(l=>l.className="");
+    document.getElementById("qcmScore").textContent="";
+}
+
+function checkLacunaire(){
+    const inputs=document.querySelectorAll("#lacunaire input");
+    let score=0;
+    for(let i of inputs){
+        if(!i.value){alert("Veuillez remplir tous les trous.");return;}
+        if(i.value.toLowerCase()===i.dataset.answer){score++;i.className="correct";}
+        else{i.className="incorrect";}
+    }
+    document.getElementById("lacScore").textContent="Score : "+score+"/"+inputs.length;
+}
+
+function resetLacunaire(){
+    document.querySelectorAll("#lacunaire input").forEach(i=>{i.value="";i.className="";});
+    document.getElementById("lacScore").textContent="";
+}
+
+function checkAssoc(){
+    const selects=document.querySelectorAll("#association select");
+    let score=0;
+    for(let s of selects){
+        if(!s.value){alert("Veuillez réaliser toutes les associations.");return;}
+        if(s.value===s.dataset.answer){score++;s.className="correct";}
+        else{s.className="incorrect";}
+    }
+    document.getElementById("assocScore").textContent="Score : "+score+"/"+selects.length;
+}
+
+function resetAssoc(){
+    document.querySelectorAll("#association select").forEach(s=>{s.value="";s.className="";});
+    document.getElementById("assocScore").textContent="";
+}
+</script>
+
+</body>
+</html>
