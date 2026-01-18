@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Communication digitale – Exercices interactifs</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+    margin:20px;
+}
+h1{
+    text-align:center;
+}
+.exercise{
+    background:#fff;
+    padding:20px;
+    margin-bottom:30px;
+    border-radius:8px;
+    box-shadow:0 0 5px rgba(0,0,0,0.1);
+}
+.question{
+    margin-bottom:15px;
+}
+.answers label{
+    display:block;
+    margin:4px 0;
+}
+.correct{
+    color:green;
+    font-weight:bold;
+}
+.incorrect{
+    color:red;
+    font-weight:bold;
+}
+.buttons{
+    margin-top:15px;
+}
+button{
+    padding:8px 15px;
+    margin-right:10px;
+}
+.score{
+    margin-top:10px;
+    font-weight:bold;
+}
+select{
+    padding:4px;
+}
+.match-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+}
+.match-row span{
+    width:45%;
+}
+</style>
+</head>
+
+<body>
+
+<h1 style="color: blue;">Communication digitale – Généralités</h1>
+
+<!-- EXERCICE 1 : QCM -->
+<div class="exercise" id="qcm">
+<h2 style="color: orange;">Exercice 1 – Choisissez la bonne réponse.</h2>
+
+<form>
+<div class="question" data-correct="a">
+1. La communication digitale consiste principalement à :
+<div class="answers">
+<label><input type="radio" name="q1" value="a"> transmettre et créer des informations sur Internet</label>
+<label><input type="radio" name="q1" value="b"> développer uniquement des logiciels</label>
+<label><input type="radio" name="q1" value="c"> gérer des serveurs informatiques</label>
+<label><input type="radio" name="q1" value="d"> stocker des données hors ligne</label>
+</div>
+</div>
+
+<div class="question" data-correct="b">
+2. Le terme « digital » signifie :
+<div class="answers">
+<label><input type="radio" name="q2" value="a"> graphique</label>
+<label><input type="radio" name="q2" value="b"> numérique</label>
+<label><input type="radio" name="q2" value="c"> analogique</label>
+<label><input type="radio" name="q2" value="d"> virtuel</label>
+</div>
+</div>
+
+<div class="question" data-correct="c">
+3. Le protocole utilisé par le Web est :
+<div class="answers">
+<label><input type="radio" name="q3" value="a"> FTP</label>
+<label><input type="radio" name="q3" value="b"> SMTP</label>
+<label><input type="radio" name="q3" value="c"> HTTP</label>
+<label><input type="radio" name="q3" value="d"> IP</label>
+</div>
+</div>
+
+<div class="question" data-correct="d">
+4. Les technologies du Web ont été mises au point :
+<div class="answers">
+<label><input type="radio" name="q4" value="a"> en 2000</label>
+<label><input type="radio" name="q4" value="b"> en 1975</label>
+<label><input type="radio" name="q4" value="c"> en 1995</label>
+<label><input type="radio" name="q4" value="d"> en 1989-1990</label>
+</div>
+</div>
+
+<div class="question" data-correct="a">
+5. Internet est :
+<div class="answers">
+<label><input type="radio" name="q5" value="a"> un réseau mondial de réseaux</label>
+<label><input type="radio" name="q5" value="b"> un site web</label>
+<label><input type="radio" name="q5" value="c"> un navigateur</label>
+<label><input type="radio" name="q5" value="d"> une application</label>
+</div>
+</div>
+
+<div class="question" data-correct="b">
+6. Le Web correspond à :
+<div class="answers">
+<label><input type="radio" name="q6" value="a"> un réseau privé</label>
+<label><input type="radio" name="q6" value="b"> une application utilisant Internet</label>
+<label><input type="radio" name="q6" value="c"> un matériel informatique</label>
+<label><input type="radio" name="q6" value="d"> un serveur</label>
+</div>
+</div>
+
+<div class="question" data-correct="c">
+7. Le premier sens du mot communication signifie :
+<div class="answers">
+<label><input type="radio" name="q7" value="a"> informer</label>
+<label><input type="radio" name="q7" value="b"> transmettre</label>
+<label><input type="radio" name="q7" value="c"> partager</label>
+<label><input type="radio" name="q7" value="d"> publier</label>
+</div>
+</div>
+
+<div class="question" data-correct="d">
+8. Le sens de transmission apparaît :
+<div class="answers">
+<label><input type="radio" name="q8" value="a"> au XIe siècle</label>
+<label><input type="radio" name="q8" value="b"> au XIIe siècle</label>
+<label><input type="radio" name="q8" value="c"> au XVe siècle</label>
+<label><input type="radio" name="q8" value="d"> au XVIe siècle</label>
+</div>
+</div>
+
+<div class="question" data-correct="a">
+9. La communication digitale s’est développée grâce :
+<div class="answers">
+<label><input type="radio" name="q9" value="a"> au développement d’Internet</label>
+<label><input type="radio" name="q9" value="b"> à la radio</label>
+<label><input type="radio" name="q9" value="c"> à la presse</label>
+<label><input type="radio" name="q9" value="d"> au téléphone</label>
+</div>
+</div>
+
+<div class="question" data-correct="b">
+10. Les réseaux sociaux ont :
+<div class="answers">
+<label><input type="radio" name="q10" value="a"> ralenti la communication</label>
+<label><input type="radio" name="q10" value="b"> modifié les stratégies des entreprises</label>
+<label><input type="radio" name="q10" value="c"> supprimé le Web</label>
+<label><input type="radio" name="q10" value="d"> augmenté fortement les coûts</label>
+</div>
+</div>
+</form>
+
+<div class="buttons">
+<button onclick="checkQCM()">Vérifiez vos réponses</button>
+<button onclick="resetQCM()">Réinitialiser l’exercice</button>
+</div>
+<p class="score" id="qcmScore"></p>
+</div>
+
+<!-- EXERCICE 2 : LACUNAIRE -->
+<div class="exercise" id="lacunaire">
+<h2 style="color: orange;">Exercice 2 – Complétez avec un mot de la liste.</h2>
+
+<p>
+La communication digitale permet aux entreprises de créer une
+<select data-answer="identité"></select>,
+de développer leur
+<select data-answer="notoriété"></select>
+et de transmettre un message
+<select data-answer="cohérent"></select>.
+Elle repose sur
+<select data-answer="Internet"></select>
+et utilise différents
+<select data-answer="canaux"></select>.
+</p>
+
+<div class="buttons">
+<button onclick="checkLacunaire()">Vérifiez vos réponses</button>
+<button onclick="resetLacunaire()">Réinitialiser l’exercice</button>
+</div>
+<p class="score" id="lacScore"></p>
+</div>
+
+<!-- EXERCICE 3 : ASSOCIATION -->
+<div class="exercise" id="association">
+<h2 style="color: orange;">Exercice 3 – Associez un terme à sa définition.</h2>
+
+<div class="match-row">
+<span>Internet</span>
+<select data-answer="réseau mondial de réseaux">
+<option value=""></option>
+<option>application d’Internet</option>
+<option>réseau mondial de réseaux</option>
+<option>protocole du Web</option>
+<option>canal de communication</option>
+</select>
+</div>
+
+<div class="match-row">
+<span>Web</span>
+<select data-answer="application d’Internet">
+<option value=""></option>
+<option>réseau mondial de réseaux</option>
+<option>application d’Internet</option>
+<option>protocole</option>
+<option>logiciel</option>
+</select>
+</div>
+
+<div class="match-row">
+<span>HTTP</span>
+<select data-answer="protocole du Web">
+<option value=""></option>
+<option>langage informatique</option>
+<option>protocole du Web</option>
+<option>serveur</option>
+<option>site Internet</option>
+</select>
+</div>
+
+<div class="match-row">
+<span>Communication digitale</span>
+<select data-answer="transmission d’informations en ligne">
+<option value=""></option>
+<option>publicité papier</option>
+<option>transmission d’informations en ligne</option>
+<option>réseau local</option>
+<option>impression</option>
+</select>
+</div>
+
+<div class="match-row">
+<span>Réseaux sociaux</span>
+<select data-answer="multiplicité des canaux">
+<option value=""></option>
+<option>média traditionnel</option>
+<option>multiplicité des canaux</option>
+<option>réseau privé</option>
+<option>outil hors ligne</option>
+</select>
+</div>
+
+<div class="buttons">
+<button onclick="checkAssoc()">Vérifiez vos réponses</button>
+<button onclick="resetAssoc()">Réinitialiser l’exercice</button>
+</div>
+<p class="score" id="assocScore"></p>
+</div>
+
+<script>
+function checkQCM(){
+let score=0;
+let questions=document.querySelectorAll('#qcm .question');
+for(let q of questions){
+let checked=q.querySelector('input:checked');
+if(!checked){alert("Veuillez répondre à toutes les questions.");return;}
+let correct=q.dataset.correct;
+q.querySelectorAll('label').forEach(l=>l.className="");
+if(checked.value===correct){
+checked.parentElement.classList.add('correct');
+score++;
+}else{
+checked.parentElement.classList.add('incorrect');
+q.querySelector('input[value="'+correct+'"]').parentElement.classList.add('correct');
+}
+}
+document.getElementById('qcmScore').textContent="Score : "+score+"/10";
+}
+
+function resetQCM(){
+document.querySelectorAll('#qcm input').forEach(i=>i.checked=false);
+document.querySelectorAll('#qcm label').forEach(l=>l.className="");
+document.getElementById('qcmScore').textContent="";
+}
+
+function initLacunaire(){
+let words=["Internet","canaux","cohérent","notoriété","identité"].sort(()=>Math.random()-0.5);
+document.querySelectorAll('#lacunaire select').forEach(s=>{
+s.innerHTML='<option value=""></option>'+words.map(w=>'<option>'+w+'</option>').join('');
+});
+}
+initLacunaire();
+
+function checkLacunaire(){
+let score=0;
+let selects=document.querySelectorAll('#lacunaire select');
+for(let s of selects){
+if(!s.value){alert("Veuillez compléter tous les trous.");return;}
+s.className="";
+if(s.value===s.dataset.answer){s.classList.add('correct');score++;}
+else{s.classList.add('incorrect');}
+}
+document.getElementById('lacScore').textContent="Score : "+score+"/"+selects.length;
+}
+
+function resetLacunaire(){
+initLacunaire();
+document.querySelectorAll('#lacunaire select').forEach(s=>s.className="");
+document.getElementById('lacScore').textContent="";
+}
+
+function checkAssoc(){
+let score=0;
+let selects=document.querySelectorAll('#association select');
+for(let s of selects){
+if(!s.value){alert("Veuillez tout associer.");return;}
+s.className="";
+if(s.value===s.dataset.answer){s.classList.add('correct');score++;}
+else{s.classList.add('incorrect');}
+}
+document.getElementById('assocScore').textContent="Score : "+score+"/"+selects.length;
+}
+
+function resetAssoc(){
+document.querySelectorAll('#association select').forEach(s=>{s.value="";s.className="";});
+document.getElementById('assocScore').textContent="";
+}
+</script>
+
+</body>
+</html>
