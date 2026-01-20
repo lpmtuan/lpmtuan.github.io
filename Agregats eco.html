@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Les agrégats économiques – Exercices interactifs</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f7fa;margin:0;padding:20px;color:#333}
+h1,h2{color:#2c3e50}
+.exercise{background:#fff;border-radius:8px;padding:20px;margin-bottom:30px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.question{margin-bottom:15px}
+.answers label{display:block;margin:5px 0;padding:5px;border-radius:4px}
+.correct{color:#155724;background:#d4edda}
+.incorrect{color:#721c24;background:#f8d7da}
+button{margin:10px 5px 0 0;padding:8px 14px;border:none;border-radius:4px;cursor:pointer}
+.check{background:#3498db;color:#fff}
+.reset{background:#95a5a6;color:#fff}
+.score{margin-top:10px;font-weight:bold}
+input[type="text"]{padding:5px;margin:0 5px;width:120px}
+.liste-mots span{display:inline-block;background:#ecf0f1;padding:5px 8px;margin:5px;border-radius:4px}
+.match-container{display:flex;justify-content:space-between}
+.match-list{width:45%}
+.match-item{margin:6px 0}
+select{width:100%}
+</style>
+</head>
+<body>
+
+<h1 style="color: green;">Les agrégats économiques</h1>
+
+<div class="exercise" id="qcm">
+<h2 style="color: blue;">Exercice 1 – Choisissez la bonne réponse.</h2>
+
+<div class="question" data-correct="b">
+<p>1. Le PIB correspond à :</p>
+<div class="answers">
+<label><input type="radio" name="q1"> la croissance économique</label>
+<label><input type="radio" name="q1"> la valeur des biens et services finals produits</label>
+<label><input type="radio" name="q1"> le bien-être des habitants</label>
+<label><input type="radio" name="q1"> la somme des revenus</label>
+</div>
+</div>
+
+<div class="question" data-correct="c">
+<p>2. La croissance économique est :</p>
+<div class="answers">
+<label><input type="radio" name="q2"> l’évolution du PIB en valeur</label>
+<label><input type="radio" name="q2"> la variation des prix</label>
+<label><input type="radio" name="q2"> l’évolution du PIB en volume</label>
+<label><input type="radio" name="q2"> la hausse des salaires</label>
+</div>
+</div>
+
+<div class="question" data-correct="a">
+<p>3. Le PIB et le PNB portent sur :</p>
+<div class="answers">
+<label><input type="radio" name="q3"> les biens et services finals</label>
+<label><input type="radio" name="q3"> les biens intermédiaires</label>
+<label><input type="radio" name="q3"> les importations</label>
+<label><input type="radio" name="q3"> les transferts sociaux</label>
+</div>
+</div>
+
+<div class="question" data-correct="d">
+<p>4. La différence entre PIB et PNB repose sur :</p>
+<div class="answers">
+<label><input type="radio" name="q4"> les services</label>
+<label><input type="radio" name="q4"> les biens</label>
+<label><input type="radio" name="q4"> la monnaie</label>
+<label><input type="radio" name="q4"> le territoire</label>
+</div>
+</div>
+
+<div class="question" data-correct="b">
+<p>5. Le PIB reflète uniquement :</p>
+<div class="answers">
+<label><input type="radio" name="q5"> le bien-être</label>
+<label><input type="radio" name="q5"> la valeur des échanges économiques</label>
+<label><input type="radio" name="q5"> le niveau de vie</label>
+<label><input type="radio" name="q5"> l’environnement</label>
+</div>
+</div>
+
+<div class="question" data-correct="c">
+<p>6. Le PIB prend en compte :</p>
+<div class="answers">
+<label><input type="radio" name="q6"> le bénévolat</label>
+<label><input type="radio" name="q6"> les travaux domestiques</label>
+<label><input type="radio" name="q6"> l’économie souterraine</label>
+<label><input type="radio" name="q6"> les loisirs</label>
+</div>
+</div>
+
+<div class="question" data-correct="a">
+<p>7. L’inflation est :</p>
+<div class="answers">
+<label><input type="radio" name="q7"> une hausse continue du niveau général des prix</label>
+<label><input type="radio" name="q7"> une baisse des prix</label>
+<label><input type="radio" name="q7"> une stagnation</label>
+<label><input type="radio" name="q7"> une crise économique</label>
+</div>
+</div>
+
+<div class="question" data-correct="d">
+<p>8. La désinflation correspond :</p>
+<div class="answers">
+<label><input type="radio" name="q8"> à la déflation</label>
+<label><input type="radio" name="q8"> à une baisse durable des prix</label>
+<label><input type="radio" name="q8"> à une crise monétaire</label>
+<label><input type="radio" name="q8"> au ralentissement de l’inflation</label>
+</div>
+</div>
+
+<div class="question" data-correct="b">
+<p>9. Une cause de l’inflation peut être :</p>
+<div class="answers">
+<label><input type="radio" name="q9"> le progrès technique</label>
+<label><input type="radio" name="q9"> la hausse des coûts</label>
+<label><input type="radio" name="q9"> la baisse de la demande</label>
+<label><input type="radio" name="q9"> la déflation</label>
+</div>
+</div>
+
+<div class="question" data-correct="c">
+<p>10. Le PIB sert notamment à :</p>
+<div class="answers">
+<label><input type="radio" name="q10"> mesurer le bonheur</label>
+<label><input type="radio" name="q10"> expliquer l’inflation</label>
+<label><input type="radio" name="q10"> suivre l’état de santé de l’économie</label>
+<label><input type="radio" name="q10"> fixer les salaires</label>
+</div>
+</div>
+
+<button class="check" onclick="checkQCM()">Vérifiez vos réponses</button>
+<button class="reset" onclick="resetQCM()">Réinitialiser l’exercice</button>
+<div class="score" id="scoreQCM"></div>
+</div>
+
+<div class="exercise" id="lacunaire">
+<h2 style="color: blue;">Exercice 2 – Texte lacunaire</h2>
+
+<p>
+La <b>croissance économique</b> est l’évolution du 
+<input type="text" data-answer="PIB"> sans tenir compte de la variation des 
+<input type="text" data-answer="prix">. Elle correspond à l’évolution des 
+<input type="text" data-answer="quantités"> produites et s’exprime en 
+<input type="text" data-answer="pourcentage">.
+</p>
+
+<div class="liste-mots">
+<span>quantités</span><span>pourcentage</span><span>prix</span><span>PIB</span>
+</div>
+
+<button class="check" onclick="checkLacunaire()">Vérifiez vos réponses</button>
+<button class="reset" onclick="resetLacunaire()">Réinitialiser l’exercice</button>
+<div class="score" id="scoreLacunaire"></div>
+</div>
+
+<div class="exercise" id="association">
+<h2 style="color: blue;">Exercice 3 – Exercice d’association</h2>
+
+<div class="match-container">
+<div class="match-list">
+<div class="match-item">PIB
+<select data-answer="b">
+<option value="">---</option>
+<option value="a">Baisse continue des prix</option>
+<option value="b">Valeur des biens et services finals produits</option>
+<option value="c">Ralentissement de l’inflation</option>
+<option value="d">Hausse des prix</option>
+</select>
+</div>
+
+<div class="match-item">Inflation
+<select data-answer="d">
+<option value="">---</option>
+<option value="a">Valeur ajoutée</option>
+<option value="b">Production</option>
+<option value="c">Désinflation</option>
+<option value="d">Hausse continue des prix</option>
+</select>
+</div>
+
+<div class="match-item">Déflation
+<select data-answer="a">
+<option value="">---</option>
+<option value="a">Baisse continue des prix</option>
+<option value="b">Hausse du PIB</option>
+<option value="c">Inflation galopante</option>
+<option value="d">Croissance</option>
+</select>
+</div>
+
+<div class="match-item">Désinflation
+<select data-answer="c">
+<option value="">---</option>
+<option value="a">Déflation</option>
+<option value="b">Inflation forte</option>
+<option value="c">Ralentissement de l’inflation</option>
+<option value="d">Stagnation</option>
+</select>
+</div>
+
+<div class="match-item">Croissance
+<select data-answer="b">
+<option value="">---</option>
+<option value="a">Variation des prix</option>
+<option value="b">Évolution du PIB en volume</option>
+<option value="c">Déflation</option>
+<option value="d">Récession</option>
+</select>
+</div>
+</div>
+</div>
+
+<button class="check" onclick="checkAssociation()">Vérifiez vos réponses</button>
+<button class="reset" onclick="resetAssociation()">Réinitialiser l’exercice</button>
+<div class="score" id="scoreAssociation"></div>
+</div>
+
+<script>
+function checkQCM(){
+let questions=document.querySelectorAll('#qcm .question');
+let score=0;
+for(let q of questions){
+let checked=q.querySelector('input:checked');
+if(!checked){alert("Veuillez répondre à toutes les questions.");return;}
+let labels=q.querySelectorAll('label');
+labels.forEach(l=>l.classList.remove('correct','incorrect'));
+let correct=q.dataset.correct;
+labels.forEach((l,i)=>{
+let letter=String.fromCharCode(97+i);
+if(letter===correct){l.classList.add('correct');}
+if(l.querySelector('input').checked && letter!==correct){l.classList.add('incorrect');}
+});
+if(checked.parentElement.classList.contains('correct'))score++;
+}
+document.getElementById('scoreQCM').textContent="Score : "+score+"/10";
+}
+
+function resetQCM(){
+document.querySelectorAll('#qcm input').forEach(i=>i.checked=false);
+document.querySelectorAll('#qcm label').forEach(l=>l.classList.remove('correct','incorrect'));
+document.getElementById('scoreQCM').textContent="";
+}
+
+function checkLacunaire(){
+let inputs=document.querySelectorAll('#lacunaire input[type=text]');
+let score=0;
+for(let i of inputs){
+if(i.value===""){alert("Veuillez compléter tous les trous.");return;}
+i.classList.remove('correct','incorrect');
+if(i.value.trim()===i.dataset.answer){i.classList.add('correct');score++;}else{i.classList.add('incorrect');}
+}
+document.getElementById('scoreLacunaire').textContent="Score : "+score+"/"+inputs.length;
+}
+
+function resetLacunaire(){
+document.querySelectorAll('#lacunaire input').forEach(i=>{i.value="";i.classList.remove('correct','incorrect');});
+document.getElementById('scoreLacunaire').textContent="";
+}
+
+function checkAssociation(){
+let selects=document.querySelectorAll('#association select');
+let score=0;
+for(let s of selects){
+if(s.value===""){alert("Veuillez réaliser toutes les associations.");return;}
+s.classList.remove('correct','incorrect');
+if(s.value===s.dataset.answer){s.classList.add('correct');score++;}else{s.classList.add('incorrect');}
+}
+document.getElementById('scoreAssociation').textContent="Score : "+score+"/"+selects.length;
+}
+
+function resetAssociation(){
+document.querySelectorAll('#association select').forEach(s=>{s.value="";s.classList.remove('correct','incorrect');});
+document.getElementById('scoreAssociation').textContent="";
+}
+</script>
+
+</body>
+</html>
