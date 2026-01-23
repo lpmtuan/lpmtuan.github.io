@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Exercice B2 – Rythme de vie et loisirs</title>
+
+<style>
+body{
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg,#e3f2fd,#fce4ec);
+  margin:0;
+  padding:30px;
+}
+h1{text-align:center;color:#2c3e50;}
+
+.container{
+  display:flex;
+  gap:25px;
+  max-width:1200px;
+  margin:auto;
+}
+
+/* LISTE DE MOTS */
+.mots{
+  width:30%;
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.1);
+  position:sticky;
+  top:20px;
+  height:fit-content;
+}
+.mot{
+  display:inline-block;
+  background:#dfe6e9;
+  padding:8px 12px;
+  margin:6px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.mot:hover{
+  background:#6c5ce7;
+  color:#fff;
+}
+
+/* PHRASES */
+.exercice{
+  width:70%;
+  background:#fff;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.1);
+  max-height:520px;
+  overflow-y:auto;
+}
+.phrase{
+  margin-bottom:18px;
+  font-size:17px;
+}
+input{
+  width:220px;
+  padding:6px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+.correct{background:#b6f2b6;}
+.incorrect{background:#f7b6b6;}
+
+button{
+  margin-top:20px;
+  padding:12px 18px;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  cursor:pointer;
+}
+#checkBtn{background:#6c5ce7;color:#fff;}
+#checkBtn:disabled{background:#aaa;cursor:not-allowed;}
+#corrigeBtn{background:#00b894;color:#fff;display:none;}
+#resetBtn{background:#dfe6e9;margin-left:10px;}
+
+#score{
+  margin-top:15px;
+  font-weight:bold;
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+<h1 style="color: blue;">Vocabulaire : le rythme de vie et les loisirs</h1>
+
+<div class="container">
+
+<!-- LISTE DES MOTS -->
+<div class="mots" id="listeMots"></div>
+
+<!-- PHRASES -->
+<div class="exercice" id="phrases">
+  <div class="phrase">1. L’___________ au travail nuit à la productivité collective.</div>
+  <input data-answer="absentéisme">
+
+  <div class="phrase">2. Le ___________ est parfois encouragé par une culture de performance excessive.</div>
+  <input data-answer="présentéisme">
+
+  <div class="phrase">3. Il faut savoir ___________ à sa vie personnelle.</div>
+  <input data-answer="accorder du temps">
+
+  <div class="phrase">4. Les vacances sont souvent associées à la ___________ mentale.</div>
+  <input data-answer="détente">
+
+  <div class="phrase">5. Il aime ___________ dans la ville pour observer la vie quotidienne.</div>
+  <input data-answer="flâner">
+
+  <div class="phrase">6. Le ___________ contribue à l’équilibre entre vie privée et professionnelle.</div>
+  <input data-answer="loisir">
+
+  <div class="phrase">7. Le ___________ est de plus en plus intégré aux programmes de bien-être en entreprise.</div>
+  <input data-answer="massage">
+
+  <div class="phrase">8. Sa ___________ contraste avec le rythme soutenu de ses collègues.</div>
+  <input data-answer="nonchalance">
+
+  <div class="phrase">9. La ___________ est souvent stigmatisée dans les sociétés modernes.</div>
+  <input data-answer="paresse">
+
+  <div class="phrase">10. En congé, il préfère ___________ plutôt que multiplier les activités.</div>
+  <input data-answer="prendre son temps">
+
+  <div class="phrase">11. Les techniques de ___________ sont utilisées pour réduire le stress.</div>
+  <input data-answer="relaxation">
+
+  <div class="phrase">12. Le ___________ reste indispensable au bon fonctionnement cognitif.</div>
+  <input data-answer="repos">
+
+  <div class="phrase">13. La ___________ est un état recherché dans les pratiques méditatives.</div>
+  <input data-answer="sérénité">
+
+  <div class="phrase">14. Ils apprécient ___________ pour découvrir de nouveaux artistes.</div>
+  <input data-answer="assister à un concert">
+
+  <div class="phrase">15. Lors de leurs voyages culturels, ils aiment ___________.</div>
+  <input data-answer="visiter des expositions">
+</div>
+</div>
+
+<button id="checkBtn" disabled onclick="verifier()">Vérifier les réponses</button>
+<button id="corrigeBtn" onclick="voirCorrige()">Voir le corrigé</button>
+<button id="resetBtn" onclick="resetExercice()">Réinitialiser l’exercice</button>
+
+<div id="score"></div>
+
+<script>
+let inputs=document.querySelectorAll("input");
+let actif=null;
+
+// activation champ actif
+inputs.forEach(i=>{
+  i.addEventListener("focus",()=>actif=i);
+  i.addEventListener("input",checkCompletion);
+});
+
+// mots mélangés
+let mots=[
+"sérénité","repos","nonchalance","flâner","loisir",
+"accorder du temps","massage","détente","relaxation",
+"absentéisme","présentéisime","paresse",
+"prendre son temps","assister à un concert","visiter des expositions"
+].sort(()=>Math.random()-0.5);
+
+let liste=document.getElementById("listeMots");
+mots.forEach(m=>{
+  let span=document.createElement("span");
+  span.className="mot";
+  span.innerText=m;
+  span.onclick=()=>{if(actif){actif.value=m;checkCompletion();}};
+  liste.appendChild(span);
+});
+
+function checkCompletion(){
+  let rempli=true;
+  inputs.forEach(i=>{if(i.value.trim()==="") rempli=false;});
+  document.getElementById("checkBtn").disabled=!rempli;
+}
+
+function verifier(){
+  let score=0;
+  inputs.forEach(i=>{
+    let bonne=i.dataset.answer.toLowerCase();
+    let rep=i.value.trim().toLowerCase();
+    if(rep===bonne){
+      i.classList.add("correct");
+      score++;
+    }else{
+      i.classList.add("incorrect");
+    }
+    i.disabled=true;
+  });
+  document.getElementById("score").innerText="Score : "+score+" / 15";
+  document.getElementById("corrigeBtn").style.display="inline-block";
+}
+
+function voirCorrige(){
+  inputs.forEach(i=>{
+    i.value=i.dataset.answer;
+    i.classList.remove("incorrect");
+    i.classList.add("correct");
+  });
+}
+
+function resetExercice(){
+  inputs.forEach(i=>{
+    i.value="";
+    i.disabled=false;
+    i.classList.remove("correct","incorrect");
+  });
+  document.getElementById("score").innerText="";
+  document.getElementById("checkBtn").disabled=true;
+  document.getElementById("corrigeBtn").style.display="none";
+}
+</script>
+
+</body>
+</html>
