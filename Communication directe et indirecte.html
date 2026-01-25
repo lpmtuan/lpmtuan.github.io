@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>La communication directe et indirecte</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f8;
+    margin:0;
+    padding:20px;
+}
+h1,h2{
+    color:#2c3e50;
+}
+.exercise{
+    background:#ffffff;
+    border-radius:8px;
+    padding:20px;
+    margin-bottom:30px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+.question{
+    margin-bottom:15px;
+}
+.options label{
+    display:block;
+    padding:6px;
+    border-radius:4px;
+    cursor:pointer;
+    transition:background 0.3s;
+}
+.options label:hover{
+    background:#ecf0f1;
+}
+.correct{
+    background:#d4edda !important;
+}
+.incorrect{
+    background:#f8d7da !important;
+}
+.buttons{
+    margin-top:15px;
+}
+button{
+    padding:8px 14px;
+    margin-right:10px;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+    transition:opacity 0.3s;
+}
+button:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+}
+.verify{background:#3498db;color:#fff;}
+.correction{background:#9b59b6;color:#fff;}
+.reset{background:#7f8c8d;color:#fff;}
+.score{
+    margin-top:10px;
+    font-weight:bold;
+}
+select{
+    padding:5px;
+}
+.matching{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+@media(max-width:600px){
+    body{padding:10px;}
+}
+</style>
+</head>
+<body>
+
+<h1 style="color: blue;">La communication directe et indirecte</h1>
+
+<div class="exercise" id="ex-qcm">
+<h2 style="color: orange;">Exercice 1 - Cochez la bonne réponse.</h2>
+
+<div class="question" data-answer="B">
+<p>1. Une communication directe se caractérise surtout par :</p>
+<div class="options">
+<label><input type="radio" name="q1" value="A"> l’usage de sous-entendus</label>
+<label><input type="radio" name="q1" value="B"> un message explicite</label>
+<label><input type="radio" name="q1" value="C"> une interprétation libre</label>
+</div>
+</div>
+
+<div class="question" data-answer="C">
+<p>2. Dans une communication indirecte, le message :</p>
+<div class="options">
+<label><input type="radio" name="q2" value="A"> est toujours bref</label>
+<label><input type="radio" name="q2" value="B"> ne provoque aucune réaction</label>
+<label><input type="radio" name="q2" value="C"> doit être interprété</label>
+</div>
+</div>
+
+<div class="question" data-answer="A">
+<p>3. « Je ne suis pas sûr d’être la personne la plus qualifiée » exprime :</p>
+<div class="options">
+<label><input type="radio" name="q3" value="A"> un refus indirect</label>
+<label><input type="radio" name="q3" value="B"> une acceptation claire</label>
+<label><input type="radio" name="q3" value="C"> une information neutre</label>
+</div>
+</div>
+
+<div class="question" data-answer="B">
+<p>4. La communication indirecte est souvent utilisée pour :</p>
+<div class="options">
+<label><input type="radio" name="q4" value="A"> gagner du temps</label>
+<label><input type="radio" name="q4" value="B"> atténuer un message délicat</label>
+<label><input type="radio" name="q4" value="C"> éviter toute interaction</label>
+</div>
+</div>
+
+<div class="question" data-answer="C">
+<p>5. « Ça prend plus de temps que prévu, non ? » sert surtout à :</p>
+<div class="options">
+<label><input type="radio" name="q5" value="A"> féliciter</label>
+<label><input type="radio" name="q5" value="B"> informer précisément</label>
+<label><input type="radio" name="q5" value="C"> exprimer une critique indirecte</label>
+</div>
+</div>
+
+<div class="question" data-answer="A">
+<p>6. Une phrase directe est généralement :</p>
+<div class="options">
+<label><input type="radio" name="q6" value="A"> claire sur l’intention</label>
+<label><input type="radio" name="q6" value="B"> ambiguë</label>
+<label><input type="radio" name="q6" value="C"> contradictoire</label>
+</div>
+</div>
+
+<div class="question" data-answer="B">
+<p>7. Un client déçu qui pose beaucoup de questions utilise :</p>
+<div class="options">
+<label><input type="radio" name="q7" value="A"> une communication directe agressive</label>
+<label><input type="radio" name="q7" value="B"> une communication indirecte</label>
+<label><input type="radio" name="q7" value="C"> un silence stratégique</label>
+</div>
+</div>
+
+<div class="question" data-answer="C">
+<p>8. La communication indirecte repose souvent sur :</p>
+<div class="options">
+<label><input type="radio" name="q8" value="A"> des ordres précis</label>
+<label><input type="radio" name="q8" value="B"> des instructions écrites</label>
+<label><input type="radio" name="q8" value="C"> le contexte</label>
+</div>
+</div>
+
+<div class="question" data-answer="A">
+<p>9. Dire « J’ai beaucoup de travail en ce moment » peut signifier :</p>
+<div class="options">
+<label><input type="radio" name="q9" value="A"> un refus partiel</label>
+<label><input type="radio" name="q9" value="B"> une disponibilité immédiate</label>
+<label><input type="radio" name="q9" value="C"> une promesse ferme</label>
+</div>
+</div>
+
+<div class="question" data-answer="B">
+<p>10. La communication directe est souvent privilégiée :</p>
+<div class="options">
+<label><input type="radio" name="q10" value="A"> pour éviter les conflits</label>
+<label><input type="radio" name="q10" value="B"> pour être efficace</label>
+<label><input type="radio" name="q10" value="C"> pour créer du suspense</label>
+</div>
+</div>
+
+<div class="question" data-answer="C">
+<p>11. Un sous-entendu est typique d’une communication :</p>
+<div class="options">
+<label><input type="radio" name="q11" value="A"> formelle</label>
+<label><input type="radio" name="q11" value="B"> administrative</label>
+<label><input type="radio" name="q11" value="C"> indirecte</label>
+</div>
+</div>
+
+<div class="question" data-answer="A">
+<p>12. Exprimer clairement un désaccord correspond à :</p>
+<div class="options">
+<label><input type="radio" name="q12" value="A"> une communication directe</label>
+<label><input type="radio" name="q12" value="B"> une stratégie floue</label>
+<label><input type="radio" name="q12" value="C"> une évitation</label>
+</div>
+</div>
+
+<div class="buttons">
+<button class="verify" disabled>Vérifier vos réponses</button>
+<button class="correction" disabled>Voir le corrigé</button>
+<button class="reset">Réinitialiser l’exercice</button>
+</div>
+<div class="score"></div>
+</div>
+
+<div class="exercise" id="ex-gap">
+<h2 style="color: orange;">Exercice 2</h2>
+<p>Choisissez la communication <strong>directe</strong> ou <strong>indirecte</strong> dans les cas suivants.</p>
+
+<div class="question" data-answer="directe">
+1. Une consigne claire est une communication 
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>.
+</div>
+
+<div class="question" data-answer="indirecte">
+2. Les sous-entendus relèvent de la communication 
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>.
+</div>
+
+<div class="question" data-answer="indirecte">
+3. Poser des questions pour exprimer une critique est une forme 
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>.
+</div>
+
+<div class="question" data-answer="directe">
+4. Dire « Je ne peux pas t’aider » est une communication 
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>.
+</div>
+
+<div class="question" data-answer="indirecte">
+5. Évoquer un problème sans le nommer est une communication 
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>.
+</div>
+
+<div class="question" data-answer="directe">
+6. Donner un avis explicite correspond à une communication 
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>.
+</div>
+
+<div class="buttons">
+<button class="verify" disabled>Vérifier vos réponses</button>
+<button class="correction" disabled>Voir le corrigé</button>
+<button class="reset">Réinitialiser l’exercice</button>
+</div>
+<div class="score"></div>
+</div>
+
+<div class="exercise" id="ex-match">
+<h2 style="color: orange;">Exercice 3</h2>
+<p>Associez la situation au type de communication.</p>
+
+<div class="matching question" data-answer="directe">
+<span>1. « Je suis frustré par ce retard. »</span>
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>
+</div>
+
+<div class="matching question" data-answer="indirecte">
+<span>2. « Est-ce que le délai te semble raisonnable ? »</span>
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>
+</div>
+
+<div class="matching question" data-answer="indirecte">
+<span>3. Un collègue souligne les points positifs avant de critiquer.</span>
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>
+</div>
+
+<div class="matching question" data-answer="directe">
+<span>4. « Cette solution ne me convient pas. »</span>
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>
+</div>
+
+<div class="matching question" data-answer="indirecte">
+<span>5. Évoquer un exemple similaire qui a échoué.</span>
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>
+</div>
+
+<div class="matching question" data-answer="directe">
+<span>6. Demander explicitement de modifier un travail.</span>
+<select>
+<option value=""></option>
+<option value="directe">directe</option>
+<option value="indirecte">indirecte</option>
+</select>
+</div>
+
+<div class="buttons">
+<button class="verify" disabled>Vérifier vos réponses</button>
+<button class="correction" disabled>Voir le corrigé</button>
+<button class="reset">Réinitialiser l’exercice</button>
+</div>
+<div class="score"></div>
+</div>
+
+<script>
+document.querySelectorAll('.exercise').forEach(ex=>{
+    const verifyBtn = ex.querySelector('.verify');
+    const corrBtn = ex.querySelector('.correction');
+    const resetBtn = ex.querySelector('.reset');
+    const questions = ex.querySelectorAll('.question');
+    const scoreDiv = ex.querySelector('.score');
+
+    ex.addEventListener('change', ()=>{
+        let completed = true;
+        questions.forEach(q=>{
+            const inputs = q.querySelectorAll('input[type=radio]');
+            const select = q.querySelector('select');
+            if(inputs.length){
+                if(![...inputs].some(i=>i.checked)) completed=false;
+            }
+            if(select){
+                if(select.value==="") completed=false;
+            }
+        });
+        verifyBtn.disabled = !completed;
+    });
+
+    verifyBtn.addEventListener('click', ()=>{
+        let score=0;
+        questions.forEach(q=>{
+            const answer = q.dataset.answer;
+            const inputs = q.querySelectorAll('input[type=radio]');
+            const select = q.querySelector('select');
+            if(inputs.length){
+                inputs.forEach(i=>{
+                    i.disabled=true;
+                    if(i.checked){
+                        if(i.value===answer){
+                            i.parentElement.classList.add('correct');
+                            score++;
+                        }else{
+                            i.parentElement.classList.add('incorrect');
+                        }
+                    }
+                });
+            }
+            if(select){
+                select.disabled=true;
+                if(select.value===answer){
+                    select.classList.add('correct');
+                    score++;
+                }else{
+                    select.classList.add('incorrect');
+                }
+            }
+        });
+        scoreDiv.textContent = "Score : "+score+" / "+questions.length;
+        verifyBtn.disabled=true;
+        corrBtn.disabled=false;
+    });
+
+    corrBtn.addEventListener('click', ()=>{
+        questions.forEach(q=>{
+            const answer = q.dataset.answer;
+            const inputs = q.querySelectorAll('input[type=radio]');
+            const select = q.querySelector('select');
+            if(inputs.length){
+                inputs.forEach(i=>{
+                    if(i.value===answer){
+                        i.parentElement.classList.add('correct');
+                    }
+                });
+            }
+            if(select){
+                select.value = answer;
+                select.classList.add('correct');
+            }
+        });
+    });
+
+    resetBtn.addEventListener('click', ()=>{
+        questions.forEach(q=>{
+            const inputs = q.querySelectorAll('input[type=radio]');
+            const select = q.querySelector('select');
+            inputs.forEach(i=>{
+                i.checked=false;
+                i.disabled=false;
+                i.parentElement.classList.remove('correct','incorrect');
+            });
+            if(select){
+                select.value="";
+                select.disabled=false;
+                select.classList.remove('correct','incorrect');
+            }
+        });
+        scoreDiv.textContent="";
+        verifyBtn.disabled=true;
+        corrBtn.disabled=true;
+    });
+});
+</script>
+
+</body>
+</html>
