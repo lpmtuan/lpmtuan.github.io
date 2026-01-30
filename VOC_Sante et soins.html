@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Exercices interactifs – La santé</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;margin:0;padding:20px;color:#333}
+h1{text-align:center}
+section{background:#fff;padding:20px;margin-bottom:25px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+h2{color:#2c7be5}
+.question{margin-bottom:15px}
+.answers label{display:block;margin:4px 0;cursor:pointer}
+.correct{color:green;font-weight:bold}
+.incorrect{color:red;font-weight:bold}
+button{margin-top:10px;margin-right:10px;padding:8px 14px;border:none;border-radius:5px;cursor:pointer}
+.check{background:#2c7be5;color:#fff}
+.reset{background:#6c757d;color:#fff}
+.score{margin-top:10px;font-weight:bold}
+input[type="text"]{width:120px}
+select{min-width:180px}
+.assoc-container{display:flex;gap:30px}
+.assoc-container div{flex:1}
+</style>
+</head>
+<body>
+
+<h1 style="color: orange;">Vocabulaire - La santé et les soins</h1>
+
+<section id="qcm">
+<h2>Exercice 1 - Lisez et choisissez la bonne réponse.</h2>
+
+<div class="question" data-answer="b">
+<p>1. Quel professionnel s’occupe de l’anesthésie ?</p>
+<div class="answers">
+<label><input type="radio" name="q1" value="a"> le praticien</label>
+<label><input type="radio" name="q1" value="b"> l’anesthésiste</label>
+<label><input type="radio" name="q1" value="c"> l’infirmier</label>
+<label><input type="radio" name="q1" value="d"> le médecin traitant</label>
+</div>
+</div>
+
+<div class="question" data-answer="d">
+<p>2. Qui dirige un service hospitalier ?</p>
+<div class="answers">
+<label><input type="radio" name="q2" value="a"> le personnel médical</label>
+<label><input type="radio" name="q2" value="b"> le patient</label>
+<label><input type="radio" name="q2" value="c"> le médecin généraliste</label>
+<label><input type="radio" name="q2" value="d"> le chef de service</label>
+</div>
+</div>
+
+<div class="question" data-answer="a">
+<p>3. Comment appelle-t-on l’ensemble des soignants ?</p>
+<div class="answers">
+<label><input type="radio" name="q3" value="a"> le personnel médical</label>
+<label><input type="radio" name="q3" value="b"> la Sécurité sociale</label>
+<label><input type="radio" name="q3" value="c"> la mutuelle</label>
+<label><input type="radio" name="q3" value="d"> le cabinet médical</label>
+</div>
+</div>
+
+<div class="question" data-answer="c">
+<p>4. Quel document rassemble les informations de santé ?</p>
+<div class="answers">
+<label><input type="radio" name="q4" value="a"> l’ordonnance</label>
+<label><input type="radio" name="q4" value="b"> le diagnostic</label>
+<label><input type="radio" name="q4" value="c"> le dossier médical</label>
+<label><input type="radio" name="q4" value="d"> le traitement</label>
+</div>
+</div>
+
+<div class="question" data-answer="b">
+<p>5. Quelle organisation rembourse une partie des soins ?</p>
+<div class="answers">
+<label><input type="radio" name="q5" value="a"> le brevet technologique</label>
+<label><input type="radio" name="q5" value="b"> la Sécurité sociale</label>
+<label><input type="radio" name="q5" value="c"> l’essai clinique</label>
+<label><input type="radio" name="q5" value="d"> le programme de recherche</label>
+</div>
+</div>
+
+<div class="question" data-answer="d">
+<p>6. Comment appelle-t-on un test sur des patients ?</p>
+<div class="answers">
+<label><input type="radio" name="q6" value="a"> le prototype</label>
+<label><input type="radio" name="q6" value="b"> le composant</label>
+<label><input type="radio" name="q6" value="c"> le budget de la recherche</label>
+<label><input type="radio" name="q6" value="d"> l’essai clinique</label>
+</div>
+</div>
+
+<div class="question" data-answer="a">
+<p>7. Quel mot désigne une blessure légère ou un malaise ?</p>
+<div class="answers">
+<label><input type="radio" name="q7" value="a"> le malaise</label>
+<label><input type="radio" name="q7" value="b"> la tension artérielle</label>
+<label><input type="radio" name="q7" value="c"> le soin</label>
+<label><input type="radio" name="q7" value="d"> le symptôme</label>
+</div>
+</div>
+
+<div class="question" data-answer="c">
+<p>8. Quel terme correspond à une maladie qui dure ?</p>
+<div class="answers">
+<label><input type="radio" name="q8" value="a"> contagieuse</label>
+<label><input type="radio" name="q8" value="b"> grave</label>
+<label><input type="radio" name="q8" value="c"> chronique</label>
+<label><input type="radio" name="q8" value="d"> passagère</label>
+</div>
+</div>
+
+<div class="question" data-answer="b">
+<p>9. Où les patients attendent-ils leur rendez-vous ?</p>
+<div class="answers">
+<label><input type="radio" name="q9" value="a"> le cabinet médical</label>
+<label><input type="radio" name="q9" value="b"> la salle d’attente</label>
+<label><input type="radio" name="q9" value="c"> le laboratoire</label>
+<label><input type="radio" name="q9" value="d"> le service de recherche</label>
+</div>
+</div>
+
+<div class="question" data-answer="d">
+<p>10. Quel document prescrit des médicaments ?</p>
+<div class="answers">
+<label><input type="radio" name="q10" value="a"> le diagnostic</label>
+<label><input type="radio" name="q10" value="b"> le dossier médical</label>
+<label><input type="radio" name="q10" value="c"> le traitement</label>
+<label><input type="radio" name="q10" value="d"> l’ordonnance</label>
+</div>
+</div>
+
+<button class="check" onclick="checkQCM()">Vérifiez vos réponses</button>
+<button class="reset" onclick="resetQCM()">Réinitialiser l’exercice</button>
+<div class="score" id="qcmScore"></div>
+</section>
+
+<section id="lacunaire">
+<h2>Exercice 2 - Complétez avec un mot de la liste.</h2>
+<p>Complétez le texte avec les mots proposés.</p>
+
+<p>
+Lors d’une consultation, le <input type="text" id="l1"> examine le <input type="text" id="l2">,
+analyse le <input type="text" id="l3"> puis propose un <input type="text" id="l4">.
+L’objectif est de <input type="text" id="l5"> le patient.
+</p>
+
+<p><strong>Mots :</strong> diagnostic – médecin généraliste – traitement – patient – soulager</p>
+
+<button class="check" onclick="checkLacunaire()">Vérifiez vos réponses</button>
+<button class="reset" onclick="resetLacunaire()">Réinitialiser l’exercice</button>
+<div class="score" id="lacScore"></div>
+</section>
+
+<section id="association">
+<h2>Exercice 3 - Associez un terme à sa définition.</h2>
+<p>Associez chaque terme à sa définition.</p>
+
+<div class="assoc-container">
+<div>
+<p>Termes</p>
+<p>1. la blessure</p>
+<p>2. le médicament</p>
+<p>3. le symptôme</p>
+<p>4. les paramètres vitaux</p>
+<p>5. prendre le pouls</p>
+</div>
+<div>
+<p>Définitions</p>
+<select id="a1">
+<option value="">---</option>
+<option value="1">mesurer les battements du cœur</option>
+<option value="2">substance pour soigner</option>
+<option value="3">signe de la maladie</option>
+<option value="4">atteinte physique</option>
+<option value="5">indicateurs de l’état du corps</option>
+</select><br><br>
+
+<select id="a2">
+<option value="">---</option>
+<option value="1">mesurer les battements du cœur</option>
+<option value="2">substance pour soigner</option>
+<option value="3">signe de la maladie</option>
+<option value="4">atteinte physique</option>
+<option value="5">indicateurs de l’état du corps</option>
+</select><br><br>
+
+<select id="a3">
+<option value="">---</option>
+<option value="1">mesurer les battements du cœur</option>
+<option value="2">substance pour soigner</option>
+<option value="3">signe de la maladie</option>
+<option value="4">atteinte physique</option>
+<option value="5">indicateurs de l’état du corps</option>
+</select><br><br>
+
+<select id="a4">
+<option value="">---</option>
+<option value="1">mesurer les battements du cœur</option>
+<option value="2">substance pour soigner</option>
+<option value="3">signe de la maladie</option>
+<option value="4">atteinte physique</option>
+<option value="5">indicateurs de l’état du corps</option>
+</select><br><br>
+
+<select id="a5">
+<option value="">---</option>
+<option value="1">mesurer les battements du cœur</option>
+<option value="2">substance pour soigner</option>
+<option value="3">signe de la maladie</option>
+<option value="4">atteinte physique</option>
+<option value="5">indicateurs de l’état du corps</option>
+</select>
+</div>
+</div>
+
+<button class="check" onclick="checkAssoc()">Vérifiez vos réponses</button>
+<button class="reset" onclick="resetAssoc()">Réinitialiser l’exercice</button>
+<div class="score" id="assocScore"></div>
+</section>
+
+<script>
+function checkQCM(){
+let questions=document.querySelectorAll("#qcm .question");
+let score=0,complete=true;
+questions.forEach(q=>{
+let ans=q.dataset.answer;
+let checked=q.querySelector("input:checked");
+if(!checked){complete=false;return;}
+q.querySelectorAll("label").forEach(l=>l.classList.remove("correct","incorrect"));
+if(checked.value===ans){
+checked.parentElement.classList.add("correct");
+score++;
+}else{
+checked.parentElement.classList.add("incorrect");
+q.querySelector("input[value='"+ans+"']").parentElement.classList.add("correct");
+}
+});
+if(!complete){alert("Veuillez répondre à toutes les questions.");return;}
+document.getElementById("qcmScore").textContent="Score : "+score+"/10";
+}
+
+function resetQCM(){
+document.querySelectorAll("#qcm input").forEach(i=>i.checked=false);
+document.querySelectorAll("#qcm label").forEach(l=>l.classList.remove("correct","incorrect"));
+document.getElementById("qcmScore").textContent="";
+}
+
+function checkLacunaire(){
+let answers=["médecin généraliste","patient","diagnostic","traitement","soulager"];
+let score=0,complete=true;
+answers.forEach((a,i)=>{
+let inp=document.getElementById("l"+(i+1));
+inp.classList.remove("correct","incorrect");
+if(!inp.value){complete=false;return;}
+if(inp.value.trim()===a){inp.classList.add("correct");score++;}else{inp.classList.add("incorrect");}
+});
+if(!complete){alert("Veuillez remplir tous les champs.");return;}
+document.getElementById("lacScore").textContent="Score : "+score+"/5";
+}
+
+function resetLacunaire(){
+for(let i=1;i<=5;i++){
+let inp=document.getElementById("l"+i);
+inp.value="";
+inp.classList.remove("correct","incorrect");
+}
+document.getElementById("lacScore").textContent="";
+}
+
+function checkAssoc(){
+let solutions=[4,2,3,5,1];
+let score=0,complete=true;
+solutions.forEach((s,i)=>{
+let sel=document.getElementById("a"+(i+1));
+sel.classList.remove("correct","incorrect");
+if(!sel.value){complete=false;return;}
+if(parseInt(sel.value)===s){sel.classList.add("correct");score++;}else{sel.classList.add("incorrect");}
+});
+if(!complete){alert("Veuillez réaliser toutes les associations.");return;}
+document.getElementById("assocScore").textContent="Score : "+score+"/5";
+}
+
+function resetAssoc(){
+for(let i=1;i<=5;i++){
+let sel=document.getElementById("a"+i);
+sel.value="";
+sel.classList.remove("correct","incorrect");
+}
+document.getElementById("assocScore").textContent="";
+}
+</script>
+
+</body>
+</html>
