@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Classement lexical – S’activer (B2)</title>
+
+<style>
+body{
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg,#f0f4ff,#fefefe);
+  padding:40px;
+}
+h1{
+  text-align:center;
+  color:#2c3e50;
+}
+.container{
+  background:#fff;
+  padding:30px;
+  border-radius:14px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.1);
+  animation: fadeIn 0.8s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+.word-bank{
+  margin-bottom:25px;
+}
+.word{
+  display:inline-block;
+  background:#e3e8f0;
+  padding:8px 14px;
+  margin:6px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.word:hover{
+  background:#cfd8e3;
+}
+.word.used{
+  opacity:0.4;
+  pointer-events:none;
+}
+
+.zones{
+  display:flex;
+  gap:30px;
+  margin-top:20px;
+}
+.zone{
+  flex:1;
+  background:#f7f9fc;
+  border:2px dashed #b2bec3;
+  border-radius:10px;
+  padding:15px;
+}
+.zone h3{
+  text-align:center;
+}
+.zone div{
+  min-height:40px;
+}
+
+.correct{ background:#c8f7c5 !important; }
+.incorrect{ background:#f7c5c5 !important; }
+
+button{
+  padding:12px 18px;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  cursor:pointer;
+  margin-top:25px;
+}
+#checkBtn{
+  background:#6c5ce7;
+  color:white;
+}
+#checkBtn:disabled{
+  background:#b2bec3;
+  cursor:not-allowed;
+}
+#corrigeBtn{
+  background:#00b894;
+  color:white;
+  display:none;
+  margin-left:10px;
+}
+#resetBtn{
+  background:#dfe6e9;
+  margin-left:10px;
+}
+
+#score{
+  margin-top:20px;
+  font-size:18px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1 style="color: blue;">Vocabulaire : S'activer</h1>
+
+<div class="container">
+
+<p><strong>Consigne : Classez les adjectifs de la liste selon qu’ils qualifient une personne :</strong></p>
+<ul>
+  <li><strong>a) active</strong></li>
+  <li><strong>b) inactive</strong></li>
+</ul>
+
+<!-- Banque de mots -->
+<div class="word-bank" id="wordBank">
+  <strong>Liste d’adjectifs :</strong><br>
+</div>
+
+<!-- Zones -->
+<div class="zones">
+  <div class="zone" data-type="active">
+    <h3>a) Active</h3>
+  </div>
+  <div class="zone" data-type="inactive">
+    <h3>b) Inactive</h3>
+  </div>
+</div>
+
+<button id="checkBtn" onclick="verifier()" disabled>Vérifier les réponses</button>
+<button id="corrigeBtn" onclick="voirCorrige()">Voir le corrigé</button>
+<button id="resetBtn" onclick="resetExercice()">Réinitialiser</button>
+
+<div id="score"></div>
+
+</div>
+
+<script>
+const adjectifs=[
+  {mot:"bosseur / bosseuse", type:"active"},
+  {mot:"travailleur / travailleuse", type:"active"},
+  {mot:"laborieux / laborieuse", type:"active"},
+  {mot:"hyperactif / hyperactive", type:"active"},
+  {mot:"tendu(e)", type:"active"},
+  {mot:"débordé(e) de travail", type:"active"},
+  {mot:"être à la hauteur de", type:"active"},
+  {mot:"fainéant(e)", type:"inactive"},
+  {mot:"paresseux / paresseuse", type:"inactive"},
+  {mot:"flemmard(e)", type:"inactive"},
+  {mot:"cossard(e)", type:"inactive"},
+  {mot:"détendu(e)", type:"inactive"}
+];
+
+// Mélange
+adjectifs.sort(()=>Math.random()-0.5);
+
+const bank=document.getElementById("wordBank");
+
+adjectifs.forEach(obj=>{
+  const span=document.createElement("span");
+  span.className="word";
+  span.textContent=obj.mot;
+  span.dataset.type=obj.type;
+  span.onclick=()=>placer(span);
+  bank.appendChild(span);
+});
+
+function placer(el){
+  const zones=document.querySelectorAll(".zone");
+  zones.forEach(zone=>{
+    zone.onclick=()=>{
+      zone.appendChild(el);
+      el.classList.add("used");
+      verifierCompletion();
+    };
+  });
+}
+
+function verifierCompletion(){
+  const placed=[...document.querySelectorAll(".zone .word")].length;
+  document.getElementById("checkBtn").disabled = placed !== adjectifs.length;
+}
+
+function verifier(){
+  let score=0;
+  document.querySelectorAll(".zone").forEach(zone=>{
+    const type=zone.dataset.type;
+    zone.querySelectorAll(".word").forEach(word=>{
+      if(word.dataset.type===type){
+        word.classList.add("correct");
+        score++;
+      }else{
+        word.classList.add("incorrect");
+      }
+    });
+  });
+  document.getElementById("score").innerText="Score : "+score+" / "+adjectifs.length;
+  document.getElementById("corrigeBtn").style.display="inline-block";
+}
+
+function voirCorrige(){
+  document.querySelectorAll(".zone").forEach(zone=>zone.innerHTML="<h3>"+zone.querySelector("h3").innerText+"</h3>");
+  adjectifs.forEach(obj=>{
+    const span=document.createElement("span");
+    span.className="word correct";
+    span.textContent=obj.mot;
+    document.querySelector('.zone[data-type="'+obj.type+'"]').appendChild(span);
+  });
+}
+
+function resetExercice(){
+  document.getElementById("score").innerText="";
+  document.getElementById("corrigeBtn").style.display="none";
+  document.getElementById("checkBtn").disabled=true;
+  bank.innerHTML="<strong>Liste d’adjectifs :</strong><br>";
+  adjectifs.sort(()=>Math.random()-0.5);
+  adjectifs.forEach(obj=>{
+    const span=document.createElement("span");
+    span.className="word";
+    span.textContent=obj.mot;
+    span.dataset.type=obj.type;
+    span.onclick=()=>placer(span);
+    bank.appendChild(span);
+  });
+  document.querySelectorAll(".zone").forEach(zone=>{
+    zone.innerHTML="<h3>"+zone.querySelector("h3").innerText+"</h3>";
+  });
+}
+</script>
+
+</body>
+</html>
