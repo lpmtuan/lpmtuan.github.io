@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM Interactif : La Communication de Crise</title>
+    <style>
+        :root {
+            --primary: #0056b3;
+            --secondary: #fca311;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --error: #dc3545;
+        }
+
+        /* MISE EN PAGE 2 COLONNES */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Hauteur totale de l'écran */
+            overflow: hidden; /* Empêche le scroll global */
+            display: flex; /* Active les colonnes */
+        }
+
+        /* Colonne Gauche : Questions (Scrollable) */
+        .left-column {
+            flex: 1; /* Prend 50% de l'espace */
+            overflow-y: auto; /* Scroll indépendant */
+            padding: 20px;
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            box-sizing: border-box;
+        }
+
+        /* Colonne Droite : Vidéo (Fixe) */
+        .right-column {
+            flex: 1; /* Prend 50% de l'espace */
+            background: #000;
+            height: 100vh;
+        }
+
+        /* Intégration Vidéo Plein Écran dans sa colonne */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Adaptation du container original pour la colonne */
+        .container {
+            max-width: 100%; /* S'adapte à la colonne */
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: fadeIn 1s ease-in;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--secondary);
+            display: inline-block;
+            padding-bottom: 5px;
+            font-size: 1.5em;
+        }
+
+        .student-info {
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .student-info input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .question-card {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .question-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .options label {
+            display: block;
+            padding: 8px;
+            margin: 3px 0;
+            background: #f8f9fa;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 0.95em;
+        }
+
+        .options label:hover {
+            background: #e2e6ea;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .correct-text {
+            color: var(--success);
+            font-weight: bold;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        .wrong-text {
+            color: var(--error);
+            font-weight: bold;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        .controls {
+            position: sticky;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            z-index: 100; /* Reste au dessus */
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            flex: 1;
+        }
+
+        .btn-check { background-color: var(--primary); color: white; }
+        .btn-check:hover { background-color: #004494; transform: scale(1.05); }
+
+        .btn-reset { background-color: #6c757d; color: white; }
+        .btn-reset:hover { background-color: #5a6268; }
+
+        .btn-submit { background-color: var(--success); color: white; }
+        .btn-submit:hover { background-color: #218838; box-shadow: 0 0 15px rgba(40, 167, 69, 0.5); }
+
+        #score-display {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 15px 0;
+            font-weight: bold;
+            color: var(--primary);
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive : Sur mobile, on passe en colonne unique */
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow: auto; height: auto; }
+            .left-column, .right-column { width: 100%; flex: none; }
+            .right-column { height: 300px; order: -1; /* Vidéo en haut sur mobile */ }
+            .left-column { overflow: visible; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="left-column">
+        <div class="container">
+            <div style="text-align: center;">
+                <h1>La communication de crise - Séance 3</h1>
+                <h2>L'organisation de la communication de crise</h2>
+            </div>
+
+            <div class="student-info">
+                <h3>Informations</h3>
+                <input type="text" id="studentName" placeholder="Votre nom et prénoms (Obligatoire)">
+                <input type="text" id="studentId" placeholder="Votre code étudiant (Obligatoire)">
+            </div>
+            
+            <div style="text-align: center;">
+                <h3>Lisez les questions et cochez la bonne réponse.</h3>
+            </div>
+            <div id="quiz-container">
+                </div>
+
+            <div id="score-display"></div>
+
+            <div class="controls">
+                <button class="btn-reset" onclick="resetQuiz()">Réinitialiser</button>
+                <button class="btn-check" onclick="checkAnswers()">Vérifier</button>
+                <button class="btn-submit" onclick="submitByEmail()">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <iframe 
+            src="https://www.youtube.com/embed/5-PdQAxpIZQ?autoplay=1&rel=0" 
+            title="Communication de crise : organisation" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+        </iframe>
+    </div>
+
+<script>
+    // --- LE CODE JAVASCRIPT RESTE IDENTIQUE ---
+    
+    // Base de données des 40 questions (10A, 10B, 10C, 10D)
+    const questions = [
+        // Slide 2: Phases
+        { q: "Quelle est la première phase temporelle d'une crise ?", o: ["La phase préliminaire", "La phase aiguë", "La phase chronique", "La phase post-crise"], a: "a" },
+        { q: "Quel élément marque souvent le début de la phase aiguë ?", o: ["Les rumeurs", "L'événement déclencheur", "Le retour à la normale", "L'audit de fin"], a: "b" },
+        { q: "La gestion des impacts a lieu principalement durant quelle phase ?", o: ["Préliminaire", "Post-crise", "La crise (aiguë)", "Rupture"], a: "c" },
+        { q: "Que peut-il se passer après un retour à la normale apparent ?", o: ["Une stase complète", "Une amnésie totale", "Une fermeture immédiate", "Un rebondissement"], a: "d" },
+
+        // Slide 3: Typologies
+        { q: "Une panne informatique majeure relève de quelle typologie ?", o: ["Technique / Économique", "Humaine", "Sociale", "Externe uniquement"], a: "a" },
+        { q: "Un scandale de harcèlement relève de quelle typologie ?", o: ["Technique", "Humaine / Sociale", "Économique", "Naturelle"], a: "b" },
+        { q: "Comment sont classées les typologies de crise selon le schéma ?", o: ["Par couleur", "Par gravité", "Interne/Externe et Tech/Humain", "Par département"], a: "c" },
+        { q: "Une attaque terroriste contre l'entreprise est une crise :", o: ["Interne", "Sociale", "Technique", "Externe"], a: "d" },
+
+        // Slide 6-10: Recensement
+        { q: "Quel est le but du recensement des crises potentielles ?", o: ["Réduire l'effet de surprise", "Prédire l'avenir exactement", "Faire peur aux salariés", "Augmenter le budget"], a: "a" },
+        { q: "Pour chaque crise potentielle, il faut évaluer :", o: ["Le coût marketing", "La probabilité d'occurrence", "Le nom du responsable", "La date exacte"], a: "b" },
+        { q: "Le recensement des risques doit être une démarche :", o: ["Secrète", "Figée", "Dynamique et ouverte", "Uniquement financière"], a: "c" },
+        { q: "Une contamination alimentaire est un risque pour quelle industrie ?", o: ["Bancaire", "Informatique", "Textile", "Agroalimentaire"], a: "d" },
+
+        // Slide 11-12: Simulation
+        { q: "La simulation permet de passer d'une logique théorique à :", o: ["Une logique opérationnelle", "Une logique financière", "Une logique abstraite", "Une logique administrative"], a: "a" },
+        { q: "La simulation révèle souvent :", o: ["Les succès passés", "Les failles invisibles", "Les bénéfices futurs", "Les meilleurs employés"], a: "b" },
+        { q: "Que teste-t-on lors d'une simulation ?", o: ["La qualité des produits", "Le système informatique", "La coordination interne", "La décoration des bureaux"], a: "c" },
+        { q: "Un scénario d'accident industriel doit inclure :", o: ["Le menu de la cantine", "La musique d'ambiance", "La couleur des murs", "L'afflux de journalistes"], a: "d" },
+
+        // Slide 13-14: Cellule de crise
+        { q: "La cellule de crise représente :", o: ["Le cœur décisionnel", "Le service marketing", "Le conseil d'administration", "L'accueil du public"], a: "a" },
+        { q: "Où doit se réunir la cellule de crise ?", o: ["Dans le hall d'entrée", "Dans un lieu clos", "À la cafétéria", "En extérieur"], a: "b" },
+        { q: "Qui assure la coordination dans la cellule de crise ?", o: ["Le stagiaire", "Le porte-parole", "L'animateur", "L'expert juridique"], a: "c" },
+        { q: "Dans une cyberattaque, qui évalue les obligations légales ?", o: ["Les informaticiens", "Les communicants", "Le directeur financier", "Les juristes"], a: "d" },
+
+        // Slide 15-16: Check-list
+        { q: "À quoi sert principalement une check-list en crise ?", o: ["À éviter les oublis", "À noter les absents", "À faire joli", "À passer le temps"], a: "a" },
+        { q: "La check-list permet de rassurer :", o: ["Les actionnaires", "Les équipes sous stress", "Les concurrents", "Les clients"], a: "b" },
+        { q: "La check-list médias doit contenir :", o: ["Les rumeurs du jour", "Les articles Wikipédia", "Les journalistes clés", "Les photos des employés"], a: "c" },
+        { q: "Quel élément ne figure PAS typiquement dans la check-list ?", o: ["Les numéros d'urgence", "Les mots de passe", "Les messages prêts", "Le menu du déjeuner"], a: "d" },
+
+        // Slide 18-19: Plan de Com
+        { q: "Le plan de communication définit en premier :", o: ["L'objectif de communication", "Le budget traiteur", "La couleur du logo", "La date de fin"], a: "a" },
+        { q: "Quelle qualité est attendue du plan de communication ?", o: ["Complexité", "Pragmatisme", "Longueur", "Mystère"], a: "b" },
+        { q: "Qui sont les 'cibles' dans le plan de communication ?", o: ["Les objectifs financiers", "Les concurrents", "Les publics visés", "Les produits vendus"], a: "c" },
+        { q: "Pour rassurer les riverains, un canal adapté est :", o: ["Un email interne", "Un appel silencieux", "Une note de service", "Une réunion publique"], a: "d" },
+
+        // Slide 20: Messages
+        { q: "La préparation 'légère' des messages inclut :", o: ["L'essentiel du discours", "L'historique complet", "Les bilans comptables", "Les CV des directeurs"], a: "a" },
+        { q: "Le dossier de presse correspond à une préparation :", o: ["Superficielle", "Approfondie", "Orale uniquement", "Inutile"], a: "b" },
+        { q: "Quels aspects sont traités dans le dossier de presse ?", o: ["Uniquement les photos", "Seulement le futur", "Technique et historique", "Les opinions personnelles"], a: "c" },
+        { q: "Pour préparer les messages, il faut anticiper :", o: ["La météo", "Le trafic routier", "Le dessert", "Les questions polémiques"], a: "d" },
+
+        // Slide 21: Media Training
+        { q: "À l'oral, il est important de maîtriser :", o: ["L'émotionnel", "La grammaire latine", "Le code informatique", "L'histoire de l'art"], a: "a" },
+        { q: "Quelle caractéristique est essentielle pour l'oral ?", o: ["La complexité", "La brièveté", "L'hésitation", "Le chuchotement"], a: "b" },
+        { q: "À l'écrit, on privilégie :", o: ["L'humour", "L'improvisation", "La rigueur factuelle", "Les ratures"], a: "c" },
+        { q: "La cohérence terminologique est cruciale pour :", o: ["L'oral", "La radio", "La vidéo", "L'écrit"], a: "d" },
+
+        // Slide 22-24: Relations & Conclusion
+        { q: "Qui sont les interlocuteurs 'décideurs' ?", o: ["Les autorités", "Les enfants", "Les passants", "Les stagiaires"], a: "a" },
+        { q: "Que cherchent principalement les riverains ?", o: ["De l'argent", "De la protection", "Du divertissement", "De la gloire"], a: "b" },
+        { q: "Pour être crédible, la communication doit être :", o: ["Rare", "Coûteuse", "Régulière", "Anonyme"], a: "c" },
+        { q: "Une crise bien gérée repose sur une organisation :", o: ["Improvisée", "Aléatoire", "Lente", "Rigoureuse"], a: "d" }
+    ];
+
+    let answeredCount = 0;
+    let score = 0;
+    let isChecked = false;
+
+    function initQuiz() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+        
+        questions.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `q-card-${index}`;
+
+            const title = document.createElement('div');
+            title.className = 'question-title';
+            title.textContent = `${index + 1}. ${item.q}`;
+            card.appendChild(title);
+
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+
+            const choices = ['a', 'b', 'c', 'd'];
+            choices.forEach((choice, i) => {
+                const label = document.createElement('label');
+                label.id = `label-${index}-${choice}`;
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `q${index}`;
+                input.value = choice;
+                input.onclick = checkCompletion;
+
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(item.o[i]));
+                optionsDiv.appendChild(label);
+            });
+
+            card.appendChild(optionsDiv);
+            container.appendChild(card);
+        });
+    }
+
+    function checkCompletion() {
+        const total = questions.length;
+        let count = 0;
+        for (let i = 0; i < total; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (selected) count++;
+        }
+        answeredCount = count;
+    }
+
+    function checkAnswers() {
+        if (answeredCount < questions.length) {
+            alert("Veuillez répondre à toutes les questions avant de vérifier.");
+            return;
+        }
+
+        score = 0;
+        questions.forEach((item, index) => {
+            const selectedInput = document.querySelector(`input[name="q${index}"]:checked`);
+            const selectedValue = selectedInput ? selectedInput.value : null;
+            const correctValue = item.a;
+
+            ['a', 'b', 'c', 'd'].forEach(c => {
+                const label = document.getElementById(`label-${index}-${c}`);
+                label.classList.remove('correct-text', 'wrong-text');
+            });
+
+            if (selectedValue === correctValue) {
+                score++;
+                document.getElementById(`label-${index}-${selectedValue}`).classList.add('correct-text');
+            } else {
+                document.getElementById(`label-${index}-${selectedValue}`).classList.add('wrong-text');
+            }
+        });
+
+        isChecked = true;
+        const scoreDisplay = document.getElementById('score-display');
+        scoreDisplay.style.display = 'block';
+        scoreDisplay.textContent = `Votre Score : ${score} / 40`;
+        
+        scoreDisplay.scrollIntoView({behavior: "smooth"});
+    }
+
+    function resetQuiz() {
+        if(confirm("Voulez-vous vraiment réinitialiser tout l'exercice ?")) {
+            document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+            document.querySelectorAll('label').forEach(el => el.classList.remove('correct-text', 'wrong-text'));
+            document.getElementById('score-display').style.display = 'none';
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentId').value = '';
+            score = 0;
+            answeredCount = 0;
+            isChecked = false;
+            checkCompletion();
+            document.querySelector('.left-column').scrollTo(0,0);
+        }
+    }
+
+    function submitByEmail() {
+        if (!isChecked) {
+            alert("Veuillez vérifier vos réponses avant de terminer.");
+            return;
+        }
+
+        const name = document.getElementById('studentName').value.trim();
+        const id = document.getElementById('studentId').value.trim();
+
+        if (!name || !id) {
+            alert("Veuillez remplir votre Nom et votre Code Étudiant en haut de la page.");
+            document.querySelector('.student-info').scrollIntoView({behavior: "smooth"});
+            return;
+        }
+
+        const email = "tuanlpm@hcmue.edu.vn";
+        const subject = encodeURIComponent(`Résultat QCM Communication Crise - ${name}`);
+        const body = encodeURIComponent(
+            `Nom et prénoms : ${name}\n` +
+            `Code étudiant : ${id}\n` +
+            `Score : ${score} / 40\n\n` +
+            `Date de réalisation : ${new Date().toLocaleDateString()}`
+        );
+
+        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    }
+
+    window.onload = initQuiz;
+
+</script>
+
+</body>
+</html>
