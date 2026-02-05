@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice Vidéo : La folie du Running</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e74c3c;
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --success: #27ae60;
+            --wrong: #c0392b;
+            --bg-left: #ffffff;
+            --bg-right: #2c3e50;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* --- COLONNE GAUCHE : QUESTIONS --- */
+        .left-column {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background-color: var(--bg-left);
+            border-right: 5px solid var(--light);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .instruction {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .question-block {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .question-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .q-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: block;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .option-label:hover {
+            background-color: #f9f9f9;
+            border-color: #ccc;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .option-label.selected {
+            border-color: var(--secondary);
+            background-color: #eaf6fd;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .option-label.correct {
+            border-color: var(--success);
+            background-color: #d5f5e3;
+            color: #145a32;
+        }
+
+        .option-label.wrong {
+            border-color: var(--wrong);
+            background-color: #fadbd8;
+            color: #78281f;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #555;
+            padding: 10px;
+            background: #f8f9fa;
+            border-left: 4px solid var(--secondary);
+            display: none;
+            font-style: italic;
+        }
+
+        /* --- COLONNE DROITE : VIDÉO --- */
+        .right-column {
+            flex: 1;
+            background-color: var(--bg-right);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .sticky-note {
+            color: white;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        /* --- BARRE D'ACTIONS --- */
+        .action-bar {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-check {
+            background-color: var(--success);
+            color: white;
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-check:disabled {
+            background-color: #bdc3c7; /* Gris */
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.7;
+            transform: none !important;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: none;
+        }
+        
+        .progress-text {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column-reverse;
+                height: auto;
+                overflow: auto;
+            }
+            .left-column, .right-column {
+                flex: none;
+                width: 100%;
+                overflow: visible;
+            }
+            .right-column {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="left-column">
+        <h1>Les Français aiment la course à pied</h1>
+        <p class="instruction">Regardez la vidéo et répondez aux questions suivantes.</p>
+        
+        <form id="quizForm">
+            <div id="questionsContainer"></div>
+        </form>
+
+        <div class="action-bar">
+            <span id="progressText" class="progress-text">Répondez à toutes les questions pour valider (0/20)</span>
+            
+            <button type="button" class="btn btn-check" onclick="checkAnswers()" id="btnCheck" disabled>Vérifier les réponses</button>
+            
+            <div id="finalScore" class="score-display"></div>
+        </div>
+        <br><br>
+    </div>
+
+    <div class="right-column">
+        <div class="sticky-note">📺 Cliquez pour regarder la vidéo 📺</div>
+        <div class="video-container">
+            <iframe src="https://drive.google.com/file/d/1L9_zbtFIxr9yP1BrUnFn7lk9DLZ3krTR/preview" allow="autoplay"></iframe>
+        </div>
+    </div>
+
+<script>
+    const questions = [
+        { q: "1. Quelle figure de style la journaliste utilise-t-elle pour décrire l'affluence sur les quais de Seine ?", options: ["C'est un terrain de jeu.", "C'est un peu l'autoroute.", "C'est un défilé de mode.", "C'est un parcours du combattant."], correct: 1, cite: "« ...c'est un peu l'autoroute. »" },
+        { q: "2. Quel profil de coureurs retrouve-t-on durant la pause déjeuner ?", options: ["Uniquement des employés de bureau.", "Seulement des sportifs de haut niveau.", "Des personnes de tous âges et niveaux.", "Exclusivement des jeunes cadres dynamiques."], correct: 2, cite: "« De tous âges, de tous niveaux... »" },
+        { q: "3. Quel est le lien professionnel entre Florent et Thomas ?", options: ["Ils sont collègues dans une assurance.", "Ils sont concurrents dans le secteur bancaire.", "Ils sont partenaires dans une start-up sportive.", "Ils sont fournisseur et client."], correct: 0, cite: "« Ils travaillent ensemble dans un grand groupe d'assurance... »" },
+        { q: "4. Quelle initiative Florent et Thomas ont-ils prise au début de l'année ?", options: ["Ils ont couru un marathon complet.", "Ils ont demandé une augmentation.", "Ils ont créé une application de running.", "Ils ont monté une équipe de collègues joggeurs."], correct: 3, cite: "« ...ils ont monté une équipe de collègues joggeurs... »" },
+        { q: "5. Selon le coureur interrogé, quel est l'avantage physiologique de courir 'entre midi et deux' ?", options: ["Cela permet de dormir plus tôt le soir.", "Cela donne la forme pour finir la journée.", "Cela remplace le besoin de déjeuner.", "Cela évite les embouteillages du soir."], correct: 1, cite: "« ...être en forme l'après-midi et finir la journée. »" },
+        { q: "6. Quelle est l'attitude de certains chefs d'entreprise face à cette pratique ?", options: ["Ils l'encouragent et la financent.", "Ils l'interdisent pour des raisons de sécurité.", "Ils la tolèrent mais ne participent pas.", "Ils l'organisent uniquement le week-end."], correct: 0, cite: "« ...qui encouragent et financent cette activité. »" },
+        { q: "7. Quel est le taux de participation chez le fournisseur d'énergie mentionné ?", options: ["La totalité des employés.", "Un salarié sur dix.", "Un salarié sur trois.", "Seulement l'équipe de direction."], correct: 2, cite: "« ...un salarié sur trois est inscrit... »" },
+        { q: "8. D'après le PDG, quel effet l'effort physique a-t-il sur la structure hiérarchique ?", options: ["Il renforce l'autorité du chef.", "Il crée de nouvelles compétitions internes.", "Il met en évidence les salaires.", "Il gomme les grades et la hiérarchie."], correct: 3, cite: "« Il n'y a pas de grade, il n'y a pas de hiérarchie... »" },
+        { q: "9. Quel est l'objectif principal de la souffrance partagée durant la course selon le PDG ?", options: ["Transformer un sport individuel en collectif.", "Sélectionner les employés les plus résistants.", "Préparer les équipes à des horaires difficiles.", "Réduire les coûts de la mutuelle santé."], correct: 0, cite: "« ...que ce sport individuel devienne vraiment quelque chose de collectif. »" },
+        { q: "10. Quelle statistique définit la régularité des coureurs français aujourd'hui ?", options: ["50% courent tous les jours.", "20% courent au moins une fois par semaine.", "10% courent une fois par mois.", "30% ne courent que pendant les vacances."], correct: 1, cite: "« ...20% des Français disent chausser leurs baskets au moins une fois par semaine. »" },
+        { q: "11. Quel type de clientèle les équipementiers visent-ils particulièrement ?", options: ["Les étudiants boursiers.", "Les retraités inactifs.", "Une clientèle souvent aisée.", "Les professionnels de santé."], correct: 2, cite: "« ...capter cette clientèle souvent aisée. »" },
+        { q: "12. Combien de brevets technologiques la chaussure 'dernier-cri' contient-elle ?", options: ["Deux.", "Trois.", "Quatre.", "Cinq."], correct: 3, cite: "« ...contient à elle seule cinq brevets technologiques. »" },
+        { q: "13. Quelle distinction esthétique est faite entre les modèles hommes et femmes pour cette chaussure ?", options: ["La couleur des semelles (argentée/dorée).", "La hauteur du talon.", "La matière des lacets.", "La forme de la pointe."], correct: 0, cite: "« ...semelles argentées pour les femmes, dorées pour les hommes... »" },
+        { q: "14. Quel ressenti la cliente exprime-t-elle en essayant la chaussure ?", options: ["Elle la trouve trop lourde.", "Elle sent la rigidité et la stabilité.", "Elle la trouve trop souple.", "Elle a mal aux pieds immédiatement."], correct: 1, cite: "« On sent beaucoup... la rigidité... elles sont effectivement plus stables. »" },
+        { q: "15. Quelle est la tendance actuelle majeure mentionnée par la journaliste concernant l'équipement ?", options: ["Le retour au minimalisme.", "Les matériaux recyclés.", "Les équipements connectés.", "Les chaussures sur-mesure."], correct: 2, cite: "« ...la tendance est aux équipements connectés. »" },
+        { q: "16. Combien de temps de recherche a été nécessaire pour la chaussure qui corrige la posture ?", options: ["Six mois.", "Un an.", "Dix-huit mois.", "Deux ans."], correct: 3, cite: "« Il aura fallu deux ans de recherche... »" },
+        { q: "17. Quelle est la fonctionnalité principale de cette chaussure connectée ?", options: ["Corriger la posture en temps réel.", "Calculer le nombre de calories brûlées.", "Diffuser de la musique selon le rythme.", "Se lacer toute seule."], correct: 0, cite: "« ...permet en temps réel de corriger sa posture. »" },
+        { q: "18. Comment la chaussure détecte-t-elle la façon de courir ?", options: ["Grâce à une caméra externe.", "Via une application GPS.", "Grâce à deux capteurs à l'intérieur.", "Par l'usure de la semelle."], correct: 2, cite: "« On a donc deux capteurs, qui sont à l'intérieur... »" },
+        { q: "19. Quelle technique de course est recommandée pour éviter les blessures ?", options: ["Courir sur les talons.", "Courir sur le milieu et l'avant du pied.", "Faire de très grandes enjambées.", "Courir les jambes très raides."], correct: 1, cite: "« ...courir plutôt sur le milieu et sur l'avant du pied. »" },
+        { q: "20. À quelle occasion ce reportage a-t-il été diffusé ?", options: ["Lors des Jeux Olympiques.", "Pour la journée du sport en entreprise.", "À l'occasion du marathon de New York.", "Durant le salon du running à Paris."], correct: 3, cite: "« Le salon du running se tient à Paris... »" }
+    ];
+
+    const container = document.getElementById('questionsContainer');
+    const btnCheck = document.getElementById('btnCheck');
+    const progressText = document.getElementById('progressText');
+    let answeredCount = 0;
+
+    function init() {
+        container.innerHTML = "";
+        questions.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            qDiv.id = `qblock-${index}`;
+
+            const title = document.createElement('div');
+            title.className = 'q-title';
+            title.innerText = item.q;
+            qDiv.appendChild(title);
+
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options-grid';
+
+            item.options.forEach((opt, optIndex) => {
+                const label = document.createElement('label');
+                label.className = 'option-label';
+                label.onclick = () => selectOption(index, optIndex, label);
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `question-${index}`;
+                radio.value = optIndex;
+                
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(opt));
+                optionsDiv.appendChild(label);
+            });
+            qDiv.appendChild(optionsDiv);
+
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback';
+            feedback.id = `feedback-${index}`;
+            qDiv.appendChild(feedback);
+
+            container.appendChild(qDiv);
+        });
+        updateProgress();
+    }
+
+    function selectOption(qIndex, optIndex, labelElement) {
+        // Gestion de l'affichage 'selected'
+        const parentGrid = labelElement.parentNode;
+        const allLabels = parentGrid.querySelectorAll('.option-label');
+        allLabels.forEach(l => l.classList.remove('selected'));
+        labelElement.classList.add('selected');
+        
+        const radio = labelElement.querySelector('input');
+        radio.checked = true;
+
+        // Vérifier si toutes les questions sont répondues
+        checkGlobalCompletion();
+    }
+
+    function checkGlobalCompletion() {
+        let count = 0;
+        for(let i=0; i<questions.length; i++) {
+            const inputs = document.getElementsByName(`question-${i}`);
+            for(let input of inputs) {
+                if(input.checked) {
+                    count++;
+                    break;
+                }
+            }
+        }
+        answeredCount = count;
+        updateProgress();
+    }
+
+    function updateProgress() {
+        if(answeredCount === questions.length) {
+            btnCheck.disabled = false;
+            progressText.innerText = "Vous avez répondu à toutes les questions !";
+            progressText.style.color = "var(--success)";
+            progressText.style.fontWeight = "bold";
+        } else {
+            btnCheck.disabled = true;
+            progressText.innerText = `Répondez à toutes les questions pour valider (${answeredCount}/${questions.length})`;
+            progressText.style.color = "#7f8c8d";
+            progressText.style.fontWeight = "normal";
+        }
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        
+        // Cache le texte de progression
+        progressText.style.display = 'none';
+        btnCheck.style.display = 'none';
+
+        questions.forEach((item, index) => {
+            const inputs = document.getElementsByName(`question-${index}`);
+            let selectedVal = -1;
+            let selectedLabel = null;
+
+            inputs.forEach(input => {
+                if(input.checked) {
+                    selectedVal = parseInt(input.value);
+                    selectedLabel = input.parentElement;
+                }
+                input.disabled = true;
+                input.parentElement.style.pointerEvents = 'none';
+            });
+
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            const allLabels = document.getElementById(`qblock-${index}`).querySelectorAll('.option-label');
+
+            if (selectedVal === item.correct) {
+                score++;
+                selectedLabel.classList.remove('selected');
+                selectedLabel.classList.add('correct');
+                feedbackDiv.innerHTML = `✅ <b>Correct !</b> <br> ${item.cite}`;
+            } else {
+                selectedLabel.classList.remove('selected');
+                selectedLabel.classList.add('wrong');
+                allLabels[item.correct].classList.add('correct');
+                feedbackDiv.innerHTML = `❌ <b>Incorrect.</b> <br> ${item.cite}`;
+            }
+            feedbackDiv.style.display = 'block';
+        });
+
+        const scoreDiv = document.getElementById('finalScore');
+        scoreDiv.style.display = 'block';
+        scoreDiv.innerText = `Votre score : ${score} / ${questions.length}`;
+        
+        scoreDiv.scrollIntoView({behavior: "smooth"});
+    }
+
+    init();
+</script>
+</body>
+</html>
