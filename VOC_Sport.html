@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Le sport – Exercices interactifs</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;margin:0;padding:20px;color:#333}
+h1,h2{color:#1e6f8a}
+section{background:#fff;border-radius:8px;padding:20px;margin-bottom:25px;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
+.question{margin-bottom:15px}
+.options label{display:block;margin:4px 0;cursor:pointer}
+button{margin-top:15px;margin-right:10px;padding:8px 14px;border:none;border-radius:5px;cursor:pointer;font-size:14px}
+.check{background:#1e6f8a;color:#fff}
+.reset{background:#999;color:#fff}
+.correct{color:green;font-weight:bold}
+.incorrect{color:red;font-weight:bold}
+.score{margin-top:10px;font-weight:bold}
+input[type="text"]{padding:5px;width:180px}
+table{border-collapse:collapse;width:100%}
+td,th{border:1px solid #ccc;padding:8px;text-align:left}
+select{width:100%}
+</style>
+</head>
+<body>
+
+<h1>Vocabulaire - Le sport</h1>
+
+<section id="qcm">
+<h2>Exercice 1 – Choisissez la bonne réponse.</h2>
+
+<div class="question" data-answer="a">
+<p>1. Quel terme désigne une grande compétition internationale ?</p>
+<div class="options">
+<label><input type="radio" name="q1"> la coupe du monde</label>
+<label><input type="radio" name="q1"> la posture</label>
+<label><input type="radio" name="q1"> le saut</label>
+<label><input type="radio" name="q1"> la boxe</label>
+</div>
+</div>
+
+<div class="question" data-answer="b">
+<p>2. Comment appelle-t-on une personne qui pratique la course à pied ?</p>
+<div class="options">
+<label><input type="radio" name="q2"> le marathon</label>
+<label><input type="radio" name="q2"> le joggeur</label>
+<label><input type="radio" name="q2"> le terrain</label>
+<label><input type="radio" name="q2"> le club</label>
+</div>
+</div>
+
+<div class="question" data-answer="c">
+<p>3. Quelle activité se pratique dans une piscine ?</p>
+<div class="options">
+<label><input type="radio" name="q3"> se muscler</label>
+<label><input type="radio" name="q3"> s’entraîner</label>
+<label><input type="radio" name="q3"> la natation</label>
+<label><input type="radio" name="q3"> le saut</label>
+</div>
+</div>
+
+<div class="question" data-answer="d">
+<p>4. Quel événement a lieu tous les quatre ans ?</p>
+<div class="options">
+<label><input type="radio" name="q4"> la compétition</label>
+<label><input type="radio" name="q4"> le marathon</label>
+<label><input type="radio" name="q4"> la course à pied</label>
+<label><input type="radio" name="q4"> les jeux olympiques</label>
+</div>
+</div>
+
+<div class="question" data-answer="a">
+<p>5. Quelle action permet d’améliorer ses performances physiques ?</p>
+<div class="options">
+<label><input type="radio" name="q5"> s’entraîner</label>
+<label><input type="radio" name="q5"> le court</label>
+<label><input type="radio" name="q5"> la balle</label>
+<label><input type="radio" name="q5"> le filet</label>
+</div>
+</div>
+
+<div class="question" data-answer="b">
+<p>6. Quel sport se joue avec une raquette ?</p>
+<div class="options">
+<label><input type="radio" name="q6"> la boxe</label>
+<label><input type="radio" name="q6"> le tennis</label>
+<label><input type="radio" name="q6"> le ski</label>
+<label><input type="radio" name="q6"> la natation</label>
+</div>
+</div>
+
+<div class="question" data-answer="c">
+<p>7. Quel terme s’oppose au sport d’équipe ?</p>
+<div class="options">
+<label><input type="radio" name="q7"> la dynamique de groupe</label>
+<label><input type="radio" name="q7"> la cohésion d’équipe</label>
+<label><input type="radio" name="q7"> le sport individuel</label>
+<label><input type="radio" name="q7"> le ballon</label>
+</div>
+</div>
+
+<div class="question" data-answer="d">
+<p>8. Quelle activité correspond à une longue course ?</p>
+<div class="options">
+<label><input type="radio" name="q8"> le jogging</label>
+<label><input type="radio" name="q8"> la compétition</label>
+<label><input type="radio" name="q8"> le terrain</label>
+<label><input type="radio" name="q8"> le marathon</label>
+</div>
+</div>
+
+<div class="question" data-answer="a">
+<p>9. Quel sport de combat est cité ?</p>
+<div class="options">
+<label><input type="radio" name="q9"> la boxe</label>
+<label><input type="radio" name="q9"> le ski</label>
+<label><input type="radio" name="q9"> la course à pied</label>
+<label><input type="radio" name="q9"> la posture</label>
+</div>
+</div>
+
+<div class="question" data-answer="b">
+<p>10. Que fait-on pour développer ses muscles ?</p>
+<div class="options">
+<label><input type="radio" name="q10"> transpirer</label>
+<label><input type="radio" name="q10"> se muscler</label>
+<label><input type="radio" name="q10"> souffrir</label>
+<label><input type="radio" name="q10"> être en forme</label>
+</div>
+</div>
+
+<button class="check" onclick="checkQCM()">Vérifiez vos réponses</button>
+<button class="reset" onclick="resetQCM()">Réinitialiser l’exercice</button>
+<div class="score" id="scoreQCM"></div>
+</section>
+
+<section id="lacunaire">
+<h2>Exercice 2 - Complétez le texte avec les mots proposés.</h2>
+<p>
+Lors d’une activité sportive, l'<strong>1...</strong> est essentiel.  
+Travailler la <strong>2...</strong> permet d’éviter les blessures.  
+Une bonne <strong>3...</strong> améliore l’efficacité collective.  
+Après l’effort, on peut ressentir la <strong>4...</strong>.  
+Pour progresser, il faut parfois <strong>5...</strong>.
+</p>
+
+<ol>
+<li><input type="text" id="l1"></li>
+<li><input type="text" id="l2"></li>
+<li><input type="text" id="l3"></li>
+<li><input type="text" id="l4"></li>
+<li><input type="text" id="l5"></li>
+</ol>
+
+<p><em>Mots proposés :</em> souffrir – cohésion d’équipe – effort – posture – bouffée d’oxygène</p>
+
+<button class="check" onclick="checkLacunaire()">Vérifiez vos réponses</button>
+<button class="reset" onclick="resetLacunaire()">Réinitialiser l’exercice</button>
+<div class="score" id="scoreLacunaire"></div>
+</section>
+
+<section id="association">
+<h2>Exercice 3 – Associez chaque équipement à sa description.</h2>
+
+<table>
+<tr><th>Équipement</th><th>Description</th></tr>
+<tr>
+<td>la raquette</td>
+<td>
+<select id="a1" class="shuffle">
+<option value="">---</option>
+<option value="objet pour frapper une balle">objet pour frapper une balle</option>
+<option value="surface de jeu">surface de jeu</option>
+<option value="vêtement sportif">vêtement sportif</option>
+<option value="protection de la jambe">protection de la jambe</option>
+<option value="instrument pour glisser">instrument pour glisser</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>le terrain</td>
+<td>
+<select id="a2" class="shuffle">
+<option value="">---</option>
+<option value="objet pour frapper une balle">objet pour frapper une balle</option>
+<option value="surface de jeu">surface de jeu</option>
+<option value="vêtement sportif">vêtement sportif</option>
+<option value="protection de la jambe">protection de la jambe</option>
+<option value="instrument pour glisser">instrument pour glisser</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>le maillot</td>
+<td>
+<select id="a3" class="shuffle">
+<option value="">---</option>
+<option value="objet pour frapper une balle">objet pour frapper une balle</option>
+<option value="surface de jeu">surface de jeu</option>
+<option value="vêtement sportif">vêtement sportif</option>
+<option value="protection de la jambe">protection de la jambe</option>
+<option value="instrument pour glisser">instrument pour glisser</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>le protège-genou</td>
+<td>
+<select id="a4" class="shuffle">
+<option value="">---</option>
+<option value="objet pour frapper une balle">objet pour frapper une balle</option>
+<option value="surface de jeu">surface de jeu</option>
+<option value="vêtement sportif">vêtement sportif</option>
+<option value="protection de la jambe">protection de la jambe</option>
+<option value="instrument pour glisser">instrument pour glisser</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>le ski</td>
+<td>
+<select id="a5" class="shuffle">
+<option value="">---</option>
+<option value="objet pour frapper une balle">objet pour frapper une balle</option>
+<option value="surface de jeu">surface de jeu</option>
+<option value="vêtement sportif">vêtement sportif</option>
+<option value="protection de la jambe">protection de la jambe</option>
+<option value="instrument pour glisser">instrument pour glisser</option>
+</select>
+</td>
+</tr>
+</table>
+
+<button class="check" onclick="checkAsso()">Vérifiez vos réponses</button>
+<button class="reset" onclick="resetAsso()">Réinitialiser l’exercice</button>
+<div class="score" id="scoreAsso"></div>
+</section>
+
+<script>
+function checkQCM(){
+let questions=document.querySelectorAll("#qcm .question");
+let score=0;
+for(let q of questions){
+let checked=q.querySelector("input:checked");
+if(!checked){document.getElementById("scoreQCM").textContent="Veuillez répondre à toutes les questions.";return;}
+let labels=q.querySelectorAll("label");
+labels.forEach((lab,i)=>{
+lab.classList.remove("correct","incorrect");
+let letter=["a","b","c","d"][i];
+if(letter===q.dataset.answer){
+lab.classList.add("correct");
+if(checked===lab.querySelector("input")) score++;
+}else if(checked===lab.querySelector("input")){
+lab.classList.add("incorrect");
+}
+});
+}
+document.getElementById("scoreQCM").textContent="Score : "+score+" / 10";
+}
+
+function resetQCM(){
+document.querySelectorAll("#qcm input").forEach(i=>i.checked=false);
+document.querySelectorAll("#qcm label").forEach(l=>l.classList.remove("correct","incorrect"));
+document.getElementById("scoreQCM").textContent="";
+}
+
+function checkLacunaire(){
+let answers=["effort","posture","cohésion d’équipe","bouffée d’oxygène","souffrir"];
+let inputs=[l1,l2,l3,l4,l5];
+let score=0;
+for(let i=0;i<inputs.length;i++){
+inputs[i].classList.remove("correct","incorrect");
+if(!inputs[i].value){scoreLacunaire.textContent="Veuillez remplir tous les trous.";return;}
+if(inputs[i].value.trim()===answers[i]){
+inputs[i].classList.add("correct");score++;
+}else{
+inputs[i].classList.add("incorrect");
+}
+}
+scoreLacunaire.textContent="Score : "+score+" / 5";
+}
+
+function resetLacunaire(){
+[l1,l2,l3,l4,l5].forEach(i=>{i.value="";i.classList.remove("correct","incorrect")});
+scoreLacunaire.textContent="";
+}
+
+function checkAsso(){
+let correct={
+a1:"objet pour frapper une balle",
+a2:"surface de jeu",
+a3:"vêtement sportif",
+a4:"protection de la jambe",
+a5:"instrument pour glisser"
+};
+let score=0;
+for(let id in correct){
+let sel=document.getElementById(id);
+sel.classList.remove("correct","incorrect");
+if(!sel.value){scoreAsso.textContent="Veuillez réaliser toutes les associations.";return;}
+if(sel.value===correct[id]){sel.classList.add("correct");score++;}else{sel.classList.add("incorrect");}
+}
+scoreAsso.textContent="Score : "+score+" / 5";
+}
+
+function resetAsso(){
+["a1","a2","a3","a4","a5"].forEach(id=>{
+let s=document.getElementById(id);
+s.value="";
+s.classList.remove("correct","incorrect");
+});
+scoreAsso.textContent="";
+}
+
+function shuffleSelectOptions(){
+document.querySelectorAll("select.shuffle").forEach(sel=>{
+let opts=Array.from(sel.options).slice(1);
+for(let i=opts.length-1;i>0;i--){
+let j=Math.floor(Math.random()*(i+1));
+[opts[i],opts[j]]=[opts[j],opts[i]];
+}
+opts.forEach(o=>sel.appendChild(o));
+});
+}
+shuffleSelectOptions();
+</script>
+
+</body>
+</html>
