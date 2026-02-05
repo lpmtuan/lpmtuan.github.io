@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice Vidéo : Ensemble, c'est mieux !</title>
+    <style>
+        :root {
+            --primary: #4834d4; /* Bleu plus "universitaire" */
+            --accent: #eb4d4b;
+            --secondary: #686de0;
+            --light: #f3f5f9;
+            --success: #6ab04c;
+            --wrong: #eb4d4b;
+            --bg-left: #ffffff;
+            --bg-right: #130f40;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* --- COLONNE GAUCHE : QUESTIONS (2/3 de l'espace) --- */
+        .left-column {
+            flex: 2; /* 2/3 de l'espace */
+            overflow-y: auto;
+            padding: 40px;
+            background-color: var(--bg-left);
+            border-right: 5px solid var(--light);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .instruction {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .question-block {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .q-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.15rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 colonnes pour les réponses car la zone est large */
+            gap: 15px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            background: #fafafa;
+        }
+
+        .option-label:hover {
+            background-color: #fff;
+            border-color: var(--secondary);
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        .option-label.selected {
+            border-color: var(--secondary);
+            background-color: #edf2ff;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .option-label.correct {
+            border-color: var(--success);
+            background-color: #badc58; /* Vert plus doux */
+            color: #130f40;
+        }
+
+        .option-label.wrong {
+            border-color: var(--wrong);
+            background-color: #ffcccc;
+            color: #78281f;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #2f3542;
+            padding: 15px;
+            background: #f1f2f6;
+            border-left: 5px solid var(--secondary);
+            border-radius: 0 5px 5px 0;
+            display: none;
+        }
+
+        /* --- COLONNE DROITE : VIDÉO (1/3 de l'espace) --- */
+        .right-column {
+            flex: 1; /* 1/3 de l'espace */
+            background-color: var(--bg-right);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+        }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .sticky-note {
+            color: white;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* --- BARRE D'ACTIONS --- */
+        .action-bar {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #ccc;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-check {
+            background-color: var(--success);
+            color: white;
+            box-shadow: 0 5px 15px rgba(106, 176, 76, 0.4);
+        }
+
+        .btn-check:disabled {
+            background-color: #b2bec3;
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.6;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(106, 176, 76, 0.6);
+        }
+
+        .score-display {
+            margin-top: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: none;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .progress-text {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 1100px) {
+            .options-grid {
+                grid-template-columns: 1fr; /* Une seule colonne sur écrans moyens */
+            }
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column-reverse;
+                height: auto;
+                overflow: auto;
+            }
+            .left-column, .right-column {
+                flex: none;
+                width: 100%;
+            }
+            .right-column {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                padding: 15px;
+            }
+            .video-container {
+                max-width: 600px; /* Limite la taille de la vidéo sur mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="left-column">
+        <h1>🚴‍♂️ Ensemble, c'est mieux !</h1>
+        <p class="instruction">Écoutez le dialogue et répondez aux questions suivantes.</p>
+        
+        <form id="quizForm">
+            <div id="questionsContainer"></div>
+        </form>
+
+        <div class="action-bar">
+            <span id="progressText" class="progress-text">Répondez à toutes les questions pour valider (0/10)</span>
+            
+            <button type="button" class="btn btn-check" onclick="checkAnswers()" id="btnCheck" disabled>Vérifier mes réponses</button>
+            
+            <div id="finalScore" class="score-display"></div>
+        </div>
+        <br><br>
+    </div>
+
+    <div class="right-column">
+        <div class="sticky-note">📺 Écoutez le dialogue 📺</div>
+        <div class="video-container">
+            <iframe src="https://drive.google.com/file/d/1sEc-7A4hkl5EOx_pLV8G8DcrK0JjAJ1O/preview" allow="autoplay"></iframe>
+        </div>
+    </div>
+
+<script>
+    // Données du QCM pour le Document 2
+    const questions = [
+        {
+            q: "1. Quelle est la raison principale pour laquelle Nicolas refuse initialement de rejoindre l'équipe de sport ?",
+            options: ["Il n'aime pas Amélie.", "Il a peur de l'effort physique.", "Il n'a pas de vélo.", "Il doit étudier pour ses examens."],
+            correct: 1,
+            cite: "« Oh non, l'effort, c'est pas mon truc. » "
+        },
+        {
+            q: "2. Quel problème spécifique Nicolas rencontre-t-il avec la balade du vendredi ?",
+            options: ["Il travaille le vendredi après-midi.", "Il n'aime pas faire du vélo.", "La distance de 30 km est trop longue pour lui.", "Il n'a pas l'équipement nécessaire."],
+            correct: 2,
+            cite: "« Je ne peux pas vous suivre... Vous faites 30 km! » "
+        },
+        {
+            q: "3. Quelle solution Amélie propose-t-elle pour rassurer Nicolas sur la distance ?",
+            options: ["Louer un vélo électrique.", "Rejoindre un groupe de niveau adapté (10 km).", "Faire des pauses fréquentes.", "Commencer par la marche à pied."],
+            correct: 1,
+            cite: "« ...tu peux commencer par le groupe des 10 km... » "
+        },
+        {
+            q: "4. Quelle projection Amélie fait-elle sur les progrès de Nicolas dans deux mois ?",
+            options: ["Il courra un marathon.", "Il achètera un vélo professionnel.", "Il pourra parcourir entre 15 et 20 km.", "Il deviendra chef d'équipe."],
+            correct: 2,
+            cite: "« ...tu auras réussi à parcourir entre 15 et 20 km... » "
+        },
+        {
+            q: "5. Quelle crainte sociale Nicolas exprime-t-il ?",
+            options: ["Être ignoré par les autres étudiants.", "Devoir payer une cotisation élevée.", "Que les autres se moquent de lui.", "Ne connaître personne dans le groupe."],
+            correct: 2,
+            cite: "« ...tous les autres du groupe vont se moquer de moi ! » "
+        },
+        {
+            q: "6. Selon Amélie, quel est l'objectif véritable de ce groupe sportif universitaire ?",
+            options: ["Gagner des compétitions régionales.", "Créer du lien social hors du contexte universitaire.", "Préparer les Jeux Olympiques universitaires.", "Améliorer ses notes par le sport."],
+            correct: 1,
+            cite: "« C'est une manière d'être ensemble en dehors du contexte de l'université... » "
+        },
+        {
+            q: "7. Quel changement d'habitude Amélie prédit-elle pour Nicolas s'il s'y met ?",
+            options: ["Il fera tous ses trajets en ville à vélo.", "Il arrêtera ses études pour le sport.", "Il deviendra végétarien.", "Il déménagera à la campagne."],
+            correct: 0,
+            cite: "« Tu commenceras peut-être comme nous à faire tous tes trajets en ville à vélo ! » "
+        },
+        {
+            q: "8. À quelle condition Nicolas accepte-t-il de tenter l'expérience ?",
+            options: ["Si Amélie lui prête son vélo.", "S'ils font d'abord un entraînement privé ensemble.", "Si l'inscription est gratuite.", "Si l'université valide des crédits ECTS."],
+            correct: 1,
+            cite: "« On pourrait d'abord faire un petit entraînement ou deux, ensemble... » "
+        },
+        {
+            q: "9. Que propose Amélie concernant les matchs de sports collectifs (basket, volley, foot) ?",
+            options: ["De venir arbitrer les matchs.", "De venir simplement regarder pour commencer.", "De payer l'entrée.", "De s'inscrire immédiatement comme remplaçant."],
+            correct: 1,
+            cite: "« ...viens déjà nous voir jouer. » "
+        },
+        {
+            q: "10. Outre le sport, quel est l'intérêt majeur de ces rencontres selon la fin du dialogue ?",
+            options: ["Rencontrer des étudiants d'autres facultés.", "Trouver un emploi étudiant.", "Apprendre une nouvelle langue.", "Gagner de l'argent."],
+            correct: 0,
+            cite: "« ...rencontrer les étudiants des autres facultés de l'université qu'on ne voit jamais ! » "
+        }
+    ];
+
+    const container = document.getElementById('questionsContainer');
+    const btnCheck = document.getElementById('btnCheck');
+    const progressText = document.getElementById('progressText');
+    let answeredCount = 0;
+
+    function init() {
+        container.innerHTML = "";
+        questions.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            qDiv.id = `qblock-${index}`;
+
+            const title = document.createElement('div');
+            title.className = 'q-title';
+            title.innerText = item.q;
+            qDiv.appendChild(title);
+
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options-grid';
+
+            item.options.forEach((opt, optIndex) => {
+                const label = document.createElement('label');
+                label.className = 'option-label';
+                label.onclick = () => selectOption(index, optIndex, label);
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `question-${index}`;
+                radio.value = optIndex;
+                
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(opt));
+                optionsDiv.appendChild(label);
+            });
+            qDiv.appendChild(optionsDiv);
+
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback';
+            feedback.id = `feedback-${index}`;
+            qDiv.appendChild(feedback);
+
+            container.appendChild(qDiv);
+        });
+        updateProgress();
+    }
+
+    function selectOption(qIndex, optIndex, labelElement) {
+        // UI Selection
+        const parentGrid = labelElement.parentNode;
+        const allLabels = parentGrid.querySelectorAll('.option-label');
+        allLabels.forEach(l => l.classList.remove('selected'));
+        labelElement.classList.add('selected');
+        
+        const radio = labelElement.querySelector('input');
+        radio.checked = true;
+
+        // Check completion status
+        checkGlobalCompletion();
+    }
+
+    function checkGlobalCompletion() {
+        let count = 0;
+        for(let i=0; i<questions.length; i++) {
+            const inputs = document.getElementsByName(`question-${i}`);
+            for(let input of inputs) {
+                if(input.checked) {
+                    count++;
+                    break;
+                }
+            }
+        }
+        answeredCount = count;
+        updateProgress();
+    }
+
+    function updateProgress() {
+        if(answeredCount === questions.length) {
+            btnCheck.disabled = false;
+            progressText.innerHTML = "✨ Vous avez répondu à toutes les questions !";
+            progressText.style.color = "var(--success)";
+            progressText.style.fontWeight = "bold";
+        } else {
+            btnCheck.disabled = true;
+            progressText.innerHTML = `Répondez à toutes les questions pour valider (${answeredCount}/${questions.length})`;
+            progressText.style.color = "#7f8c8d";
+            progressText.style.fontWeight = "normal";
+        }
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        
+        // Hide progress text and button
+        progressText.style.display = 'none';
+        btnCheck.style.display = 'none';
+
+        questions.forEach((item, index) => {
+            const inputs = document.getElementsByName(`question-${index}`);
+            let selectedVal = -1;
+            let selectedLabel = null;
+
+            inputs.forEach(input => {
+                if(input.checked) {
+                    selectedVal = parseInt(input.value);
+                    selectedLabel = input.parentElement;
+                }
+                // Lock inputs
+                input.disabled = true;
+                input.parentElement.style.pointerEvents = 'none';
+            });
+
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            const allLabels = document.getElementById(`qblock-${index}`).querySelectorAll('.option-label');
+
+            if (selectedVal === item.correct) {
+                score++;
+                selectedLabel.classList.remove('selected');
+                selectedLabel.classList.add('correct');
+                feedbackDiv.innerHTML = `✅ <b>Correct !</b> <br> ${item.cite}`;
+            } else {
+                selectedLabel.classList.remove('selected');
+                selectedLabel.classList.add('wrong');
+                // Show correct answer
+                allLabels[item.correct].classList.add('correct');
+                feedbackDiv.innerHTML = `❌ <b>Incorrect.</b> <br> ${item.cite}`;
+            }
+            feedbackDiv.style.display = 'block';
+        });
+
+        const scoreDiv = document.getElementById('finalScore');
+        scoreDiv.style.display = 'block';
+        scoreDiv.innerText = `Votre score : ${score} / ${questions.length}`;
+        
+        // Smooth scroll to score
+        scoreDiv.scrollIntoView({behavior: "smooth", block: "center"});
+    }
+
+    // Init
+    init();
+</script>
+</body>
+</html>
