@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compréhension Orale B1+ : Le bruit des mots</title>
+    <style>
+        :root {
+            --primary: #2b3a42;
+            --secondary: #3f5765;
+            --accent: #ff533d;
+            --success: #27ae60;
+            --wrong: #c0392b;
+            --bg-left: #f0f4f8;
+            --bg-right: #ffffff;
+            --text-main: #333333;
+            --text-light: #ecf0f1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            overflow: hidden; /* Désactive le défilement global de la page */
+            color: var(--text-main);
+        }
+
+        /* --- COLONNE GAUCHE : AUDIO (1/3 de l'espace) --- */
+        .left-column {
+            flex: 1; /* Représente 1/3 */
+            height: 100%;
+            overflow-y: auto; /* Défilement indépendant */
+            padding: 40px 30px;
+            background-color: var(--primary);
+            color: var(--text-light);
+            border-right: 5px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .left-column h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .level-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .instruction {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            text-align: justify;
+            color: #bdc3c7;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Le lecteur audio intégré (Google Drive) */
+        iframe {
+            width: 100%;
+            height: 250px;
+            border: none;
+        }
+
+        /* --- COLONNE DROITE : QUESTIONS (2/3 de l'espace) --- */
+        .right-column {
+            flex: 2; /* Représente 2/3 */
+            height: 100%;
+            overflow-y: auto; /* Défilement indépendant */
+            padding: 40px 50px;
+            background-color: var(--bg-right);
+            scroll-behavior: smooth;
+        }
+
+        .question-block {
+            background: #fafbfc;
+            border: 1px solid #e1e8ed;
+            border-left: 5px solid var(--secondary);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: transform 0.2s;
+        }
+
+        .question-block:hover {
+            transform: translateX(5px);
+            border-left-color: var(--accent);
+        }
+
+        .q-title {
+            font-weight: 700;
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            border: 2px solid #dce4ec;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: white;
+        }
+
+        .option-label:hover {
+            border-color: var(--secondary);
+            background-color: #f0f4f8;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .option-text {
+            font-size: 1.05rem;
+        }
+
+        /* États de sélection dynamique */
+        .option-label.selected {
+            border-color: var(--secondary);
+            background-color: #e8eff5;
+            font-weight: 600;
+        }
+
+        .option-label.correct {
+            border-color: var(--success);
+            background-color: #eafaf1;
+            color: #145a32;
+        }
+
+        .option-label.wrong {
+            border-color: var(--wrong);
+            background-color: #fdedec;
+            color: #7b241c;
+            opacity: 0.8;
+        }
+
+        /* --- BARRE D'ACTIONS --- */
+        .action-bar {
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px dashed #bdc3c7;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .progress-text {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        button:active:not(:disabled) { transform: scale(0.95); }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-check { background-color: var(--primary); }
+        .btn-check:hover:not(:disabled) { background-color: #1a252f; }
+
+        .btn-reset { background-color: var(--wrong); display: none; }
+        .btn-reset:hover { background-color: #a93226; }
+
+        .btn-solution { background-color: var(--success); display: none; }
+        .btn-solution:hover { background-color: #1e8449; }
+
+        .feedback-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 950px) {
+            body {
+                flex-direction: column;
+                overflow: auto;
+            }
+            .left-column, .right-column {
+                flex: none;
+                width: 100%;
+                overflow: visible;
+                height: auto;
+            }
+            .left-column { border-right: none; border-bottom: 5px solid var(--accent); }
+            iframe { height: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="left-column">
+        <h1>Le bruit des mots</h1>
+        <div class="level-badge">Niveau B1+</div>
+        <p class="instruction">
+            🎧 Écoutez l'extrait radiophonique avec l'écrivain Alain Mabanckou et la journaliste Zoé Varier.<br><br>
+            Répondez ensuite aux questions à la colonne de droite.
+        </p>
+        
+        <div class="audio-container">
+            <iframe src="https://drive.google.com/file/d/1aigXDcD8M33atanj-GGKnNo6xbpEx3WV/preview" allow="autoplay" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div id="questionsContainer"></div>
+
+        <div class="action-bar">
+            <span id="progressText" class="progress-text">Progression : 0 / 10 réponses</span>
+            <div id="feedbackMessage" class="feedback-message"></div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn-check" id="btnCheck" disabled onclick="checkAnswers()">Vérifier les réponses</button>
+                <button type="button" class="btn-reset" id="btnReset" onclick="resetExercise()">Réinitialiser l'exercice</button>
+                <button type="button" class="btn-solution" id="btnSolution" onclick="showSolutions()">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DONNÉES DU QCM B1+ ---
+        // Équilibre strict respecté : 3 réponses A, 3 réponses B, 2 réponses C, 2 réponses D.
+        const questionsData = [
+            {
+                q: "1. Quel aliment est au centre du souvenir d'enfance raconté par l'écrivain ?",
+                options: [
+                    "Un fruit purement tropical.",
+                    "Un légume cultivé en hiver.",
+                    "Une pomme importée.",
+                    "Une mangue bien mûre."
+                ],
+                correct: 2 // C
+            },
+            {
+                q: "2. Que demandait le père d'Alain Mabanckou à son fils lors de la dégustation ?",
+                options: [
+                    "De fermer les paupières pour se concentrer sur l'ouïe.",
+                    "De deviner l'origine géographique exacte de l'aliment.",
+                    "De mâcher le fruit le plus silencieusement possible.",
+                    "De comparer ce fruit avec la production locale."
+                ],
+                correct: 0 // A
+            },
+            {
+                q: "3. À quoi le son de la mastication (« Crouatch, crouatch ») fait-il penser selon le père ?",
+                options: [
+                    "Au craquement sec du bois brûlant dans la cheminée.",
+                    "Aux bruits de pas de quelqu'un marchant dans la neige.",
+                    "Au froissement des feuilles mortes tombées en automne.",
+                    "Au son d'un instrument de musique traditionnel européen."
+                ],
+                correct: 1 // B
+            },
+            {
+                q: "4. Quel paradoxe concernant le père de l'auteur est révélé au début du récit ?",
+                options: [
+                    "Il détestait le froid de l'hiver mais adorait le goût des pommes.",
+                    "Il importait des fruits sans connaître leur véritable provenance.",
+                    "Il parlait couramment une langue étrangère sans l'avoir étudiée.",
+                    "Il décrivait la neige européenne sans jamais y avoir mis les pieds."
+                ],
+                correct: 3 // D
+            },
+            {
+                q: "5. Qu'est-ce qui provoque la soudaine prise de conscience de la journaliste Zoé Varier ?",
+                options: [
+                    "Le fait qu'un fruit banal en France soit considéré comme rare et lointain là-bas.",
+                    "La réalisation que le père d'Alain Mabanckou lui a menti pendant toute son enfance.",
+                    "La découverte étonnante que le climat local permet la culture de la pomme.",
+                    "L'idée inattendue que la neige puisse un jour tomber dans le pays natal de l'écrivain."
+                ],
+                correct: 0 // A
+            },
+            {
+                q: "6. Quelle définition simple Alain Mabanckou donne-t-il au mot « exotique » dans ce contexte ?",
+                options: [
+                    "C'est un produit alimentaire qui coûte extrêmement cher sur les marchés.",
+                    "C'est un élément naturel qui ne pousse tout simplement pas dans sa région.",
+                    "C'est l'ensemble des fruits et légumes provenant spécifiquement des pays chauds.",
+                    "C'est un repas festif réservé exclusivement aux grandes occasions familiales."
+                ],
+                correct: 1 // B
+            },
+            {
+                q: "7. Quel fruit l'écrivain cite-t-il spécifiquement comme exemple d'un aliment ordinaire pour lui ?",
+                options: [
+                    "La banane.",
+                    "L'ananas.",
+                    "La mangue.",
+                    "La poire."
+                ],
+                correct: 2 // C
+            },
+            {
+                q: "8. Que trouve la journaliste particulièrement beau dans l'histoire de l'auteur ?",
+                options: [
+                    "L'amour filial intense qui transparaît dans ce souvenir partagé.",
+                    "Le fait que l'écrivain ait enfin pu accomplir son voyage en Europe.",
+                    "L'innocence d'un jeune enfant qui découvre une nouvelle saveur.",
+                    "L'image poétique associant le bruit de la bouche à un paysage enneigé."
+                ],
+                correct: 3 // D
+            },
+            {
+                q: "9. Quelle empreinte durable ce souvenir d'enfance a-t-il laissée chez l'auteur adulte ?",
+                options: [
+                    "La pomme demeure encore aujourd'hui, à ses yeux, le symbole de l'Europe.",
+                    "Il refuse catégoriquement de manger des fruits importés par nostalgie.",
+                    "Il a pris la décision d'aller vivre dans une région où il neige fréquemment.",
+                    "Il exige de ses propres enfants qu'ils mangent les fruits les yeux fermés."
+                ],
+                correct: 0 // A
+            },
+            {
+                q: "10. Comment pourrait-on résumer le message culturel profond de cet extrait radiophonique ?",
+                options: [
+                    "La difficulté logistique de se procurer de la nourriture fraîche par le passé.",
+                    "Le relativisme culturel et le pouvoir du voyage à travers l'imagination.",
+                    "L'importance cruciale de l'éducation culinaire dès le plus jeune âge.",
+                    "Les différences climatiques extrêmes empêchant le partage entre continents."
+                ],
+                correct: 1 // B
+            }
+        ];
+
+        const container = document.getElementById('questionsContainer');
+        const btnCheck = document.getElementById('btnCheck');
+        const btnReset = document.getElementById('btnReset');
+        const btnSolution = document.getElementById('btnSolution');
+        const progressText = document.getElementById('progressText');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        // --- GÉNÉRATION HTML DES QUESTIONS ---
+        let htmlContent = "";
+        questionsData.forEach((item, qIndex) => {
+            htmlContent += `
+                <div class="question-block" id="qblock-${qIndex}">
+                    <div class="q-title">${item.q}</div>
+                    <div class="options-grid">
+            `;
+            
+            const lettres = ['a', 'b', 'c', 'd'];
+            item.options.forEach((opt, optIndex) => {
+                htmlContent += `
+                        <label class="option-label" onclick="selectOption(${qIndex}, ${optIndex}, this)">
+                            <input type="radio" name="question-${qIndex}" value="${optIndex}">
+                            <span class="option-text"><strong>${lettres[optIndex]})</strong> ${opt}</span>
+                        </label>
+                `;
+            });
+
+            htmlContent += `
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = htmlContent;
+
+        // --- LOGIQUE INTERACTIVE ---
+
+        function selectOption(qIndex, optIndex, labelElement) {
+            // Nettoyage de la sélection précédente
+            const parentGrid = labelElement.parentNode;
+            const allLabels = parentGrid.querySelectorAll('.option-label');
+            allLabels.forEach(l => l.classList.remove('selected'));
+            
+            // Appliquer le visuel de sélection
+            labelElement.classList.add('selected');
+            
+            // Cocher le radio bouton
+            const radio = labelElement.querySelector('input');
+            radio.checked = true;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let answeredCount = 0;
+            for(let i = 0; i < questionsData.length; i++) {
+                const inputs = document.getElementsByName(`question-${i}`);
+                for(let input of inputs) {
+                    if(input.checked) {
+                        answeredCount++;
+                        break;
+                    }
+                }
+            }
+
+            if(answeredCount === questionsData.length) {
+                progressText.innerHTML = "✨ L'exercice est terminé, vérifiez vos réponses !";
+                progressText.style.color = "var(--success)";
+                btnCheck.disabled = false;
+            } else {
+                progressText.innerHTML = `Progression : ${answeredCount} / 10 réponses`;
+                progressText.style.color = "var(--secondary)";
+                btnCheck.disabled = true;
+            }
+        }
+
+        // Action 1 : Vérifier (Calcule le score, bloque les inputs et oriente selon le score)
+        function checkAnswers() {
+            let score = 0;
+            
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                let selectedVal = -1;
+
+                inputs.forEach(input => {
+                    if(input.checked) {
+                        selectedVal = parseInt(input.value);
+                    }
+                    // Verrouiller les inputs
+                    input.disabled = true;
+                    input.closest('.option-label').style.pointerEvents = 'none';
+                });
+
+                if (selectedVal === item.correct) {
+                    score++;
+                }
+            });
+
+            // Gérer l'affichage des boutons et du message en fonction du score
+            btnCheck.style.display = 'none';
+            progressText.style.display = 'none';
+            feedbackMessage.style.display = 'block';
+
+            if (score >= 7) {
+                feedbackMessage.innerHTML = `🎉 Félicitations ! Score : <span style="color:var(--success)">${score} / 10</span>`;
+                feedbackMessage.style.color = "var(--success)";
+                btnSolution.style.display = 'block'; // Activer le corrigé
+                btnReset.style.display = 'none';
+            } else {
+                feedbackMessage.innerHTML = `😕 Score : <span style="color:var(--wrong)">${score} / 10</span><br><span style="font-size:1rem; font-weight:normal;">Réécoutez l'audio et réessayez.</span>`;
+                feedbackMessage.style.color = "var(--wrong)";
+                btnSolution.style.display = 'none';
+                btnReset.style.display = 'block'; // Demander de refaire
+            }
+        }
+
+        // Action 2 : Réinitialiser l'exercice (Score < 7)
+        function resetExercise() {
+            // Nettoyer les inputs et les classes
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                inputs.forEach(input => {
+                    input.checked = false;
+                    input.disabled = false;
+                    input.closest('.option-label').style.pointerEvents = 'auto';
+                    input.closest('.option-label').classList.remove('selected', 'correct', 'wrong');
+                });
+            });
+
+            // Restaurer l'interface initiale
+            feedbackMessage.style.display = 'none';
+            btnReset.style.display = 'none';
+            btnCheck.style.display = 'block';
+            progressText.style.display = 'block';
+            
+            updateProgress(); // Remettra le compteur à 0 et désactivera le bouton Vérifier
+            
+            // Remonter en haut des questions
+            document.querySelector('.right-column').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Action 3 : Voir le corrigé (Score >= 7)
+        function showSolutions() {
+            btnSolution.style.display = 'none'; // Masquer le bouton Corrigé
+            
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                let selectedVal = -1;
+
+                inputs.forEach(input => {
+                    if(input.checked) selectedVal = parseInt(input.value);
+                });
+
+                const allLabels = document.getElementById(`qblock-${index}`).querySelectorAll('.option-label');
+                
+                // Mettre en rouge si mauvaise réponse
+                if (selectedVal !== -1 && selectedVal !== item.correct) {
+                    allLabels[selectedVal].classList.remove('selected');
+                    allLabels[selectedVal].classList.add('wrong');
+                }
+                
+                // Mettre la bonne réponse en vert
+                allLabels[item.correct].classList.remove('selected');
+                allLabels[item.correct].classList.add('correct');
+            });
+
+            feedbackMessage.innerHTML += `<br><span style="font-size:1.1rem; color:var(--secondary);">Le corrigé est affiché en couleurs.</span>`;
+        }
+    </script>
+</body>
+</html>
