@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercices de Vocabulaire : La Littérature et les Livres</title>
+    <style>
+        :root {
+            --primary: #8e44ad;
+            --secondary: #2980b9;
+            --accent: #f39c12;
+            --success: #27ae60;
+            --wrong: #c0392b;
+            --bg-page: #f4f6f9;
+            --bg-card: #ffffff;
+            --text-main: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .exercise-card {
+            background-color: var(--bg-card);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            animation: fadeIn 1s ease-out;
+            border-top: 6px solid var(--primary);
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        h2 {
+            color: var(--secondary);
+            border-bottom: 2px dashed var(--secondary);
+            padding-bottom: 10px;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-bar {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-weight: bold;
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .sentence {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid var(--secondary);
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sentence:hover {
+            background: #eaf2f8;
+        }
+
+        select {
+            font-size: 1em;
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            background-color: var(--bg-card);
+            color: var(--primary);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(243, 156, 18, 0.4);
+        }
+
+        select.correct { background-color: var(--success); color: white; border-color: var(--success); }
+        select.wrong { background-color: var(--wrong); color: white; border-color: var(--wrong); }
+        select.solution { background-color: var(--secondary); color: white; border-color: var(--secondary); }
+
+        .action-area {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .feedback-message {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            min-height: 30px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        button:active:not(:disabled) { transform: scale(0.95); }
+        
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-check { background-color: var(--primary); }
+        .btn-check:hover:not(:disabled) { background-color: #732d91; }
+
+        .btn-reset { background-color: var(--wrong); display: none; }
+        .btn-reset:hover { background-color: #a93226; }
+
+        .btn-solution { background-color: var(--success); display: none; }
+        .btn-solution:hover { background-color: #1e8449; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="page-title">📚 Les métiers du livre et de l'écriture</h1>
+
+    <div class="exercise-card" id="ex1">
+        <h2>📝 Exercice 1 : La création et l'édition</h2>
+        <div class="progress-bar" id="prog1">0 / 10 termes sélectionnés</div>
+        
+        <div id="sentences1"></div>
+
+        <div class="action-area">
+            <div class="feedback-message" id="feedback1"></div>
+            <div class="btn-group">
+                <button class="btn-check" id="btnCheck1" disabled onclick="checkAnswers(1)">Vérifier les réponses</button>
+                <button class="btn-reset" id="btnReset1" onclick="resetExercise(1)">Réinitialiser l'exercice</button>
+                <button class="btn-solution" id="btnSolution1" onclick="showSolution(1)">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="exercise-card" id="ex2" style="border-top-color: var(--accent);">
+        <h2 style="color: var(--accent); border-bottom-color: var(--accent);">🎨 Exercice 2 : Les genres et formats de lecture</h2>
+        <div class="progress-bar" id="prog2">0 / 10 termes sélectionnés</div>
+        
+        <div id="sentences2"></div>
+
+        <div class="action-area">
+            <div class="feedback-message" id="feedback2"></div>
+            <div class="btn-group">
+                <button class="btn-check" id="btnCheck2" disabled onclick="checkAnswers(2)">Vérifier les réponses</button>
+                <button class="btn-reset" id="btnReset2" onclick="resetExercise(2)">Réinitialiser l'exercice</button>
+                <button class="btn-solution" id="btnSolution2" onclick="showSolution(2)">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- DONNÉES EXERCICE 1 ---
+    const dataEx1 = [
+        { text: "J'utilise {select} pour chercher la définition de ce mot inconnu.", answer: "le dictionnaire" },
+        { text: "Victor Hugo est {select} français très célèbre du 19e siècle.", answer: "un écrivain" },
+        { text: "Avant de commencer à rédiger, l'auteur doit {select} solide pour captiver le lecteur.", answer: "bâtir une intrigue" },
+        { text: "C'est le rôle de {select} de corriger le manuscrit et de décider de son impression.", answer: "l'éditeur" },
+        { text: "Pour partir en vacances à Rome, j'ai acheté {select} très pratique.", answer: "un guide de voyage" },
+        { text: "Ce jeune auteur rêve de {select} son premier roman l'année prochaine.", answer: "publier" },
+        { text: "J'ai trouvé une excellente recette de gâteau au chocolat dans {select}.", answer: "ce livre de cuisine" },
+        { text: "Mon fils a oublié {select} de mathématiques dans son casier à l'école.", answer: "son manuel scolaire" },
+        { text: "Pour lire dans le métro, c'est plus pratique d'avoir {select}.", answer: "un livre de poche" },
+        { text: "Je préfère lire sur ma liseuse, j'achète presque tout en {select}.", answer: "format numérique" }
+    ];
+    const options1 = ["un écrivain", "l'éditeur", "bâtir une intrigue", "publier", "le dictionnaire", "un guide de voyage", "ce livre de cuisine", "un livre de poche", "son manuel scolaire", "format numérique"];
+
+    // --- DONNÉES EXERCICE 2 ---
+    const dataEx2 = [
+        { text: "Arthur Rimbaud est {select} connu pour ses rimes et ses vers magnifiques.", answer: "un poète" },
+        { text: "Le journal local a envoyé {select} pour faire un reportage sur l'événement.", answer: "un journaliste" },
+        { text: "Le réalisateur a décidé d'{select} pour son prochain film au cinéma.", answer: "adapter une œuvre littéraire" },
+        { text: "Cet auteur a beaucoup d'imagination pour {select} attachants et uniques.", answer: "créer des personnages" },
+        { text: "Dans ce chapitre, l'écrivain s'arrête pour {select} détaillée du paysage.", answer: "faire une description" },
+        { text: "Si tu cherches des informations complètes sur l'histoire du monde, consulte {select}.", answer: "une encyclopédie" },
+        { text: "On m'a offert un magnifique {select} avec des reproductions de tableaux de Van Gogh.", answer: "livre d'art" },
+        { text: "Pour savoir quand planter mes tomates, je lis souvent mon {select}.", answer: "livre de jardinage" },
+        { text: "Elle lit un {select} pour apprendre à mieux gérer son stress et s'épanouir.", answer: "livre sur le développement personnel" },
+        { text: "Même si j'ai une tablette, je reste très attaché à l'odeur et au toucher du {select}.", answer: "format papier" }
+    ];
+    const options2 = ["un poète", "un journaliste", "adapter une œuvre littéraire", "créer des personnages", "faire une description", "une encyclopédie", "livre d'art", "livre de jardinage", "livre sur le développement personnel", "format papier"];
+
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    function buildExercise(exNum, data, options) {
+        const container = document.getElementById(`sentences${exNum}`);
+        container.innerHTML = "";
+        
+        const shuffledOptions = shuffle([...options]);
+
+        data.forEach((item, index) => {
+            let selectHTML = `<select id="ex${exNum}-sel${index}" onchange="checkCompletion(${exNum})">
+                                <option value="">-- Choisir --</option>`;
+            
+            shuffledOptions.forEach(opt => {
+                selectHTML += `<option value="${opt}">${opt}</option>`;
+            });
+            selectHTML += `</select>`;
+
+            const div = document.createElement("div");
+            div.className = "sentence";
+            div.innerHTML = `<strong>${index + 1}.</strong> ` + item.text.replace("{select}", selectHTML);
+            container.appendChild(div);
+        });
+    }
+
+    window.checkCompletion = function(exNum) {
+        const selects = document.querySelectorAll(`[id^='ex${exNum}-sel']`);
+        let filledCount = 0;
+
+        selects.forEach(select => {
+            select.classList.remove('correct', 'wrong', 'solution');
+            if (select.value !== "") filledCount++;
+        });
+
+        const prog = document.getElementById(`prog${exNum}`);
+        prog.innerText = `${filledCount} / 10 termes sélectionnés`;
+
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        
+        // Active le bouton de vérification seulement si tout est rempli
+        if (filledCount === 10) {
+            btnCheck.disabled = false;
+            prog.style.color = "var(--success)";
+        } else {
+            btnCheck.disabled = true;
+            prog.style.color = "#7f8c8d";
+        }
+    };
+
+    window.checkAnswers = function(exNum) {
+        const data = exNum === 1 ? dataEx1 : dataEx2;
+        let score = 0;
+
+        // Calcul du score (sans afficher les couleurs par défaut selon votre consigne pour le reset)
+        data.forEach((item, index) => {
+            const select = document.getElementById(`ex${exNum}-sel${index}`);
+            // Verrouille le select
+            select.disabled = true;
+            if (select.value === item.answer) {
+                score++;
+                select.classList.add('correct'); // Optionnel : colorer en vert le juste pendant la vérif
+            } else {
+                select.classList.add('wrong');
+            }
+        });
+
+        const feedback = document.getElementById(`feedback${exNum}`);
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        const btnReset = document.getElementById(`btnReset${exNum}`);
+        const btnSolution = document.getElementById(`btnSolution${exNum}`);
+
+        btnCheck.style.display = "none";
+
+        // Logique de score >= 7
+        if (score >= 7) {
+            feedback.innerHTML = `🎉 Félicitations ! Score : <span style="color:var(--success)">${score} / 10</span>`;
+            feedback.style.color = "var(--success)";
+            btnSolution.style.display = "block";
+            btnReset.style.display = "none";
+        } else {
+            feedback.innerHTML = `😕 Score : <span style="color:var(--wrong)">${score} / 10</span>. Il vaut mieux refaire l'exercice.`;
+            feedback.style.color = "var(--wrong)";
+            btnSolution.style.display = "none";
+            btnReset.style.display = "block";
+        }
+    };
+
+    window.resetExercise = function(exNum) {
+        const selects = document.querySelectorAll(`[id^='ex${exNum}-sel']`);
+        selects.forEach(select => {
+            select.value = "";
+            select.disabled = false;
+            select.classList.remove('correct', 'wrong', 'solution');
+        });
+
+        document.getElementById(`feedback${exNum}`).innerText = "";
+        
+        document.getElementById(`btnCheck${exNum}`).style.display = "block";
+        document.getElementById(`btnCheck${exNum}`).disabled = true;
+        
+        document.getElementById(`btnReset${exNum}`).style.display = "none";
+        document.getElementById(`btnSolution${exNum}`).style.display = "none";
+
+        checkCompletion(exNum);
+    };
+
+    window.showSolution = function(exNum) {
+        const data = exNum === 1 ? dataEx1 : dataEx2;
+
+        data.forEach((item, index) => {
+            const select = document.getElementById(`ex${exNum}-sel${index}`);
+            select.value = item.answer;
+            select.classList.remove('correct', 'wrong');
+            select.classList.add('solution');
+        });
+
+        document.getElementById(`feedback${exNum}`).innerHTML += ` <br><span style="color:var(--secondary); font-size: 0.8em;">(Corrigé affiché)</span>`;
+        document.getElementById(`btnSolution${exNum}`).style.display = "none";
+    };
+
+    // Initialisation
+    buildExercise(1, dataEx1, options1);
+    buildExercise(2, dataEx2, options2);
+
+</script>
+</body>
+</html>
