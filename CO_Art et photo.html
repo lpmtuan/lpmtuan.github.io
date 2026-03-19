@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compréhension orale : Métier de photographe</title>
+    <style>
+        :root {
+            --primary: #34495e; /* Gris foncé moderne */
+            --secondary: #3498db; /* Bleu artistique */
+            --accent: #e74c3c; /* Rouge passion */
+            --success: #27ae60;
+            --wrong: #c0392b;
+            --bg-left: #ecf0f1;
+            --bg-right: #ffffff;
+            --text-main: #2c3e50;
+            --text-light: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            overflow: hidden; /* Empêche le défilement de la page entière */
+            color: var(--text-main);
+        }
+
+        /* --- COLONNE GAUCHE : AUDIO (1/3 de l'espace) --- */
+        .left-column {
+            flex: 1; /* 1/3 de la largeur */
+            height: 100%;
+            overflow-y: auto; /* Défilement indépendant */
+            padding: 40px 30px;
+            background-color: var(--primary);
+            color: var(--text-light);
+            border-right: 6px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: inset -5px 0 15px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .left-column h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+            color: var(--text-light);
+            line-height: 1.2;
+        }
+
+        .level-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .instruction {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            text-align: justify;
+            color: #bdc3c7;
+        }
+
+        .audio-container {
+            width: 100%;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            position: sticky;
+            top: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 250px;
+            border: none;
+        }
+
+        /* --- COLONNE DROITE : QUESTIONS (2/3 de l'espace) --- */
+        .right-column {
+            flex: 2; /* 2/3 de la largeur */
+            height: 100%;
+            overflow-y: auto; /* Défilement indépendant */
+            padding: 40px 60px;
+            background-color: var(--bg-right);
+            scroll-behavior: smooth;
+        }
+
+        .question-block {
+            background: #f8f9fa;
+            border: 1px solid #e1e8ed;
+            border-left: 5px solid var(--secondary);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+            border-left-color: var(--accent);
+        }
+
+        .q-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+            line-height: 1.4;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 20px;
+            border: 2px solid #dce4ec;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: white;
+        }
+
+        .option-label:hover {
+            border-color: var(--secondary);
+            background-color: #f2fcf9;
+        }
+
+        .option-label input[type="radio"] {
+            margin-top: 4px;
+            margin-right: 15px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .option-text {
+            font-size: 1.05rem;
+            line-height: 1.4;
+        }
+
+        /* États de sélection dynamique */
+        .option-label.selected {
+            border-color: var(--secondary);
+            background-color: #eafaf1;
+            font-weight: 600;
+        }
+
+        .option-label.correct {
+            border-color: var(--success);
+            background-color: #eafaf1;
+            color: #145a32;
+        }
+
+        .option-label.wrong {
+            border-color: var(--wrong);
+            background-color: #fdedec;
+            color: #7b241c;
+            opacity: 0.8;
+        }
+
+        /* --- BARRE D'ACTIONS --- */
+        .action-bar {
+            margin-top: 50px;
+            padding: 35px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px dashed #bdc3c7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .progress-text {
+            font-size: 1.15rem;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        button:active:not(:disabled) { transform: scale(0.95); }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-check { background-color: var(--primary); }
+        .btn-check:hover:not(:disabled) { background-color: #1a252f; }
+
+        .btn-reset { background-color: var(--wrong); display: none; }
+        .btn-reset:hover { background-color: #a93226; }
+
+        .btn-solution { background-color: var(--success); display: none; }
+        .btn-solution:hover { background-color: #1e8449; }
+
+        .feedback-message {
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+            line-height: 1.4;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 1000px) {
+            body {
+                flex-direction: column;
+                overflow: auto;
+            }
+            .left-column, .right-column {
+                flex: none;
+                width: 100%;
+                overflow: visible;
+                height: auto;
+            }
+            .left-column { border-right: none; border-bottom: 6px solid var(--secondary); padding: 20px; }
+            .right-column { padding: 20px; }
+            iframe { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="left-column">
+        <h1>Art et photographie</h1>
+        <div class="level-badge">Niveau B1+</div>
+        <p class="instruction">
+            🎧 Écoutez la conversation entre Moussa et Justine à propos de leurs goûts en matière de photographie.<br><br>
+            Répondez ensuite aux questions à la colonne à droite. Pour valider l'exercice, vous devrez obtenir un score d'au moins 8/12 afin de débloquer le corrigé détaillé.
+        </p>
+        
+        <div class="audio-container">
+            <iframe src="https://drive.google.com/file/d/1q3lnViaW_L1LahmF5DC2s_xCHlEoUcFK/preview" allow="autoplay" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div id="questionsContainer"></div>
+
+        <div class="action-bar">
+            <span id="progressText" class="progress-text">Progression : 0 / 12 réponses</span>
+            <div id="feedbackMessage" class="feedback-message"></div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn-check" id="btnCheck" disabled onclick="checkAnswers()">Vérifier les réponses</button>
+                <button type="button" class="btn-reset" id="btnReset" onclick="resetExercise()">Réinitialiser l'exercice</button>
+                <button type="button" class="btn-solution" id="btnSolution" onclick="showSolutions()">Voir le corrigé</button>
+            </div>
+        </div>
+        <br><br>
+    </div>
+
+    <script>
+        // --- DONNÉES DU QCM ---
+        // 12 questions. Équilibre des bonnes réponses : 3 A, 3 B, 3 C, 3 D.
+        const questionsData = [
+            {
+                q: "1. Quel cadeau Moussa a-t-il récemment reçu ?",
+                options: [
+                    "Un appareil photo professionnel.",
+                    "Un livre de photos de Bettina Rheims.",
+                    "Des billets pour une exposition d'art.",
+                    "Un portrait encadré d'une star française."
+                ],
+                correct: 1 // B
+            },
+            {
+                q: "2. Quelle est la spécialité de la photographe Bettina Rheims selon Moussa ?",
+                options: [
+                    "Des portraits de célébrités dans des décors étonnants.",
+                    "Des photos de paysages ruraux et romantiques.",
+                    "Des reportages de guerre en noir et blanc.",
+                    "Des photographies animalières très sauvages."
+                ],
+                correct: 0 // A
+            },
+            {
+                q: "3. Qu'est-ce que Justine apprécie particulièrement dans l'œuvre de Sophie Calle ?",
+                options: [
+                    "Ses nombreux portraits de vedettes de la mode.",
+                    "Le fait qu'elle photographie les paysages urbains.",
+                    "La façon dont elle met sa propre vie en scène.",
+                    "Ses documentaires animaliers très impressionnants."
+                ],
+                correct: 2 // C
+            },
+            {
+                q: "4. Pourquoi Justine n'a-t-elle pas acheté plusieurs livres à la librairie du musée ?",
+                options: [
+                    "Parce qu'elle n'avait pas apporté son portefeuille.",
+                    "Parce qu'ils étaient en rupture de stock ce jour-là.",
+                    "Parce qu'ils étaient trop lourds à transporter.",
+                    "Parce qu'elle trouvait que les prix étaient trop élevés."
+                ],
+                correct: 3 // D
+            },
+            {
+                q: "5. De quel photographe parle principalement l'exposition que Justine a visitée ?",
+                options: [
+                    "Raymond Depardon.",
+                    "Sophie Calle.",
+                    "Bettina Rheims.",
+                    "Jacques Henri Lartigue."
+                ],
+                correct: 0 // A
+            },
+            {
+                q: "6. Comment Justine décrit-elle le style de photographies de Raymond Depardon ?",
+                options: [
+                    "Des clichés abstraits pris exclusivement en studio.",
+                    "Des photos prises sur le vif, montrant le mouvement.",
+                    "Des portraits figés de grandes personnalités politiques.",
+                    "Des images historiques datant du début du siècle."
+                ],
+                correct: 1 // B
+            },
+            {
+                q: "7. Qui est considéré comme « l'inventeur de l'instantané » dans cette conversation ?",
+                options: [
+                    "Raymond Depardon.",
+                    "Jacques Henri Lartigue.",
+                    "Henri Cartier-Bresson.",
+                    "Sophie Calle."
+                ],
+                correct: 2 // C
+            },
+            {
+                q: "8. D'après Justine, à quelle période l'agence Magnum a-t-elle été fondée ?",
+                options: [
+                    "Au début du XIXe siècle.",
+                    "Pendant la Révolution française.",
+                    "Au début des années 1920.",
+                    "Dans les années 1940, après la guerre."
+                ],
+                correct: 3 // D
+            },
+            {
+                q: "9. Que reproche Moussa à Justine au sujet de sa vision de la photographie ?",
+                options: [
+                    "Il la trouve un peu trop nostalgique du passé.",
+                    "Il trouve qu'elle manque de connaissances techniques.",
+                    "Il pense qu'elle n'apprécie que les photographes étrangers.",
+                    "Il lui reproche de ne pas aller assez souvent au musée."
+                ],
+                correct: 0 // A
+            },
+            {
+                q: "10. Quelle sortie Moussa propose-t-il à Justine pour les semaines à venir ?",
+                options: [
+                    "Visiter les studios de la célèbre agence Magnum.",
+                    "Aller voir une exposition sur Jacques Henri Lartigue.",
+                    "Assister à une conférence de presse de Sophie Calle.",
+                    "Acheter de nouveaux livres dans une librairie d'art."
+                ],
+                correct: 1 // B
+            },
+            {
+                q: "11. Comment Justine perçoit-elle l'œuvre de Jacques Henri Lartigue ?",
+                options: [
+                    "Elle la trouve beaucoup plus technique que les autres.",
+                    "Elle juge ses photographies tristes et dépressives.",
+                    "Elle la trouve plus romantique que celle de Cartier-Bresson.",
+                    "Elle déteste totalement son approche de la photographie."
+                ],
+                correct: 2 // C
+            },
+            {
+                q: "12. Pourquoi Moussa s'intéresse-t-il personnellement aux photos de Lartigue ?",
+                options: [
+                    "Parce qu'elles ont été prises dans sa ville natale.",
+                    "Parce qu'il connaît personnellement la famille de l'artiste.",
+                    "Parce qu'elles utilisent une technique de développement unique.",
+                    "Parce qu'elles racontent une histoire du XXe siècle."
+                ],
+                correct: 3 // D
+            }
+        ];
+
+        const container = document.getElementById('questionsContainer');
+        const btnCheck = document.getElementById('btnCheck');
+        const btnReset = document.getElementById('btnReset');
+        const btnSolution = document.getElementById('btnSolution');
+        const progressText = document.getElementById('progressText');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        // --- GÉNÉRATION HTML DES QUESTIONS ---
+        let htmlContent = "";
+        questionsData.forEach((item, qIndex) => {
+            htmlContent += `
+                <div class="question-block" id="qblock-${qIndex}">
+                    <div class="q-title">${item.q}</div>
+                    <div class="options-grid">
+            `;
+            
+            const lettres = ['a', 'b', 'c', 'd'];
+            item.options.forEach((opt, optIndex) => {
+                htmlContent += `
+                        <label class="option-label" onclick="selectOption(${qIndex}, ${optIndex}, this)">
+                            <input type="radio" name="question-${qIndex}" value="${optIndex}">
+                            <span class="option-text"><strong>${lettres[optIndex]})</strong> ${opt}</span>
+                        </label>
+                `;
+            });
+
+            htmlContent += `
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = htmlContent;
+
+        // --- LOGIQUE INTERACTIVE ---
+
+        function selectOption(qIndex, optIndex, labelElement) {
+            // Nettoyage
+            const parentGrid = labelElement.parentNode;
+            const allLabels = parentGrid.querySelectorAll('.option-label');
+            allLabels.forEach(l => l.classList.remove('selected'));
+            
+            // Appliquer sélection
+            labelElement.classList.add('selected');
+            
+            // Cocher radio
+            const radio = labelElement.querySelector('input');
+            radio.checked = true;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let answeredCount = 0;
+            for(let i = 0; i < questionsData.length; i++) {
+                const inputs = document.getElementsByName(`question-${i}`);
+                for(let input of inputs) {
+                    if(input.checked) {
+                        answeredCount++;
+                        break;
+                    }
+                }
+            }
+
+            if(answeredCount === questionsData.length) {
+                progressText.innerHTML = "✨ Exercice complété, vous pouvez vérifier vos réponses !";
+                progressText.style.color = "var(--success)";
+                btnCheck.disabled = false;
+            } else {
+                progressText.innerHTML = `Progression : ${answeredCount} / 12 réponses`;
+                progressText.style.color = "var(--secondary)";
+                btnCheck.disabled = true;
+            }
+        }
+
+        // Action 1 : Vérifier (Calcule score, bloque inputs, Oriente selon ">= 8")
+        function checkAnswers() {
+            let score = 0;
+            
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                let selectedVal = -1;
+
+                inputs.forEach(input => {
+                    if(input.checked) {
+                        selectedVal = parseInt(input.value);
+                    }
+                    input.disabled = true;
+                    input.closest('.option-label').style.pointerEvents = 'none';
+                });
+
+                if (selectedVal === item.correct) {
+                    score++;
+                }
+            });
+
+            btnCheck.style.display = 'none';
+            progressText.style.display = 'none';
+            feedbackMessage.style.display = 'block';
+
+            // Condition : le score est de 8 ou plus sur 12
+            if (score >= 8) {
+                feedbackMessage.innerHTML = `🎉 Félicitations ! Votre score : <span style="color:var(--success)">${score} / 12</span><br><span style="font-size:1.1rem; font-weight:normal; color:#555;">Excellent travail. Vous pouvez consulter le corrigé détaillé.</span>`;
+                feedbackMessage.style.color = "var(--success)";
+                btnSolution.style.display = 'block'; 
+                btnReset.style.display = 'none';
+            } else {
+                feedbackMessage.innerHTML = `😕 Score insuffisant : <span style="color:var(--wrong)">${score} / 12</span><br><span style="font-size:1.1rem; font-weight:normal; color:#555;">Veuillez réinitialiser l'exercice'.</span>`;
+                feedbackMessage.style.color = "var(--wrong)";
+                btnSolution.style.display = 'none';
+                btnReset.style.display = 'block'; 
+            }
+            
+            document.querySelector('.right-column').scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Action 2 : Réinitialiser (Score insuffisant)
+        function resetExercise() {
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                inputs.forEach(input => {
+                    input.checked = false;
+                    input.disabled = false;
+                    input.closest('.option-label').style.pointerEvents = 'auto';
+                    input.closest('.option-label').classList.remove('selected', 'correct', 'wrong');
+                });
+            });
+
+            feedbackMessage.style.display = 'none';
+            btnReset.style.display = 'none';
+            btnCheck.style.display = 'block';
+            progressText.style.display = 'block';
+            
+            updateProgress(); 
+            
+            document.querySelector('.right-column').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Action 3 : Voir le corrigé (Score >= 8)
+        function showSolutions() {
+            btnSolution.style.display = 'none'; 
+            
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                let selectedVal = -1;
+
+                inputs.forEach(input => {
+                    if(input.checked) selectedVal = parseInt(input.value);
+                });
+
+                const allLabels = document.getElementById(`qblock-${index}`).querySelectorAll('.option-label');
+                
+                // Mettre en rouge si mauvaise réponse
+                if (selectedVal !== -1 && selectedVal !== item.correct) {
+                    allLabels[selectedVal].classList.remove('selected');
+                    allLabels[selectedVal].classList.add('wrong');
+                }
+                
+                // Mettre la bonne réponse en vert
+                allLabels[item.correct].classList.remove('selected');
+                allLabels[item.correct].classList.add('correct');
+            });
+
+            feedbackMessage.innerHTML += `<br><span style="font-size:1.1rem; color:var(--secondary);">Le corrigé détaillé est affiché ci-dessus en couleurs.</span>`;
+            document.querySelector('.right-column').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
