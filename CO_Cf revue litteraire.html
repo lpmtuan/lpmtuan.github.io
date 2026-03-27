@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compréhension orale : WIP, nouvelle revue littéraire</title>
+    <style>
+        :root {
+            --primary: #2c3e50; /* Bleu ardoise profond */
+            --secondary: #e74c3c; /* Rouge littéraire/RFI */
+            --accent: #f1c40f; /* Jaune doré */
+            --success: #27ae60;
+            --wrong: #c0392b;
+            --bg-left: #34495e;
+            --bg-right: #f5f6fa;
+            --text-main: #2f3640;
+            --text-light: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            overflow: hidden; 
+            color: var(--text-main);
+        }
+
+        /* --- COLONNE GAUCHE : AUDIO (1/3) --- */
+        .left-column {
+            flex: 1; /* 1/3 de l'espace */
+            height: 100%;
+            overflow-y: auto; 
+            padding: 40px 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, #1a252f 100%);
+            color: var(--text-light);
+            border-right: 6px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: inset -5px 0 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .left-column h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+            color: var(--text-light);
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .level-badge {
+            background-color: var(--accent);
+            color: var(--primary);
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .instruction {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            text-align: justify;
+            color: #dcdde1;
+        }
+
+        .audio-container {
+            width: 100%;
+            aspect-ratio: 16 / 9; /* Permet d'afficher la barre Drive correctement */
+            min-height: 220px;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- COLONNE DROITE : QUESTIONS (2/3) --- */
+        .right-column {
+            flex: 2; /* 2/3 de l'espace */
+            height: 100%;
+            overflow-y: auto; 
+            padding: 40px 60px;
+            background-color: var(--bg-right);
+            scroll-behavior: smooth;
+        }
+
+        .question-block {
+            background: #ffffff;
+            border: 1px solid #dcdde1;
+            border-left: 6px solid var(--secondary);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-left-color: var(--primary);
+        }
+
+        .q-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+            line-height: 1.4;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 20px;
+            border: 2px solid transparent;
+            background-color: #f5f6fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .option-label:hover {
+            background-color: #e0f0ff;
+            border-color: #3498db;
+        }
+
+        .option-label input[type="radio"] {
+            margin-top: 4px;
+            margin-right: 15px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .option-text {
+            font-size: 1.05rem;
+            line-height: 1.4;
+        }
+
+        .option-label.selected {
+            border-color: #3498db;
+            background-color: #eaf4fc;
+            font-weight: 600;
+        }
+
+        .option-label.correct {
+            border-color: var(--success);
+            background-color: #eafaf1;
+            color: #145a32;
+        }
+
+        .option-label.wrong {
+            border-color: var(--wrong);
+            background-color: #fdedec;
+            color: #7b241c;
+            opacity: 0.8;
+        }
+
+        /* --- BARRE D'ACTIONS --- */
+        .action-bar {
+            margin-top: 50px;
+            padding: 35px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 2px dashed #bdc3c7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .progress-text {
+            font-size: 1.15rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 16px 35px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        button:active:not(:disabled) { transform: scale(0.95); }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-check { background-color: var(--primary); }
+        .btn-check:hover:not(:disabled) { background-color: #1a252f; }
+
+        .btn-reset { background-color: var(--wrong); display: none; }
+        .btn-reset:hover { background-color: #a93226; }
+
+        .btn-solution { background-color: var(--success); display: none; }
+        .btn-solution:hover { background-color: #1e8449; }
+
+        .feedback-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+            line-height: 1.4;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 1000px) {
+            body {
+                flex-direction: column;
+                overflow: auto;
+            }
+            .left-column, .right-column {
+                flex: none;
+                width: 100%;
+                overflow: visible;
+                height: auto;
+            }
+            .left-column { border-right: none; border-bottom: 6px solid var(--secondary); padding: 30px 20px; }
+            .right-column { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="left-column">
+        <h1>Littérature sans filtre</h1>
+        <div class="level-badge">Niveau B1+</div>
+        <p class="instruction">
+            🎧 Écoutez ce reportage de RFI consacré à la naissance de la nouvelle revue littéraire <em>WIP</em> et du café "Pitch Me".<br><br>
+            Répondez ensuite aux 10 questions proposées. Pour valider l'exercice et débloquer le corrigé, vous devez obtenir un score d'au moins <strong>7/10</strong>.
+        </p>
+        
+        <div class="audio-container">
+            <iframe src="https://drive.google.com/file/d/1C-XzsOw4U5GnmMEQuNS7U0pWJAoA-wn-/preview" allow="autoplay" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div id="questionsContainer"></div>
+
+        <div class="action-bar">
+            <span id="progressText" class="progress-text">Progression : 0 / 10 réponses</span>
+            <div id="feedbackMessage" class="feedback-message"></div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn-check" id="btnCheck" disabled onclick="checkAnswers()">Vérifier les réponses</button>
+                <button type="button" class="btn-reset" id="btnReset" onclick="resetExercise()">Réinitialiser l'exercice</button>
+                <button type="button" class="btn-solution" id="btnSolution" onclick="showSolutions()">Voir le corrigé</button>
+            </div>
+        </div>
+        <br><br>
+    </div>
+
+    <script>
+        // --- DONNÉES DU QCM ---
+        // 10 questions. Équilibre parfait : 3 A, 2 B, 3 C, 2 D.
+        const questionsData = [
+            {
+                q: "1. Quelle était la nature originelle de l'établissement tenu par Mamadou Fédior ?",
+                options: [
+                    "Un restaurant africain clandestin (un « resto clando »).",
+                    "Une grande librairie parisienne classique.",
+                    "Un bar réservé aux journalistes de radio.",
+                    "Une maison d'édition indépendante."
+                ],
+                correct: 0 // A
+            },
+            {
+                q: "2. Quel est l'objectif premier du lieu appelé « Pitch Me » créé par les trois amis ?",
+                options: [
+                    "Vendre des boissons traditionnelles à des prix abordables.",
+                    "Permettre à des auteurs de lire leurs textes publiquement.",
+                    "Financer la publication de romans policiers.",
+                    "Offrir des cours de cuisine et de peinture aux habitants."
+                ],
+                correct: 1 // B
+            },
+            {
+                q: "3. D'après Babacar Diop, quelle est l'ambiance générale lors de ces rencontres ?",
+                options: [
+                    "Très silencieuse et académique.",
+                    "Strictement encadrée par des professeurs.",
+                    "Ouverte, sans aucune gêne et mêlant toutes les classes sociales.",
+                    "Exclusivement réservée aux écrivains professionnels."
+                ],
+                correct: 2 // C
+            },
+            {
+                q: "4. Que s'est-il passé au bout de trois années d'existence de ce café littéraire ?",
+                options: [
+                    "Une nouvelle revue littéraire (WIP) a été créée.",
+                    "Le restaurant a fait faillite et a fermé ses portes.",
+                    "L'établissement a été racheté par la mairie de Paris.",
+                    "Les fondateurs ont décidé de se consacrer à la radio."
+                ],
+                correct: 0 // A
+            },
+            {
+                q: "5. Selon Sonia Rolley, quelle est la ligne éditoriale principale de la revue ?",
+                options: [
+                    "Publier uniquement des auteurs célèbres et primés.",
+                    "Mélanger de nouveaux talents non édités avec des auteurs déjà publiés.",
+                    "Traduire des romans étrangers non disponibles en France.",
+                    "Proposer des articles politiques et journalistiques engagés."
+                ],
+                correct: 1 // B
+            },
+            {
+                q: "6. Quel message fondamental la revue souhaite-t-elle faire passer au public ?",
+                options: [
+                    "Que la littérature classique est supérieure aux écrits modernes.",
+                    "Qu'il est très facile de se faire publier de nos jours.",
+                    "Que l'écriture littéraire est un véritable processus de travail.",
+                    "Que les auteurs devraient écrire exclusivement dans des cafés."
+                ],
+                correct: 2 // C
+            },
+            {
+                q: "7. Que reproche indirectement Élisabeth Lesne à l'édition française traditionnelle ?",
+                options: [
+                    "D'être trop centrée sur un cercle parisien fermé (le 5e et 6e arrondissement).",
+                    "De publier beaucoup trop de jeunes auteurs sans expérience.",
+                    "De se concentrer uniquement sur la littérature étrangère contemporaine.",
+                    "De refuser catégoriquement la publication de nouvelles revues."
+                ],
+                correct: 0 // A
+            },
+            {
+                q: "8. Quel bénéfice l'auteure Sabrina Kassa a-t-elle tiré de son expérience au Pitch Me ?",
+                options: [
+                    "Elle a trouvé immédiatement un emploi de journaliste à la radio.",
+                    "Elle a réussi à vendre des milliers d'exemplaires de son livre.",
+                    "Elle a appris à cuisiner plusieurs spécialités traditionnelles.",
+                    "Les commentaires du public l'ont aidée à enrichir et libérer son récit."
+                ],
+                correct: 3 // D
+            },
+            {
+                q: "9. Que font les spectateurs lorsque les auteurs lisent leurs textes lors de ces soirées ?",
+                options: [
+                    "Ils se contentent d'écouter dans un silence absolu.",
+                    "Ils évaluent les textes pour attribuer une note officielle.",
+                    "Ils décortiquent, commentent et essaient d'enrichir le texte de l'autre.",
+                    "Ils quittent la salle si le récit ne leur plaît pas immédiatement."
+                ],
+                correct: 2 // C
+            },
+            {
+                q: "10. Où le concept du « Pitch Me » s'est-il finalement réinstallé à la fin du reportage ?",
+                options: [
+                    "Dans le célèbre quartier latin (Ve arrondissement).",
+                    "À l'intérieur des locaux de la radio RFI.",
+                    "Dans les bureaux des éditions Karthala.",
+                    "Dans un nouveau restaurant situé dans le 20e arrondissement."
+                ],
+                correct: 3 // D
+            }
+        ];
+
+        const container = document.getElementById('questionsContainer');
+        const btnCheck = document.getElementById('btnCheck');
+        const btnReset = document.getElementById('btnReset');
+        const btnSolution = document.getElementById('btnSolution');
+        const progressText = document.getElementById('progressText');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        let htmlContent = "";
+        questionsData.forEach((item, qIndex) => {
+            htmlContent += `
+                <div class="question-block" id="qblock-${qIndex}">
+                    <div class="q-title">${item.q}</div>
+                    <div class="options-grid">
+            `;
+            
+            const lettres = ['a', 'b', 'c', 'd'];
+            item.options.forEach((opt, optIndex) => {
+                htmlContent += `
+                        <label class="option-label" onclick="selectOption(${qIndex}, ${optIndex}, this)">
+                            <input type="radio" name="question-${qIndex}" value="${optIndex}">
+                            <span class="option-text"><strong>${lettres[optIndex]})</strong> ${opt}</span>
+                        </label>
+                `;
+            });
+
+            htmlContent += `
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = htmlContent;
+
+        function selectOption(qIndex, optIndex, labelElement) {
+            const parentGrid = labelElement.parentNode;
+            const allLabels = parentGrid.querySelectorAll('.option-label');
+            allLabels.forEach(l => l.classList.remove('selected'));
+            
+            labelElement.classList.add('selected');
+            
+            const radio = labelElement.querySelector('input');
+            radio.checked = true;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let answeredCount = 0;
+            for(let i = 0; i < questionsData.length; i++) {
+                const inputs = document.getElementsByName(`question-${i}`);
+                for(let input of inputs) {
+                    if(input.checked) {
+                        answeredCount++;
+                        break;
+                    }
+                }
+            }
+
+            if(answeredCount === questionsData.length) {
+                progressText.innerHTML = "✨ Exercice complété, vous pouvez vérifier !";
+                progressText.style.color = "var(--success)";
+                btnCheck.disabled = false;
+            } else {
+                progressText.innerHTML = `Progression : ${answeredCount} / 10 réponses`;
+                progressText.style.color = "var(--primary)";
+                btnCheck.disabled = true;
+            }
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                let selectedVal = -1;
+
+                inputs.forEach(input => {
+                    if(input.checked) {
+                        selectedVal = parseInt(input.value);
+                    }
+                    input.disabled = true;
+                    input.closest('.option-label').style.pointerEvents = 'none';
+                });
+
+                if (selectedVal === item.correct) {
+                    score++;
+                }
+            });
+
+            btnCheck.style.display = 'none';
+            progressText.style.display = 'none';
+            feedbackMessage.style.display = 'block';
+
+            // Logique de validation : Minimum 7/10
+            if (score >= 7) {
+                feedbackMessage.innerHTML = `🎉 Exercice Validé ! Score : <span style="color:var(--success)">${score} / 10</span><br><span style="font-size:1.1rem; font-weight:normal; color:#555;">Bravo. Vous pouvez consulter le corrigé détaillé.</span>`;
+                feedbackMessage.style.color = "var(--success)";
+                btnSolution.style.display = 'block'; 
+                btnReset.style.display = 'none';
+            } else {
+                feedbackMessage.innerHTML = `😕 Score insuffisant : <span style="color:var(--wrong)">${score} / 10</span><br><span style="font-size:1.1rem; font-weight:normal; color:#555;">Veuillez refaire l'exercice.</span>`;
+                feedbackMessage.style.color = "var(--wrong)";
+                btnSolution.style.display = 'none';
+                btnReset.style.display = 'block'; 
+            }
+            
+            document.querySelector('.right-column').scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function resetExercise() {
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                inputs.forEach(input => {
+                    input.checked = false;
+                    input.disabled = false;
+                    input.closest('.option-label').style.pointerEvents = 'auto';
+                    input.closest('.option-label').classList.remove('selected', 'correct', 'wrong');
+                });
+            });
+
+            feedbackMessage.style.display = 'none';
+            btnReset.style.display = 'none';
+            btnCheck.style.display = 'block';
+            progressText.style.display = 'block';
+            
+            updateProgress(); 
+            document.querySelector('.right-column').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showSolutions() {
+            btnSolution.style.display = 'none'; 
+            
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                let selectedVal = -1;
+
+                inputs.forEach(input => {
+                    if(input.checked) selectedVal = parseInt(input.value);
+                });
+
+                const allLabels = document.getElementById(`qblock-${index}`).querySelectorAll('.option-label');
+                
+                if (selectedVal !== -1 && selectedVal !== item.correct) {
+                    allLabels[selectedVal].classList.remove('selected');
+                    allLabels[selectedVal].classList.add('wrong');
+                }
+                
+                allLabels[item.correct].classList.remove('selected');
+                allLabels[item.correct].classList.add('correct');
+            });
+
+            feedbackMessage.innerHTML += `<br><span style="font-size:1.1rem; color:var(--primary);">Le corrigé est affiché en couleurs ci-dessus.</span>`;
+            document.querySelector('.right-column').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercices de vocabulaire : L'art et la création</title>
+    <style>
+        :root {
+            --primary: #2c3e50; /* Bleu nuit/Ardoise */
+            --ex1-color: #8e44ad; /* Violet artistique */
+            --ex2-color: #d35400; /* Orange terre cuite/peinture */
+            --success: #27ae60;
+            --wrong: #c0392b;
+            --bg-page: #f4f6f7;
+            --bg-card: #ffffff;
+            --text-main: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.8em;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .exercise-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 35px 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        /* Bordures dynamiques */
+        #ex1 { border-top: 8px solid var(--ex1-color); }
+        #ex2 { border-top: 8px solid var(--ex2-color); }
+
+        #ex1 h2 { color: var(--ex1-color); border-bottom: 2px dashed var(--ex1-color); }
+        #ex2 h2 { color: var(--ex2-color); border-bottom: 2px dashed var(--ex2-color); }
+
+        h2 {
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-indicator {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            font-weight: 600;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .sentence {
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            background: #fdfefe;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        #ex1 .sentence { border-left: 4px solid var(--ex1-color); }
+        #ex2 .sentence { border-left: 4px solid var(--ex2-color); }
+
+        .sentence:hover { background: #f4f6f7; }
+
+        select {
+            font-size: 0.95em;
+            padding: 6px 12px;
+            margin: 0 5px;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            background-color: #fff;
+            color: var(--primary);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            outline: none;
+            max-width: 100%;
+        }
+
+        select:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(44, 62, 80, 0.3); }
+
+        /* Classes de correction */
+        select.correct { background-color: var(--success); color: white; border-color: var(--success); }
+        select.wrong { background-color: var(--wrong); color: white; border-color: var(--wrong); }
+        select.solution { background-color: var(--primary); color: white; border-color: var(--primary); }
+
+        .action-area {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px dashed #bdc3c7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .feedback-message {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+            min-height: 35px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 14px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        button:active:not(:disabled) { transform: scale(0.95); }
+        
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        #ex1 .btn-check { background-color: var(--ex1-color); }
+        #ex2 .btn-check { background-color: var(--ex2-color); }
+
+        .btn-check:hover:not(:disabled) { filter: brightness(1.1); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+
+        .btn-reset { background-color: var(--wrong); display: none; }
+        .btn-reset:hover { background-color: #a93226; }
+
+        .btn-solution { background-color: var(--success); display: none; }
+        .btn-solution:hover { background-color: #1e8449; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="page-title">🎨 L'art et la création (Niveau B1+)</h1>
+
+    <div class="exercise-card" id="ex1">
+        <h2>🎭 Exercice 1 : Le monde de l'art</h2>
+        <div class="progress-indicator" id="prog1">0 / 10 termes sélectionnés</div>
+        <div id="sentences1"></div>
+
+        <div class="action-area">
+            <div class="feedback-message" id="feedback1"></div>
+            <div class="btn-group">
+                <button class="btn-check" id="btnCheck1" disabled onclick="checkAnswers(1)">Vérifier les réponses</button>
+                <button class="btn-reset" id="btnReset1" onclick="resetExercise(1)">Réinitialiser l'exercice</button>
+                <button class="btn-solution" id="btnSolution1" onclick="showSolution(1)">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="exercise-card" id="ex2">
+        <h2>🖌️ Exercice 2 : La peinture et la bande dessinée</h2>
+        <div class="progress-indicator" id="prog2">0 / 10 termes sélectionnés</div>
+        <div id="sentences2"></div>
+
+        <div class="action-area">
+            <div class="feedback-message" id="feedback2"></div>
+            <div class="btn-group">
+                <button class="btn-check" id="btnCheck2" disabled onclick="checkAnswers(2)">Vérifier les réponses</button>
+                <button class="btn-reset" id="btnReset2" onclick="resetExercise(2)">Réinitialiser l'exercice</button>
+                <button class="btn-solution" id="btnSolution2" onclick="showSolution(2)">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- DONNÉES EXERCICE 1 ---
+    const dataEx1 = [
+        { text: "La Joconde de Léonard de Vinci est considérée comme {select} de la peinture mondiale.", answer: "un chef-d'œuvre" },
+        { text: "Pour devenir un bon musicien, il faut pratiquer tous les jours afin de {select}.", answer: "s'améliorer" },
+        { text: "Le dernier film de ce réalisateur a connu {select} incroyable dans les cinémas du pays.", answer: "un succès" },
+        { text: "Depuis qu'il est tout petit, il veut être acteur ; c'est vraiment {select} pour lui.", answer: "une vocation" },
+        { text: "Cette jeune chanteuse a beaucoup de {select}, sa voix est vraiment magnifique et unique.", answer: "talent" },
+        { text: "La nature et les grands voyages peuvent beaucoup {select} les écrivains pour écrire leurs romans.", answer: "inspirer" },
+        { text: "Il n'est pas un professionnel de la photographie, c'est juste {select} très passionné.", answer: "un amateur" },
+        { text: "Mon oncle achète des peintures anciennes très chères, c'est {select} d'art.", answer: "un collectionneur" },
+        { text: "Ce musée parisien a une excellente {select} internationale grâce à ses très belles expositions.", answer: "réputation" },
+        { text: "Avant de commencer son métier, le jeune sculpteur a dû {select} pendant cinq ans dans une école d'art.", answer: "se former" }
+    ];
+    const options1 = [
+        "un chef-d'œuvre", 
+        "s'améliorer", 
+        "un succès", 
+        "une vocation", 
+        "talent", 
+        "inspirer", 
+        "un amateur", 
+        "un collectionneur", 
+        "réputation", 
+        "se former"
+    ];
+
+    // --- DONNÉES EXERCICE 2 ---
+    const dataEx2 = [
+        { text: "Avant de commencer à peindre, l'artiste fait d'abord {select} au crayon sur son carnet.", answer: "une esquisse" },
+        { text: "Pour bien étaler les couleurs sur son tableau, il utilise {select} très fin.", answer: "un pinceau" },
+        { text: "Vincent Van Gogh s'est regardé dans un miroir pour peindre {select} très célèbre.", answer: "un autoportrait" },
+        { text: "J'adore ce tableau qui représente {select} magnifique avec des montagnes et une grande forêt.", answer: "un paysage" },
+        { text: "Le peintre a acheté {select} blanche en tissu pour commencer sa toute nouvelle œuvre.", answer: "une toile" },
+        { text: "Dans son atelier, il pose son tableau sur {select} en bois pour travailler debout confortablement.", answer: "un chevalet" },
+        { text: "Dans une bande dessinée, les paroles des personnages sont écrites dans {select}.", answer: "une bulle" },
+        { text: "Ce jeune {select} a énormément d'imagination pour créer les images de sa bande dessinée.", answer: "dessinateur" },
+        { text: "Le scénariste et l'illustrateur ont terminé la première {select} de la BD, avec toutes ses cases.", answer: "planche" },
+        { text: "Ils viennent de publier un nouvel {select} qui raconte la suite de l'histoire du héros.", answer: "album" }
+    ];
+    const options2 = [
+        "une esquisse", 
+        "un pinceau", 
+        "un autoportrait", 
+        "un paysage", 
+        "une toile", 
+        "un chevalet", 
+        "une bulle", 
+        "dessinateur", 
+        "planche", 
+        "album"
+    ];
+
+    // Fonction de mélange aléatoire
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    // Construction du HTML pour chaque exercice
+    function buildExercise(exNum, data, options) {
+        const container = document.getElementById(`sentences${exNum}`);
+        container.innerHTML = "";
+        
+        const shuffledOptions = shuffle([...options]);
+
+        data.forEach((item, index) => {
+            let selectHTML = `<select id="ex${exNum}-sel${index}" onchange="checkCompletion(${exNum})">
+                                <option value="">-- Choisissez --</option>`;
+            
+            shuffledOptions.forEach(opt => {
+                selectHTML += `<option value="${opt}">${opt}</option>`;
+            });
+            selectHTML += `</select>`;
+
+            const div = document.createElement("div");
+            div.className = "sentence";
+            div.innerHTML = `<strong>${index + 1}.</strong> <span>${item.text.replace("{select}", selectHTML)}</span>`;
+            container.appendChild(div);
+        });
+    }
+
+    // Vérifie la complétion pour activer le bouton "Vérifier"
+    window.checkCompletion = function(exNum) {
+        const selects = document.querySelectorAll(`[id^='ex${exNum}-sel']`);
+        let filledCount = 0;
+
+        selects.forEach(select => {
+            select.classList.remove('correct', 'wrong', 'solution'); 
+            if (select.value !== "") filledCount++;
+        });
+
+        const prog = document.getElementById(`prog${exNum}`);
+        prog.innerText = `${filledCount} / 10 termes sélectionnés`;
+
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        
+        if (filledCount === 10) {
+            btnCheck.disabled = false;
+            prog.style.color = "var(--success)";
+        } else {
+            btnCheck.disabled = true;
+            prog.style.color = "#7f8c8d";
+        }
+    };
+
+    // Validation du score
+    window.checkAnswers = function(exNum) {
+        const data = exNum === 1 ? dataEx1 : dataEx2;
+        let score = 0;
+
+        data.forEach((item, index) => {
+            const select = document.getElementById(`ex${exNum}-sel${index}`);
+            select.disabled = true; // Verrouillage
+            if (select.value === item.answer) {
+                score++;
+            }
+        });
+
+        const feedback = document.getElementById(`feedback${exNum}`);
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        const btnReset = document.getElementById(`btnReset${exNum}`);
+        const btnSolution = document.getElementById(`btnSolution${exNum}`);
+
+        btnCheck.style.display = "none";
+
+        // Score minimum exigé : 7/10
+        if (score >= 7) {
+            feedback.innerHTML = `🎉 Félicitations ! Votre score est de <span style="color:var(--success)">${score} / 10</span>`;
+            feedback.style.color = "var(--success)";
+            
+            btnSolution.style.display = "block"; // Affiche le corrigé
+            btnReset.style.display = "none";
+        } else {
+            feedback.innerHTML = `😕 Score insuffisant : <span style="color:var(--wrong)">${score} / 10</span>. Veuillez refaire l'exercice.`;
+            feedback.style.color = "var(--wrong)";
+            
+            btnSolution.style.display = "none"; 
+            btnReset.style.display = "block"; // Oblige à recommencer
+        }
+    };
+
+    // Réinitialisation de l'exercice
+    window.resetExercise = function(exNum) {
+        const selects = document.querySelectorAll(`[id^='ex${exNum}-sel']`);
+        selects.forEach(select => {
+            select.value = "";
+            select.disabled = false; // Déverrouille
+            select.classList.remove('correct', 'wrong', 'solution');
+        });
+
+        document.getElementById(`feedback${exNum}`).innerText = "";
+        
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        btnCheck.style.display = "block";
+        btnCheck.disabled = true; 
+        
+        document.getElementById(`btnReset${exNum}`).style.display = "none";
+        document.getElementById(`btnSolution${exNum}`).style.display = "none";
+
+        checkCompletion(exNum); 
+    };
+
+    // Affichage visuel du corrigé
+    window.showSolution = function(exNum) {
+        const data = exNum === 1 ? dataEx1 : dataEx2;
+
+        data.forEach((item, index) => {
+            const select = document.getElementById(`ex${exNum}-sel${index}`);
+            const userAnswer = select.value;
+            
+            select.value = item.answer; 
+            
+            if (userAnswer === item.answer) {
+                select.classList.add('correct'); // En vert
+            } else {
+                select.classList.add('solution'); // En couleur primaire pour mettre en évidence la correction
+            }
+        });
+
+        document.getElementById(`feedback${exNum}`).innerHTML += ` <br><span style="color:var(--text-main); font-size: 0.85em; font-weight:normal;">(Le corrigé est affiché en couleurs dans les phrases)</span>`;
+        document.getElementById(`btnSolution${exNum}`).style.display = "none";
+    };
+
+    // Initialisation
+    window.onload = () => {
+        buildExercise(1, dataEx1, options1);
+        buildExercise(2, dataEx2, options2);
+    };
+
+</script>
+</body>
+</html>
