@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercices de Vocabulaire : Le travail et l'économie</title>
+    <style>
+        :root {
+            --primary: #2d3436;
+            --ex1-color: #0984e3; /* Bleu (Recherche) */
+            --ex2-color: #00b894; /* Vert (Rémunération/Formation) */
+            --ex3-color: #e17055; /* Orange (Départ/Conflit) */
+            --ex4-color: #6c5ce7; /* Violet (Mondialisation/Expressions) */
+            --success: #27ae60;
+            --wrong: #d63031;
+            --bg-page: #dfe6e9;
+            --bg-card: #ffffff;
+            --text-main: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        /* --- EN-TÊTE ET BADGE --- */
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background-color: #e67e22; /* Orange pour se démarquer */
+            color: #ffffff;
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .page-title {
+            color: var(--primary);
+            font-size: 2.8em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin: 0;
+        }
+
+        /* --- CARTES DES EXERCICES --- */
+        .exercise-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 35px 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        /* Bordures dynamiques */
+        #ex1 { border-top: 8px solid var(--ex1-color); }
+        #ex2 { border-top: 8px solid var(--ex2-color); }
+        #ex3 { border-top: 8px solid var(--ex3-color); }
+        #ex4 { border-top: 8px solid var(--ex4-color); }
+
+        #ex1 h2 { color: var(--ex1-color); border-bottom: 2px dashed var(--ex1-color); }
+        #ex2 h2 { color: var(--ex2-color); border-bottom: 2px dashed var(--ex2-color); }
+        #ex3 h2 { color: var(--ex3-color); border-bottom: 2px dashed var(--ex3-color); }
+        #ex4 h2 { color: var(--ex4-color); border-bottom: 2px dashed var(--ex4-color); }
+
+        h2 {
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 1.7em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-indicator {
+            font-size: 0.95em;
+            color: #636e72;
+            font-weight: 600;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .sentence {
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            background: #fdfefe;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        #ex1 .sentence { border-left: 4px solid var(--ex1-color); }
+        #ex2 .sentence { border-left: 4px solid var(--ex2-color); }
+        #ex3 .sentence { border-left: 4px solid var(--ex3-color); }
+        #ex4 .sentence { border-left: 4px solid var(--ex4-color); }
+
+        .sentence:hover { background: #f1f2f6; }
+
+        select {
+            font-size: 0.95em;
+            padding: 6px 12px;
+            margin: 0 5px;
+            border: 2px solid #b2bec3;
+            border-radius: 6px;
+            background-color: #fff;
+            color: var(--primary);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            outline: none;
+            max-width: 100%;
+        }
+
+        select:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(45, 52, 54, 0.3); }
+
+        /* Classes de correction */
+        select.correct { background-color: var(--success); color: white; border-color: var(--success); }
+        select.wrong { background-color: var(--wrong); color: white; border-color: var(--wrong); }
+        select.solution { background-color: var(--primary); color: white; border-color: var(--primary); }
+
+        .action-area {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px dashed #b2bec3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .feedback-message {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+            min-height: 35px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 14px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        button:active:not(:disabled) { transform: scale(0.95); }
+        
+        button:disabled {
+            background-color: #b2bec3;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        #ex1 .btn-check { background-color: var(--ex1-color); }
+        #ex2 .btn-check { background-color: var(--ex2-color); }
+        #ex3 .btn-check { background-color: var(--ex3-color); }
+        #ex4 .btn-check { background-color: var(--ex4-color); }
+
+        .btn-check:hover:not(:disabled) { filter: brightness(1.1); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+
+        .btn-reset { background-color: var(--wrong); display: none; }
+        .btn-reset:hover { background-color: #a93226; }
+
+        .btn-solution { background-color: var(--success); display: none; }
+        .btn-solution:hover { background-color: #1e8449; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <div class="level-badge">Niveau B2</div>
+        <h1 class="page-title">💼 Vocabulaire : Le travail et l'économie</h1>
+    </div>
+
+    <div class="exercise-card" id="ex1">
+        <h2>🔍 Exercice 1 : La recherche d'emploi et les contrats</h2>
+        <div class="progress-indicator" id="prog1">0 / 10 termes sélectionnés</div>
+        <div id="sentences1"></div>
+
+        <div class="action-area">
+            <div class="feedback-message" id="feedback1"></div>
+            <div class="btn-group">
+                <button class="btn-check" id="btnCheck1" disabled onclick="checkAnswers(1)">Vérifier les réponses</button>
+                <button class="btn-reset" id="btnReset1" onclick="resetExercise(1)">Réinitialiser l'exercice</button>
+                <button class="btn-solution" id="btnSolution1" onclick="showSolution(1)">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="exercise-card" id="ex2">
+        <h2>📈 Exercice 2 : La formation et la rémunération</h2>
+        <div class="progress-indicator" id="prog2">0 / 10 termes sélectionnés</div>
+        <div id="sentences2"></div>
+
+        <div class="action-area">
+            <div class="feedback-message" id="feedback2"></div>
+            <div class="btn-group">
+                <button class="btn-check" id="btnCheck2" disabled onclick="checkAnswers(2)">Vérifier les réponses</button>
+                <button class="btn-reset" id="btnReset2" onclick="resetExercise(2)">Réinitialiser l'exercice</button>
+                <button class="btn-solution" id="btnSolution2" onclick="showSolution(2)">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="exercise-card" id="ex3">
+        <h2>⚠️ Exercice 3 : Les conflits, les départs et la retraite</h2>
+        <div class="progress-indicator" id="prog3">0 / 10 termes sélectionnés</div>
+        <div id="sentences3"></div>
+
+        <div class="action-area">
+            <div class="feedback-message" id="feedback3"></div>
+            <div class="btn-group">
+                <button class="btn-check" id="btnCheck3" disabled onclick="checkAnswers(3)">Vérifier les réponses</button>
+                <button class="btn-reset" id="btnReset3" onclick="resetExercise(3)">Réinitialiser l'exercice</button>
+                <button class="btn-solution" id="btnSolution3" onclick="showSolution(3)">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="exercise-card" id="ex4">
+        <h2>🌍 Exercice 4 : La mondialisation</h2>
+        <div class="progress-indicator" id="prog4">0 / 10 termes sélectionnés</div>
+        <div id="sentences4"></div>
+
+        <div class="action-area">
+            <div class="feedback-message" id="feedback4"></div>
+            <div class="btn-group">
+                <button class="btn-check" id="btnCheck4" disabled onclick="checkAnswers(4)">Vérifier les réponses</button>
+                <button class="btn-reset" id="btnReset4" onclick="resetExercise(4)">Réinitialiser l'exercice</button>
+                <button class="btn-solution" id="btnSolution4" onclick="showSolution(4)">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- DONNÉES EXERCICE 1 ---
+    const dataEx1 = [
+        { text: "Pour postuler dans une entreprise sans répondre à une annonce, on envoie {select}.", answer: "une candidature spontanée" },
+        { text: "Cette agence offre un contrat permanent, c'est-à-dire {select}, pour ce poste d'ingénieur.", answer: "un CDI" },
+        { text: "Si vous êtes sans emploi en France, vous devez vous inscrire à {select}.", answer: "Pôle emploi" },
+        { text: "Si votre CV est retenu, le directeur des ressources humaines vous proposera {select}.", answer: "un entretien d'embauche" },
+        { text: "Pour développer son nouveau projet, la société a décidé d'{select} cinq nouveaux techniciens.", answer: "embaucher" },
+        { text: "Trouver un travail est difficile en ce moment car {select} est très concurrentiel.", answer: "le marché du travail" },
+        { text: "Mon frère a signé un contrat court pour remplacer un salarié malade ; il a obtenu {select}.", answer: "un CDD" },
+        { text: "Pour trouver le profil idéal pour la direction, l'entreprise a engagé {select} expérimenté.", answer: "un chasseur de tête" },
+        { text: "Je consulte tous les jours les sites d'annonces pour trouver {select} qui me correspond.", answer: "une offre d'emploi" },
+        { text: "L'entreprise a fait appel à un {select} pour l'aider à trier les nombreux CV reçus.", answer: "cabinet de recrutement" }
+    ];
+    const options1 = ["une candidature spontanée", "un CDI", "Pôle emploi", "un entretien d'embauche", "embaucher", "le marché du travail", "un CDD", "un chasseur de tête", "une offre d'emploi", "cabinet de recrutement"];
+
+    // --- DONNÉES EXERCICE 2 ---
+    const dataEx2 = [
+        { text: "Chaque fin de mois, l'employé reçoit son salaire accompagné de son {select}.", answer: "bulletin de paie" },
+        { text: "Après dix ans comme vendeur, il souhaite {select} pour devenir informaticien.", answer: "se reconvertir" },
+        { text: "Pour valider sa formation universitaire, l'étudiant doit obligatoirement {select} de six mois.", answer: "faire un stage" },
+        { text: "Ce poste comporte de grandes responsabilités, mais il permet de très bien {select}.", answer: "gagner sa vie" },
+        { text: "En fin d'année, les salariés de l'usine ont touché {select} pour leurs excellents résultats.", answer: "une prime" },
+        { text: "Le directeur commercial utilise son {select} pour se rendre chez les différents clients.", answer: "véhicule de fonction" },
+        { text: "Les règles de travail et les congés sont souvent définis précisément par {select} du secteur.", answer: "la convention collective" },
+        { text: "Pour rembourser ses frais médicaux complémentaires, il a souscrit à {select} de l'entreprise.", answer: "la mutuelle" },
+        { text: "Il suit ses études en {select} : il passe deux jours à l'école et trois jours en entreprise.", answer: "alternance" },
+        { text: "Vu ses excellentes performances, elle a pris rendez-vous avec son patron pour {select}.", answer: "demander une augmentation" }
+    ];
+    const options2 = ["bulletin de paie", "la mutuelle", "se reconvertir", "faire un stage", "gagner sa vie", "une prime", "véhicule de fonction", "la convention collective", "alternance", "demander une augmentation"];
+
+    // --- DONNÉES EXERCICE 3 ---
+    const dataEx3 = [
+        { text: "Mécontents de la réforme des retraites, les ouvriers ont décidé de {select}.", answer: "se mettre en grève" },
+        { text: "Le syndicat a déposé une nouvelle {select} concernant l'amélioration de la sécurité.", answer: "revendication" },
+        { text: "À 64 ans, après une longue carrière, mon père va bientôt {select}.", answer: "prendre sa retraite" },
+        { text: "Elle a trouvé un poste beaucoup plus intéressant ailleurs et va {select} lundi matin.", answer: "donner sa démission" },
+        { text: "En raison de la crise économique, l'usine prépare un grand {select} collectif.", answer: "licenciement" },
+        { text: "Suite à une faute professionnelle très grave, le patron l'a {select} immédiatement.", answer: "mis à la porte" },
+        { text: "Opéré du dos, l'ouvrier a dû transmettre un {select} à son employeur.", answer: "arrêt de travail" },
+        { text: "Un {select} bloque l'entrée principale de l'entrepôt avec une banderole revendicative.", answer: "gréviste" },
+        { text: "L'entreprise réorganise ses équipes ; Paul va {select} dans l'agence de Bordeaux.", answer: "être muté" },
+        { text: "La direction négocie un {select} pour aider les salariés touchés par la fermeture du site.", answer: "plan social" }
+    ];
+    const options3 = ["se mettre en grève", "revendication", "prendre sa retraite", "donner sa démission", "licenciement", "mis à la porte", "arrêt de travail", "gréviste", "être muté", "plan social"];
+
+    // --- DONNÉES EXERCICE 4 ---
+    const dataEx4 = [
+        { text: "Avec l'ouverture des frontières commerciales, {select} mondial s'est fortement accéléré.", answer: "le libre-échange" },
+        { text: "Pour réduire les coûts, la multinationale a organisé la {select} de ses usines en Asie.", answer: "délocalisation" },
+        { text: "Les petites entreprises locales ont souvent du mal à résister à la {select} des géants d'internet.", answer: "concurrence" },
+        { text: "Nous ne travaillons pas ce jeudi car c'est {select} national.", answer: "un jour férié" },
+        { text: "Dans le langage familier, on utilise fréquemment le mot {select} pour parler de son entreprise.", answer: "boîte" },
+        { text: "Engager un employé sans le déclarer à l'État, c'est {select} ; c'est illégal.", answer: "travailler au noir" },
+        { text: "Un employé de bureau ou un cadre supérieur est souvent qualifié par l'expression {select}.", answer: "un col blanc" },
+        { text: "Les investisseurs exigent que l'entreprise améliore sa {select} avant la fin de l'année.", answer: "rentabilité" },
+        { text: "Réaliser une tâche trop vite et sans soin, c'est tout simplement {select}.", answer: "bâcler un travail" },
+        { text: "Il n'arrête pas de {select} jour et nuit sur son ordinateur pour terminer ce gros projet.", answer: "bosser" }
+    ];
+    const options4 = ["le libre-échange", "délocalisation", "concurrence", "un jour férié", "boîte", "travailler au noir", "un col blanc", "rentabilité", "bâcler un travail", "bosser"];
+
+    // Fonction de mélange aléatoire
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    // Construction du HTML pour chaque exercice
+    function buildExercise(exNum, data, options) {
+        const container = document.getElementById(`sentences${exNum}`);
+        container.innerHTML = "";
+        
+        const shuffledOptions = shuffle([...options]);
+
+        data.forEach((item, index) => {
+            let selectHTML = `<select id="ex${exNum}-sel${index}" onchange="checkCompletion(${exNum})">
+                                <option value="">-- Choisissez --</option>`;
+            
+            shuffledOptions.forEach(opt => {
+                selectHTML += `<option value="${opt}">${opt}</option>`;
+            });
+            selectHTML += `</select>`;
+
+            const div = document.createElement("div");
+            div.className = "sentence";
+            div.innerHTML = `<strong>${index + 1}.</strong> <span>${item.text.replace("{select}", selectHTML)}</span>`;
+            container.appendChild(div);
+        });
+    }
+
+    // Vérifie la complétion
+    window.checkCompletion = function(exNum) {
+        const selects = document.querySelectorAll(`[id^='ex${exNum}-sel']`);
+        let filledCount = 0;
+
+        selects.forEach(select => {
+            select.classList.remove('correct', 'wrong', 'solution'); 
+            if (select.value !== "") filledCount++;
+        });
+
+        const prog = document.getElementById(`prog${exNum}`);
+        prog.innerText = `${filledCount} / 10 termes sélectionnés`;
+
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        
+        if (filledCount === 10) {
+            btnCheck.disabled = false;
+            prog.style.color = "var(--success)";
+        } else {
+            btnCheck.disabled = true;
+            prog.style.color = "#636e72";
+        }
+    };
+
+    // Validation du score
+    window.checkAnswers = function(exNum) {
+        let data;
+        if(exNum === 1) data = dataEx1;
+        else if(exNum === 2) data = dataEx2;
+        else if(exNum === 3) data = dataEx3;
+        else data = dataEx4;
+
+        let score = 0;
+
+        data.forEach((item, index) => {
+            const select = document.getElementById(`ex${exNum}-sel${index}`);
+            select.disabled = true; // Verrouillage
+            if (select.value === item.answer) {
+                score++;
+            }
+        });
+
+        const feedback = document.getElementById(`feedback${exNum}`);
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        const btnReset = document.getElementById(`btnReset${exNum}`);
+        const btnSolution = document.getElementById(`btnSolution${exNum}`);
+
+        btnCheck.style.display = "none";
+
+        // Score minimum exigé : 7/10
+        if (score >= 7) {
+            feedback.innerHTML = `🎉 Félicitations ! Votre score est de <span style="color:var(--success)">${score} / 10</span>`;
+            feedback.style.color = "var(--success)";
+            
+            btnSolution.style.display = "block"; // Affiche le corrigé
+            btnReset.style.display = "none";
+        } else {
+            feedback.innerHTML = `😕 Score insuffisant : <span style="color:var(--wrong)">${score} / 10</span>. Veuillez refaire l'exercice.`;
+            feedback.style.color = "var(--wrong)";
+            
+            btnSolution.style.display = "none"; 
+            btnReset.style.display = "block"; // Oblige à recommencer
+        }
+    };
+
+    // Réinitialisation de l'exercice
+    window.resetExercise = function(exNum) {
+        const selects = document.querySelectorAll(`[id^='ex${exNum}-sel']`);
+        selects.forEach(select => {
+            select.value = "";
+            select.disabled = false; // Déverrouille
+            select.classList.remove('correct', 'wrong', 'solution');
+        });
+
+        document.getElementById(`feedback${exNum}`).innerText = "";
+        
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        btnCheck.style.display = "block";
+        btnCheck.disabled = true; 
+        
+        document.getElementById(`btnReset${exNum}`).style.display = "none";
+        document.getElementById(`btnSolution${exNum}`).style.display = "none";
+
+        checkCompletion(exNum); 
+    };
+
+    // Affichage visuel du corrigé
+    window.showSolution = function(exNum) {
+        let data;
+        if(exNum === 1) data = dataEx1;
+        else if(exNum === 2) data = dataEx2;
+        else if(exNum === 3) data = dataEx3;
+        else data = dataEx4;
+
+        data.forEach((item, index) => {
+            const select = document.getElementById(`ex${exNum}-sel${index}`);
+            const userAnswer = select.value;
+            
+            select.value = item.answer; 
+            
+            if (userAnswer === item.answer) {
+                select.classList.add('correct'); // En vert
+            } else {
+                select.classList.add('solution'); // En couleur primaire
+            }
+        });
+
+        document.getElementById(`feedback${exNum}`).innerHTML += ` <br><span style="color:var(--text-main); font-size: 0.85em; font-weight:normal;">(Le corrigé est affiché en couleurs dans les phrases)</span>`;
+        document.getElementById(`btnSolution${exNum}`).style.display = "none";
+    };
+
+    // Initialisation
+    window.onload = () => {
+        buildExercise(1, dataEx1, options1);
+        buildExercise(2, dataEx2, options2);
+        buildExercise(3, dataEx3, options3);
+        buildExercise(4, dataEx4, options4);
+    };
+
+</script>
+</body>
+</html>
