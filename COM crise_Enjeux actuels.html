@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluation : La communication de crise</title>
+    <style>
+        :root {
+            --primary: #1f3a93; /* Bleu corporate foncé */
+            --secondary: #34495e; /* Gris ardoise */
+            --accent: #e74c3c; /* Rouge alerte/crise */
+            --success: #27ae60;
+            --wrong: #c0392b;
+            --bg-page: #ecf0f1;
+            --bg-card: #ffffff;
+            --text-main: #2c3e50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d3dce3 0%, #e2eafc 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            padding: 40px 20px;
+        }
+
+        /* --- CONTENEUR PRINCIPAL --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--bg-card);
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border-top: 10px solid var(--primary);
+        }
+
+        /* --- EN-TÊTE --- */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 2px dashed #bdc3c7;
+        }
+
+        .page-header h1 {
+            color: var(--primary);
+            font-size: 2.6rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .module-badge {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);
+        }
+
+        .instruction {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: #7f8c8d;
+        }
+
+        /* --- BLOCS DE QUESTIONS --- */
+        .question-block {
+            background: #f8f9fa;
+            border: 1px solid #dce4ec;
+            border-left: 6px solid var(--primary);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border-left-color: var(--accent);
+        }
+
+        .q-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            line-height: 1.4;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 20px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: white;
+        }
+
+        .option-label:hover {
+            border-color: #95a5a6;
+            background-color: #f1f4f6;
+        }
+
+        .option-label input[type="radio"] {
+            margin-top: 4px;
+            margin-right: 15px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .option-text {
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background-color: #eaf0fa;
+            font-weight: 600;
+        }
+
+        .option-label.correct {
+            border-color: var(--success);
+            background-color: #e6fcf5;
+            color: #0b6645;
+        }
+
+        .option-label.wrong {
+            border-color: var(--wrong);
+            background-color: #fff0f0;
+            color: #8c1e1e;
+            opacity: 0.8;
+        }
+
+        /* --- BARRE D'ACTIONS --- */
+        .action-bar {
+            margin-top: 50px;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 2px dashed #95a5a6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .progress-text {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        button:active:not(:disabled) { transform: scale(0.95); }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-check { background-color: var(--primary); }
+        .btn-check:hover:not(:disabled) { background-color: #162b70; }
+
+        .btn-reset { background-color: var(--wrong); display: none; }
+        .btn-reset:hover { background-color: #a32822; }
+
+        .btn-solution { background-color: var(--success); display: none; }
+        .btn-solution:hover { background-color: #1e8a4a; }
+
+        .feedback-message {
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+            line-height: 1.4;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            .container { padding: 30px 20px; }
+            .page-header h1 { font-size: 2.2rem; }
+            .question-block { padding: 20px; }
+            .btn-group { flex-direction: column; width: 100%; }
+            button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="page-header">
+            <div class="module-badge">Les enjeux actuels</div>
+            <h1>La communication de crise</h1>
+            <p class="instruction">
+                Cet exercice comprend 40 questions issues de l'étude sur la gestion des crises contemporaines.<br><br>
+                ⚠️ <strong>Objectif :</strong> Vous devez obtenir au minimum <strong>32/40</strong> pour valider l'évaluation et consulter les réponses corrigées.
+            </p>
+        </div>
+
+        <div id="questionsContainer"></div>
+
+        <div class="action-bar">
+            <span id="progressText" class="progress-text">Progression : 0 / 40 réponses</span>
+            <div id="feedbackMessage" class="feedback-message"></div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn-check" id="btnCheck" disabled onclick="checkAnswers()">Vérifier les réponses</button>
+                <button type="button" class="btn-reset" id="btnReset" onclick="resetExercise()">Réinitialiser l'exercice</button>
+                <button type="button" class="btn-solution" id="btnSolution" onclick="showSolutions()">Voir le corrigé</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 40 QUESTIONS GÉNÉRÉES DEPUIS LE DOCUMENT PDF ---
+        // Équilibre : 10 réponses A, 10 B, 10 C, 10 D.
+        const questionsData = [
+            { q: "1. Qu'est-ce qui caractérise principalement l'évolution de la communication de crise aujourd'hui selon le document ?", options: ["L'intrusion d'Internet et la généralisation des médias sociaux.", "La disparition totale des médias traditionnels.", "Le retour exclusif à la communication par courrier papier.", "L'absence de dimension internationale dans la gestion des conflits."], correct: 0 },
+            { q: "2. Selon le texte, quels sont les deux niveaux où Internet peut être source de crise potentielle ?", options: ["Technique et communicationnel.", "Interne et externe.", "Financier et juridique.", "Local et international."], correct: 0 },
+            { q: "3. Quel est un exemple d'attaque « technique » sur Internet mentionné dans le texte ?", options: ["La publication d'un mauvais article de presse.", "Le lancement d'une rumeur sur un forum.", "Une grève prolongée des salariés en usine.", "Le piratage de sites, les cyberattaques ou l'envoi de virus."], correct: 3 },
+            { q: "4. Dans l'affaire Belvédère contre Millenium, quelle a été la méthode utilisée par Millenium pour déstabiliser son concurrent ?", options: ["Elle a acheté toutes les actions de son concurrent.", "Elle a réalisé un site pirate destiné aux actionnaires de Belvédère.", "Elle a organisé une grève dans les usines de Belvédère.", "Elle a lancé un produit avec un emballage identique."], correct: 1 },
+            { q: "5. Quel a été l'impact direct de cette offensive sur l'action en bourse de la société Belvédère ?", options: ["L'action a triplé de valeur en quelques semaines.", "L'action est restée parfaitement stable malgré la crise.", "Le cours de l'action s'est effondré, passant de 218 à 38,57 euros.", "Elle a été définitivement retirée du marché boursier européen."], correct: 2 },
+            { q: "6. D'après le document, qu'est-ce qu'un « dark site » (comme ceux dont ont été victimes Coca-Cola ou Orange) ?", options: ["Une page ou un contre-site créé dans la simple volonté d'attaquer l'image d'un groupe.", "Un site web illégal qui vend des produits contrefaits au marché noir.", "Un site d'entreprise temporairement inaccessible au grand public.", "Une messagerie secrète utilisée exclusivement pour le piratage informatique."], correct: 0 },
+            { q: "7. Que s'est-il passé pour la société de télécommunication Emulex à la suite d'une fausse information publiée en août 2000 ?", options: ["Elle a dû fermer toutes ses usines à l'étranger.", "Le cours de son action s'est effondré et elle a perdu 14 milliards de capitalisation.", "Ses employés se sont mis en grève pendant plusieurs mois.", "Elle a été rachetée immédiatement par un de ses concurrents."], correct: 1 },
+            { q: "8. Pour quelle raison majeure le site Perenoel.fr a-t-il été contraint de fermer en 2000 ?", options: ["À cause d'une attaque de hackers provenant d'un pays étranger.", "Suite à une délocalisation imprévue de ses services en Asie.", "À cause d'un bad buzz sur la maltraitance animale dans ses usines.", "En raison d'un appel au boycott et de la découverte de nombreuses irrégularités liées aux livraisons."], correct: 3 },
+            { q: "9. Quel problème inattendu l'entreprise L'Oréal a-t-elle rencontré lors de l'organisation de son jeu concours en ligne ?", options: ["Le lot principal promis aux gagnants n'existait pas réellement.", "Les serveurs informatiques de l'entreprise ont été complètement détruits.", "Les réponses exactes ont circulé sur le Net, multipliant le nombre de bonnes réponses de 500 à plus de 3000.", "Une marque concurrente a volé et déposé le concept exclusif du jeu."], correct: 2 },
+            { q: "10. À quel type de canular la marque de champagne Veuve Cliquot a-t-elle été confrontée ?", options: ["Une fausse chaîne d'e-mails promettant de recevoir des bouteilles gratuites en échange de transferts.", "Une vidéo virale montrant de faux insectes à l'intérieur de ses bouteilles.", "Un faux communiqué annonçant la faillite immédiate de l'entreprise.", "Une fausse interview de son PDG diffusée sur une grande chaîne de télévision."], correct: 0 },
+            { q: "11. Quel site français est mentionné dans le texte comme recensant les informations erronées et les rumeurs (hoax) sur le net ?", options: ["wikipedia.fr", "hoaxbuster.com", "rumour-control.fr", "fake-news-alert.com"], correct: 1 },
+            { q: "12. Quel exemple illustre dans le texte le danger des forums de discussion pour les entreprises de l'aéronautique ?", options: ["Air France a dû annuler tous ses vols à cause d'une rumeur interne.", "Des pilotes ont organisé une grève mondiale via un forum syndical.", "Des passagers ont appelé au boycott des avions d'une certaine compagnie nationale.", "Airbus a perdu un marché important face à Boeing après avoir tardé à réagir à des informations remettant en cause sa fiabilité."], correct: 3 },
+            { q: "13. Qu'a démontré la célèbre vidéo diffusée sur YouTube concernant l'antivol « Kryptonite » en 2004 ?", options: ["Que l'antivol était le plus résistant jamais construit dans le monde.", "Que la serrure risquait de se bloquer définitivement en cas de pluie.", "Que cet antivol réputé inviolable pouvait s'ouvrir avec un simple capuchon de stylo.", "Que la clé de l'antivol pouvait être reproduite sur n'importe quelle imprimante 3D."], correct: 2 },
+            { q: "14. Comment le texte définit-il l'« effet de rémanence » propre à Internet lors d'une crise ?", options: ["Le fait que les sites web institutionnels soient obligés d'être mis à jour en temps réel.", "Le fait que l'information reste disponible et que le nom de l'entreprise soit associé à la crise très longtemps après.", "La capacité inédite d'Internet à cibler précisément certains groupes de consommateurs.", "Le piratage continu et invisible des données confidentielles d'une société."], correct: 1 },
+            { q: "15. Quel événement a déclenché un retentissant « bad buzz » pour la Caisse d'Epargne en octobre 2013 ?", options: ["Une publication sur Facebook illustrant un argument commercial avec la photo d'un écureuil coincé par les testicules.", "La fuite en ligne d'une vidéo montrant un employé refusant catégoriquement de servir un client modeste.", "Un tweet jugé moqueur et insultant sur la situation économique et le chômage dans le pays.", "Un faux concours promettant d'offrir des milliers de livrets d'épargne gratuits à tous les nouveaux clients."], correct: 0 },
+            { q: "16. Pour quelle raison très grave l'enseigne de prêt-à-porter Zara a-t-elle dû s'excuser en août 2014 ?", options: ["Pour avoir utilisé de la fourrure animale strictement interdite par la législation européenne.", "Pour des propos extrêmement déplacés tenus publiquement par son directeur général.", "À la suite de la découverte d'un grave problème sanitaire dans l'une de ses usines textiles.", "Pour avoir commercialisé un polo rayé avec une étoile jaune rappelant douloureusement l'uniforme des déportés juifs."], correct: 3 },
+            { q: "17. Lors de la crise du microprocesseur d'Intel (1994), quelle erreur de communication a aggravé la situation au lieu de la résoudre ?", options: ["L'entreprise a immédiatement remplacé tous les ordinateurs sans aucune vérification.", "Elle a fermé toutes ses usines par précaution, paralysant le marché mondial.", "Son président a vainement tenté de minimiser la crise, laissant le champ libre à une violente offensive de son concurrent IBM.", "L'entreprise a accusé ouvertement et publiquement le gouvernement de mener une attaque contre elle."], correct: 2 },
+            { q: "18. Quel était le motif principal de la campagne d'attaque menée par Greenpeace contre Nestlé en mars 2010 ?", options: ["La pollution des réseaux d'eau potable dans plusieurs pays en développement.", "Son utilisation d'huile de palme, un facteur majeur de la déforestation dans le Sud-Est asiatique.", "L'exploitation d'enfants dans les immenses usines de chocolat de la marque.", "La découverte inquiétante de substances chimiques illégales dans le lait en poudre."], correct: 1 },
+            { q: "19. Quelle a été la conséquence finale de l'offensive de Greenpeace contre l'association de Lego et du groupe pétrolier Shell ?", options: ["Lego a officiellement annoncé la fin de son partenariat stratégique avec la marque Shell.", "Le groupe pétrolier Shell a racheté la totalité des parts de l'entreprise de jouets Lego.", "Lego a décidé d'attaquer l'ONG Greenpeace en justice pour grave diffamation commerciale.", "Les ventes des jouets estampillés Shell ont paradoxalement triplé dans le monde entier."], correct: 0 },
+            { q: "20. Quelle méthode très spécifique a été utilisée par le site artez.fr.st à la suite du naufrage de l'Erika par Total ?", options: ["L'envoi massif de dizaines de milliers de faux chèques de dédommagement aux victimes.", "La diffusion d'une fausse alerte à la bombe très réaliste dans le siège social de Total.", "Le piratage systématique des comptes bancaires de tous les grands dirigeants de l'entreprise.", "L'affichage d'images détournées et parodiques reprenant les véritables slogans des campagnes publicitaires de Total."], correct: 3 },
+            { q: "21. Selon le chapitre, pour quelle raison stratégique les grandes entreprises pratiquent-elles la veille sur Internet ?", options: ["Uniquement pour pouvoir espionner illégalement les activités privées de leurs propres employés.", "Pour pouvoir vendre au prix fort des espaces publicitaires aux internautes visiteurs.", "Afin de déceler l'émergence de controverses et de détecter des signaux faibles pouvant dégénérer en crise majeure.", "Dans le seul but d'identifier et de bloquer l'accès aux sites de divertissement dans leurs locaux."], correct: 2 },
+            { q: "22. Qu'a fait très concrètement la compagnie Air France sur son site Internet dans les 24 heures suivant le crash du Rio-Paris en 2009 ?", options: ["Elle a préféré fermer définitivement l'accès à son site web par précaution.", "Elle a mis en ligne pas moins de dix communiqués de presse officiels.", "Elle a diffusé une vidéo institutionnelle rassurante pour tenter de détendre l'atmosphère.", "Elle n'a publié strictement aucune information avant la conclusion finale de l'enquête judiciaire."], correct: 1 },
+            { q: "23. Pour faire face à des perturbations liées à des mouvements sociaux en 2007, qu'a posté le président de la compagnie Jet Blue sur YouTube ?", options: ["Une vidéo intitulée « Our promise to you » pour présenter directement ses excuses et les nouveaux engagements de sa compagnie.", "Un long documentaire détaillant avec précision les processus de fabrication de sa flotte d'avions.", "Une campagne publicitaire agressive accusant les syndicats et les entreprises concurrentes.", "L'enregistrement vidéo d'un client particulièrement en colère dans un terminal d'aéroport."], correct: 0 },
+            { q: "24. Comment Air France a-t-elle su exploiter habilement le réseau Twitter lors de l'éruption du volcan islandais en avril 2010 ?", options: ["L'entreprise a utilisé un programme automatique pour annuler toutes les réservations en cours.", "Elle a lancé un grand concours de photographies du volcan destiné à ses clients habituels.", "Elle a temporairement désactivé son compte officiel pour éviter d'être submergée de critiques.", "Elle a utilisé ce compte pour instaurer un dialogue direct et répondre en temps réel aux attentes des clients bloqués au sol."], correct: 3 },
+            { q: "25. Quel est l'intérêt principal de la méthode employée par l'usine Cogema de La Hague (implantation de webcams) ?", options: ["Permettre la vente directe de matériaux nucléaires usagés en ligne.", "Servir d'outil de recrutement pour trouver rapidement du nouveau personnel technique spécialisé.", "Offrir à l'internaute une communication par la preuve en lui permettant de visualiser l'intérieur des installations en direct.", "Proposer des jeux vidéo en ligne éducatifs destinés aux enfants des écoles environnantes."], correct: 2 },
+            { q: "26. D'après le texte, qu'est-ce qui représente la toute première source interne d'informations au sein d'une entreprise ?", options: ["L'affichage des circulaires syndicales sur les panneaux officiels du personnel.", "La rumeur (qui circule notamment à travers les bruits de couloirs de l'entreprise).", "La lecture du journal interne mensuel de l'entreprise.", "L'audition du discours de présentation annuel tenu par le directeur général."], correct: 1 },
+            { q: "27. Quel événement social spécifique le célèbre sociologue Edgar Morin a-t-il étudié en 1966 ?", options: ["Une rumeur très inquiétante concernant la disparition de jeunes filles dans les salons d'essayage de certains magasins à Orléans.", "Une grève nationale exceptionnelle menée par l'ensemble des ouvriers du secteur de l'automobile.", "Les conséquences psychologiques de la faillite retentissante d'une grande banque locale.", "Les réactions de panique suite à l'introduction d'un nouveau médicament toxique sur le marché."], correct: 0 },
+            { q: "28. Face à une rumeur totalement infondée, quelle stratégie consiste à attribuer volontairement son origine à un concurrent malveillant ?", options: ["L'adoption de la politique de l'autruche.", "La stratégie de transparence totale de l'information.", "Le principe de saturation des récepteurs.", "La tactique de la contre-attaque."], correct: 3 },
+            { q: "29. Qu'est-ce qui a finalement conduit à l'arrêt total de la propagation de la fameuse rumeur d'Orléans en 1966 ?", options: ["L'arrestation spectaculaire des véritables coupables par les forces de police.", "L'obligation légale de fermer définitivement tous les salons d'essayage concernés.", "L'apparition évidente du caractère profondément antisémite de cette rumeur.", "L'intervention solennelle et rassurante du Président de la République à la télévision nationale."], correct: 2 },
+            { q: "30. Selon le document, quel secteur spécifique est particulièrement sensible aux rumeurs en raison des risques de spéculation internationale ?", options: ["L'ensemble du secteur de l'automobile et des transports.", "Le domaine très réactif de la communication financière.", "L'industrie internationale de la haute couture et de la mode.", "L'ensemble du marché immobilier et du bricolage."], correct: 1 },
+            { q: "31. Qu'est-ce que l'auteur appelle l'« effet chaos » en matière de crise environnementale ou sanitaire ?", options: ["L'incapacité psychologique de la direction à gérer le personnel pendant une alerte grave.", "Le risque de destruction instantanée et totale d'une infrastructure industrielle suite à un accident.", "L'obsolescence programmée qui entraîne la baisse systématique de la qualité des produits.", "Le fait qu'un phénomène perçu comme minime à un endroit puisse finalement provoquer une catastrophe à plusieurs milliers de kilomètres."], correct: 3 },
+            { q: "32. Quelle a été la réaction brutale des consommateurs concernant les achats de rillettes et charcuteries lors de la crise de la listeria en l'an 2000 ?", options: ["Les ventes de l'entreprise ont paradoxalement augmenté grâce au soutien de la population locale.", "La consommation des produits n'a été sensiblement affectée que pendant les 24 premières heures.", "La consommation nationale a lourdement chuté de 70 % au tout début de la crise.", "Les produits ont été immédiatement et définitivement interdits à la vente sur tout le territoire."], correct: 2 },
+            { q: "33. Lors d'une crise alimentaire d'ampleur, en quoi consiste précisément ce que l'on nomme l'« effet de halo » ?", options: ["Les consommateurs ont tendance à oublier très rapidement le nom de la marque jugée fautive.", "La défiance des consommateurs s'exerce non seulement envers la marque concernée, mais s'étend à l'ensemble des produits similaires du marché.", "L'entreprise incriminée bénéficie d'une immense vague de sympathie de la part de la presse et des médias.", "Le produit ciblé est acheté de manière frénétique par les clients de peur qu'il ne disparaisse complètement des rayons."], correct: 1 },
+            { q: "34. Selon l'analyse du texte, pour quelles raisons principales la pratique du boycott s'avère-t-elle être d'une efficacité très limitée en France ?", options: ["Surtout pour des raisons juridiques (risques de plaintes car c'est formellement interdit) et à cause des particularités culturelles du pays.", "Principalement parce que les consommateurs français sont réputés totalement indifférents aux grands problèmes écologiques.", "Car les grandes entreprises nationales ont prouvé qu'elles ne commettaient jamais d'erreurs graves.", "Parce qu'une loi constitutionnelle très stricte oblige les citoyens à consommer exclusivement les produits d'origine nationale."], correct: 0 },
+            { q: "35. D'après l'étude menée par le CSA, dans quel cas précis la méfiance des consommateurs à l'égard d'une marque reste-t-elle la plus durable ?", options: ["Dans le cas des crises logistiques exclusivement liées à de simples pannes informatiques externes.", "Lorsque les crises sont perçues par l'opinion publique comme résultant purement de la « malchance » (ex: foudre, tempête).", "Lorsqu'il s'agit de crises économiques déclenchées par d'importants mouvements de grève dans le secteur des transports.", "Quand la crise est perçue par le grand public comme la conséquence directe de l'incompétence ou de la malhonnêteté de l'entreprise (ex: Josacine, pneus Speedy)."], correct: 3 },
+            { q: "36. Parmi les « dix bons points d'un message d'alerte » cités dans l'encadré du chapitre, quelle affirmation est exacte ?", options: ["Le texte du message destiné aux consommateurs doit être extrêmement long, détaillé et littéraire.", "Il est fortement déconseillé d'indiquer un quelconque point de contact ou un numéro vert pour ne pas être dérangé.", "La nature exacte du risque encouru doit être expliquée très clairement aux utilisateurs du produit.", "Le nom officiel de la marque fautive doit être autant que possible caché ou écrit en très petits caractères."], correct: 2 },
+            { q: "37. Pour quelle raison stratégique la communication interne est-elle jugée essentielle pour préserver l'image extérieure de l'entreprise ?", options: ["Car ce sont les employés eux-mêmes qui sont chargés de rédiger l'ensemble des communiqués de presse destinés aux grands médias.", "Parce que chaque salarié joue, auprès de ses proches, le rôle très influent d'un « agent ambassadeur » doté d'une forte crédibilité de proximité.", "Car la législation impose que les journalistes s'adressent exclusivement aux ouvriers plutôt qu'aux dirigeants lors des interviews.", "Dans le seul but d'intimider les employés pour les empêcher de s'inscrire ou de s'exprimer sur les réseaux sociaux externes."], correct: 1 },
+            { q: "38. À quels moments chronologiques du déroulement de la crise la communication interne de l'entreprise doit-elle impérativement intervenir ?", options: ["La communication interne est requise aux trois étapes : avant, pendant et après la crise.", "Elle ne doit être activée qu'exclusivement une fois la crise totalement terminée, pour en faire le bilan.", "Elle ne s'avère nécessaire que lorsque la presse spécialisée commence publiquement à poser des questions embarrassantes.", "Elle doit uniquement être déclenchée au moment très précis où le cours de l'action en bourse commence à chuter."], correct: 0 },
+            { q: "39. Selon le cas concret décrit dans le texte, de quelle manière spectaculaire des salariés du groupe Nortel ont-ils été la source directe d'une crise médiatique en juillet 2009 ?", options: ["En s'introduisant dans les serveurs pour diffuser un faux communiqué international de faillite générale.", "En s'organisant pour dérober l'intégralité du parc informatique de l'entreprise pendant le week-end.", "En publiant des vidéos incitant la population au boycott strict de tous les produits fabriqués par l'usine.", "En menaçant publiquement de faire sauter leur propre usine en y installant des bonbonnes de gaz, dans le but d'attirer l'attention des médias sur leur situation."], correct: 3 },
+            { q: "40. Pourquoi est-il fondamental pour un dirigeant d'entreprise de « marquer symboliquement » la fin d'une crise auprès de son personnel ?", options: ["Pour avoir l'autorité légale de procéder immédiatement aux lourds licenciements économiques nécessaires.", "Afin de préparer psychologiquement les syndicats à une annonce de baisse générale des salaires.", "Dans le but de clore le chapitre de la crise, de rassurer, et d'entraîner l'ensemble des salariés vers de nouveaux enjeux et objectifs d'avenir.", "Pour justifier la décision d'effacer secrètement toutes les archives et les preuves liées au déclenchement de cet événement."], correct: 2 }
+        ];
+
+        const container = document.getElementById('questionsContainer');
+        const btnCheck = document.getElementById('btnCheck');
+        const btnReset = document.getElementById('btnReset');
+        const btnSolution = document.getElementById('btnSolution');
+        const progressText = document.getElementById('progressText');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        // --- GÉNÉRATION DYNAMIQUE DU HTML ---
+        let htmlContent = "";
+        questionsData.forEach((item, qIndex) => {
+            htmlContent += `
+                <div class="question-block" id="qblock-${qIndex}">
+                    <div class="q-title">${item.q}</div>
+                    <div class="options-grid">
+            `;
+            
+            const lettres = ['a', 'b', 'c', 'd'];
+            item.options.forEach((opt, optIndex) => {
+                htmlContent += `
+                        <label class="option-label" onclick="selectOption(${qIndex}, ${optIndex}, this)">
+                            <input type="radio" name="question-${qIndex}" value="${optIndex}">
+                            <span class="option-text"><strong>${lettres[optIndex]})</strong> ${opt}</span>
+                        </label>
+                `;
+            });
+
+            htmlContent += `
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = htmlContent;
+
+        // --- LOGIQUE INTERACTIVE ---
+
+        function selectOption(qIndex, optIndex, labelElement) {
+            const parentGrid = labelElement.parentNode;
+            const allLabels = parentGrid.querySelectorAll('.option-label');
+            allLabels.forEach(l => l.classList.remove('selected'));
+            
+            labelElement.classList.add('selected');
+            
+            const radio = labelElement.querySelector('input');
+            radio.checked = true;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let answeredCount = 0;
+            for(let i = 0; i < questionsData.length; i++) {
+                const inputs = document.getElementsByName(`question-${i}`);
+                for(let input of inputs) {
+                    if(input.checked) {
+                        answeredCount++;
+                        break;
+                    }
+                }
+            }
+
+            if(answeredCount === questionsData.length) {
+                progressText.innerHTML = "✨ Questionnaire complété, vous pouvez vérifier !";
+                progressText.style.color = "var(--success)";
+                btnCheck.disabled = false;
+            } else {
+                progressText.innerHTML = `Progression : ${answeredCount} / 40 réponses`;
+                progressText.style.color = "var(--primary)";
+                btnCheck.disabled = true;
+            }
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                let selectedVal = -1;
+
+                inputs.forEach(input => {
+                    if(input.checked) {
+                        selectedVal = parseInt(input.value);
+                    }
+                    input.disabled = true;
+                    input.closest('.option-label').style.pointerEvents = 'none';
+                });
+
+                if (selectedVal === item.correct) {
+                    score++;
+                }
+            });
+
+            btnCheck.style.display = 'none';
+            progressText.style.display = 'none';
+            feedbackMessage.style.display = 'block';
+
+            // Seuil de réussite exigé : 32 / 40
+            if (score >= 32) {
+                feedbackMessage.innerHTML = `🎉 Validation réussie ! Score : <span style="color:var(--success)">${score} / 40</span><br><span style="font-size:1.1rem; font-weight:normal; color:#555;">Excellent travail. Vous pouvez désormais consulter le corrigé détaillé.</span>`;
+                feedbackMessage.style.color = "var(--success)";
+                btnSolution.style.display = 'block'; 
+                btnReset.style.display = 'none';
+            } else {
+                feedbackMessage.innerHTML = `😕 Score insuffisant : <span style="color:var(--wrong)">${score} / 40</span><br><span style="font-size:1.1rem; font-weight:normal; color:#555;">Le seuil de réussite est fixé à 32/40. Veuillez relire le chapitre et refaire l'exercice.</span>`;
+                feedbackMessage.style.color = "var(--wrong)";
+                btnSolution.style.display = 'none';
+                btnReset.style.display = 'block'; 
+            }
+            
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function resetExercise() {
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                inputs.forEach(input => {
+                    input.checked = false;
+                    input.disabled = false;
+                    input.closest('.option-label').style.pointerEvents = 'auto';
+                    input.closest('.option-label').classList.remove('selected', 'correct', 'wrong');
+                });
+            });
+
+            feedbackMessage.style.display = 'none';
+            btnReset.style.display = 'none';
+            btnCheck.style.display = 'block';
+            progressText.style.display = 'block';
+            
+            updateProgress(); 
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showSolutions() {
+            btnSolution.style.display = 'none'; 
+            
+            questionsData.forEach((item, index) => {
+                const inputs = document.getElementsByName(`question-${index}`);
+                let selectedVal = -1;
+
+                inputs.forEach(input => {
+                    if(input.checked) selectedVal = parseInt(input.value);
+                });
+
+                const allLabels = document.getElementById(`qblock-${index}`).querySelectorAll('.option-label');
+                
+                // Mettre en évidence l'erreur (rouge)
+                if (selectedVal !== -1 && selectedVal !== item.correct) {
+                    allLabels[selectedVal].classList.remove('selected');
+                    allLabels[selectedVal].classList.add('wrong');
+                }
+                
+                // Mettre en évidence la bonne réponse (vert)
+                allLabels[item.correct].classList.remove('selected');
+                allLabels[item.correct].classList.add('correct');
+            });
+
+            feedbackMessage.innerHTML += `<br><span style="font-size:1.1rem; color:var(--primary);">Le corrigé est affiché en couleurs dans les formulaires ci-dessus.</span>`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
