@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercices de grammaire : Concession et Opposition</title>
+    <style>
+        :root {
+            --primary: #2c3e50; /* Bleu foncé */
+            --ex1-color: #0097e6; /* Bleu clair */
+            --ex2-color: #e1b12c; /* Jaune moutarde */
+            --success: #44bd32;
+            --wrong: #c23616;
+            --bg-page: #f5f6fa;
+            --bg-card: #ffffff;
+            --text-main: #2f3640;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background-color: var(--primary);
+            color: #ffffff;
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .page-title {
+            color: var(--primary);
+            font-size: 2.8em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin: 0;
+        }
+
+        /* --- CARTES DES EXERCICES --- */
+        .exercise-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 35px 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        /* Bordures dynamiques */
+        #ex1 { border-top: 8px solid var(--ex1-color); }
+        #ex2 { border-top: 8px solid var(--ex2-color); }
+
+        #ex1 h2 { color: var(--ex1-color); border-bottom: 2px dashed var(--ex1-color); }
+        #ex2 h2 { color: var(--ex2-color); border-bottom: 2px dashed var(--ex2-color); }
+
+        h2 {
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 1.7em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-indicator {
+            font-size: 0.95em;
+            color: #7f8fa6;
+            font-weight: 600;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .sentence {
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            background: #fdfefe;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        #ex1 .sentence { border-left: 4px solid var(--ex1-color); }
+        #ex2 .sentence { border-left: 4px solid var(--ex2-color); }
+
+        .sentence:hover { background: #f1f2f6; }
+
+        /* Champs Select et Input */
+        select, input[type="text"] {
+            font-size: 0.95em;
+            padding: 6px 12px;
+            margin: 0 5px;
+            border: 2px solid #dcdde1;
+            border-radius: 6px;
+            background-color: #fff;
+            color: var(--primary);
+            font-weight: bold;
+            transition: all 0.3s;
+            outline: none;
+            max-width: 100%;
+        }
+
+        select { cursor: pointer; }
+
+        input[type="text"] {
+            width: 140px;
+            text-align: center;
+        }
+
+        select:focus, input[type="text"]:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 8px rgba(44, 62, 80, 0.3); 
+        }
+
+        /* Classes de correction */
+        .correct { background-color: var(--success) !important; color: white !important; border-color: var(--success) !important; }
+        .wrong { background-color: var(--wrong) !important; color: white !important; border-color: var(--wrong) !important; }
+        .solution { background-color: var(--primary) !important; color: white !important; border-color: var(--primary) !important; }
+
+        .action-area {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px dashed #dcdde1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .feedback-message {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+            min-height: 35px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 14px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        button:active:not(:disabled) { transform: scale(0.95); }
+        
+        button:disabled {
+            background-color: #dcdde1;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        #ex1 .btn-check { background-color: var(--ex1-color); }
+        #ex2 .btn-check { background-color: var(--ex2-color); }
+
+        .btn-check:hover:not(:disabled) { filter: brightness(1.1); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+
+        .btn-reset { background-color: var(--wrong); display: none; }
+        .btn-reset:hover { background-color: #a02d12; }
+
+        .btn-solution { background-color: var(--success); display: none; }
+        .btn-solution:hover { background-color: #379427; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <div class="level-badge">Grammaire B1/B2</div>
+        <h1 class="page-title">🔗 La concession et l'opposition</h1>
+    </div>
+
+    <div class="exercise-card" id="ex1">
+        <h2>✍️ Exercice 1 : Complétez avec les bons connecteurs.</h2>
+        <div class="progress-indicator" id="prog1">0 / 10 réponses</div>
+        <div id="sentences1"></div>
+
+        <div class="action-area">
+            <div class="feedback-message" id="feedback1"></div>
+            <div class="btn-group">
+                <button class="btn-check" id="btnCheck1" disabled onclick="checkAnswers(1)">Vérifier les réponses</button>
+                <button class="btn-reset" id="btnReset1" onclick="resetExercise(1)">Réinitialiser l'exercice</button>
+                <button class="btn-solution" id="btnSolution1" onclick="showSolution(1)">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="exercise-card" id="ex2">
+        <h2>⚙️ Exercice 2 : Conjuguez au mode et temps qui conviennent.</h2>
+        <div class="progress-indicator" id="prog2">0 / 10 réponses</div>
+        <div id="sentences2"></div>
+
+        <div class="action-area">
+            <div class="feedback-message" id="feedback2"></div>
+            <div class="btn-group">
+                <button class="btn-check" id="btnCheck2" disabled onclick="checkAnswers(2)">Vérifier les réponses</button>
+                <button class="btn-reset" id="btnReset2" onclick="resetExercise(2)">Réinitialiser l'exercice</button>
+                <button class="btn-solution" id="btnSolution2" onclick="showSolution(2)">Voir le corrigé</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- DONNÉES EXERCICE 1 (Connecteurs - Menu déroulant intégrant la "Remarque") ---
+    const dataEx1 = [
+        { text: "Il avait acheté des actions de cette start up, {select} elle a fermé et il a tout perdu.", answer: "or" },
+        { text: "Son frère est nul en informatique ; {select}, elle se débrouille très bien.", answer: "en revanche" },
+        { text: "Il est très actif sur ce réseau social, {select} il n'a que peu de vrais amis.", answer: "toutefois" },
+        { text: "Je suis très méfiant avec Internet, mais je l'utilise {select} pour mon travail.", answer: "quand même" },
+        { text: "{select} il fasse très froid, les enfants jouent dehors sans manteau.", answer: "Bien qu'" },
+        { text: "Il vaudrait mieux discuter calmement du problème {select} s'énerver.", answer: "au lieu de" },
+        { text: "{select} ses parents qui sont très sportifs, il déteste l'effort physique.", answer: "Contrairement à" },
+        { text: "Il a {select} tout m'expliquer plusieurs fois, je n'ai toujours rien compris.", answer: "beau" },
+        { text: "Le projet a été terminé à temps {select} tous les problèmes techniques rencontrés.", answer: "malgré" },
+        { text: "La France est célèbre pour ses fromages, {select} l'Italie est réputée pour ses pâtes.", answer: "alors que" }
+    ];
+    const options1 = ["or", "en revanche", "toutefois", "quand même", "Bien qu'", "au lieu de", "Contrairement à", "beau", "malgré", "alors que"];
+
+    // --- DONNÉES EXERCICE 2 (Conjugaisons - Exercice Lacunaire / Champ texte) ---
+    const dataEx2 = [
+        { text: "Bien qu'il (être) {select} souvent en retard, le patron apprécie son travail.", answer: "soit" },
+        { text: "Même si tu (avoir) {select} les meilleures notes, tu dois rester modeste.", answer: "as" },
+        { text: "Au lieu de (regarder) {select} ton téléphone, tu devrais écouter le professeur.", answer: "regarder" },
+        { text: "Elle a beau (réviser) {select} tous les jours, elle panique toujours avant l'examen.", answer: "réviser" },
+        { text: "Quoiqu'il (faire) {select} très beau, je préfère rester lire à la maison.", answer: "fasse" },
+        { text: "Elle est très bavarde, alors que son frère ne (dire) {select} jamais un mot.", answer: "dit" },
+        { text: "Quoi que tu (dire) {select} pour te défendre, je ne changerai pas d'avis.", answer: "dises" },
+        { text: "C'est un petit appartement. Ça n'empêche pas qu'il (être) {select} très confortable.", answer: "est" },
+        { text: "Encore qu'il (pouvoir) {select} y avoir des embouteillages, nous prendrons la voiture.", answer: "puisse" },
+        { text: "Tandis que je (travailler) {select} toute la journée, mon chat dort sur le canapé.", answer: "travaille" }
+    ];
+
+    // Fonction de mélange aléatoire
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    // Construction du HTML : Différencie Select (ex1) et Input texte (ex2)
+    function buildExercise(exNum, data, options = []) {
+        const container = document.getElementById(`sentences${exNum}`);
+        container.innerHTML = "";
+        
+        let shuffledOptions = [];
+        if (options.length > 0) {
+            shuffledOptions = shuffle([...options]);
+        }
+
+        data.forEach((item, index) => {
+            let inputHTML = "";
+            
+            if (exNum === 1) {
+                // EXERCICE 1 : Menu déroulant
+                inputHTML = `<select id="ex1-input${index}" onchange="checkCompletion(1)">
+                                <option value="">-- Choisissez --</option>`;
+                shuffledOptions.forEach(opt => {
+                    inputHTML += `<option value="${opt}">${opt}</option>`;
+                });
+                inputHTML += `</select>`;
+            } else {
+                // EXERCICE 2 : Champ texte (Lacunaire)
+                inputHTML = `<input type="text" id="ex2-input${index}" oninput="checkCompletion(2)" placeholder="...">`;
+            }
+
+            const div = document.createElement("div");
+            div.className = "sentence";
+            div.innerHTML = `<strong>${index + 1}.</strong> <span>${item.text.replace("{select}", inputHTML)}</span>`;
+            container.appendChild(div);
+        });
+    }
+
+    // Vérifie la complétion pour activer le bouton "Vérifier"
+    window.checkCompletion = function(exNum) {
+        const inputs = document.querySelectorAll(`[id^='ex${exNum}-input']`);
+        let filledCount = 0;
+
+        inputs.forEach(input => {
+            input.classList.remove('correct', 'wrong', 'solution'); 
+            if (input.value.trim() !== "") filledCount++;
+        });
+
+        const prog = document.getElementById(`prog${exNum}`);
+        prog.innerText = `${filledCount} / 10 réponses`;
+
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        
+        if (filledCount === 10) {
+            btnCheck.disabled = false;
+            prog.style.color = "var(--success)";
+        } else {
+            btnCheck.disabled = true;
+            prog.style.color = "#7f8fa6";
+        }
+    };
+
+    // Validation du score
+    window.checkAnswers = function(exNum) {
+        const data = exNum === 1 ? dataEx1 : dataEx2;
+        let score = 0;
+
+        data.forEach((item, index) => {
+            const input = document.getElementById(`ex${exNum}-input${index}`);
+            input.disabled = true; // Verrouillage
+            
+            // On ignore la casse et les espaces superflus
+            const userValue = input.value.trim().toLowerCase();
+            const correctValue = item.answer.toLowerCase();
+
+            if (userValue === correctValue) {
+                score++;
+            }
+        });
+
+        const feedback = document.getElementById(`feedback${exNum}`);
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        const btnReset = document.getElementById(`btnReset${exNum}`);
+        const btnSolution = document.getElementById(`btnSolution${exNum}`);
+
+        btnCheck.style.display = "none";
+
+        // Score minimum exigé : 7/10
+        if (score >= 7) {
+            feedback.innerHTML = `🎉 Félicitations ! Votre score est de <span style="color:var(--success)">${score} / 10</span>`;
+            feedback.style.color = "var(--success)";
+            
+            btnSolution.style.display = "block"; // Affiche le corrigé
+            btnReset.style.display = "none";
+        } else {
+            feedback.innerHTML = `😕 Score insuffisant : <span style="color:var(--wrong)">${score} / 10</span>. Veuillez refaire l'exercice.`;
+            feedback.style.color = "var(--wrong)";
+            
+            btnSolution.style.display = "none"; 
+            btnReset.style.display = "block"; // Oblige à recommencer
+        }
+    };
+
+    // Réinitialisation de l'exercice
+    window.resetExercise = function(exNum) {
+        const inputs = document.querySelectorAll(`[id^='ex${exNum}-input']`);
+        inputs.forEach(input => {
+            input.value = "";
+            input.disabled = false; // Déverrouille
+            input.classList.remove('correct', 'wrong', 'solution');
+        });
+
+        document.getElementById(`feedback${exNum}`).innerText = "";
+        
+        const btnCheck = document.getElementById(`btnCheck${exNum}`);
+        btnCheck.style.display = "block";
+        btnCheck.disabled = true; 
+        
+        document.getElementById(`btnReset${exNum}`).style.display = "none";
+        document.getElementById(`btnSolution${exNum}`).style.display = "none";
+
+        checkCompletion(exNum); 
+    };
+
+    // Affichage visuel du corrigé
+    window.showSolution = function(exNum) {
+        const data = exNum === 1 ? dataEx1 : dataEx2;
+
+        data.forEach((item, index) => {
+            const input = document.getElementById(`ex${exNum}-input${index}`);
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswer = item.answer.toLowerCase();
+            
+            if (userAnswer === correctAnswer) {
+                input.classList.add('correct'); // En vert
+            } else {
+                input.value = item.answer; // Force la bonne réponse
+                input.classList.add('solution'); // En couleur primaire pour la correction
+            }
+        });
+
+        document.getElementById(`feedback${exNum}`).innerHTML += ` <br><span style="color:var(--text-main); font-size: 0.85em; font-weight:normal;">(Le corrigé est affiché en couleurs dans les champs)</span>`;
+        document.getElementById(`btnSolution${exNum}`).style.display = "none";
+    };
+
+    // Initialisation
+    window.onload = () => {
+        buildExercise(1, dataEx1, options1);
+        buildExercise(2, dataEx2); // Pas d'options car champ libre
+    };
+
+</script>
+</body>
+</html>
