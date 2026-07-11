@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travail, modes d'emploi (C1)</title>
+<style>
+  :root{
+    --blue:#034EA1;
+    --blue-dark:#022F51;
+    --orange:#FAAF40;
+    --orange-dark:#C97F16;
+    --ink:#1A2233;
+    --grey:#5B6472;
+    --line:#DCE3EE;
+    --bg:#F5F7FA;
+    --card:#FFFFFF;
+    --green:#1E7A43;
+    --green-bg:#EAF7EE;
+    --red:#B4232C;
+    --red-bg:#FCEBEC;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI", Calibri, Roboto, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.55;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:28px 20px 80px;}
+
+  header.top{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:22px 26px;
+    background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);
+    border-radius:16px;
+    color:#fff;
+    margin-bottom:28px;
+    box-shadow:0 8px 24px rgba(3,78,161,0.18);
+  }
+  header.top img{
+    width:52px;height:52px;
+    border-radius:12px;
+    background:#fff;
+    padding:6px;
+    flex-shrink:0;
+  }
+  header.top .title-block{display:flex;flex-direction:column;gap:6px;}
+  header.top h1{margin:0;font-size:1.5rem;font-weight:700;letter-spacing:.2px;}
+  header.top .subtitle{font-size:.9rem;color:#D7E2F5;font-style:italic;}
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--orange);
+    color:var(--blue-dark);
+    font-weight:800;
+    font-size:.78rem;
+    letter-spacing:.6px;
+    padding:5px 12px;
+    border-radius:999px;
+    width:fit-content;
+  }
+
+  .progress-bar{
+    display:flex;
+    gap:8px;
+    margin-bottom:30px;
+  }
+  .progress-bar .seg{
+    flex:1;
+    height:8px;
+    border-radius:6px;
+    background:#E1E7F0;
+    transition:background .3s ease;
+  }
+  .progress-bar .seg.done{background:var(--green);}
+
+  section.exercise{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:26px 26px 24px;
+    margin-bottom:28px;
+    box-shadow:0 2px 10px rgba(2,47,81,0.05);
+  }
+  .ex-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  .ex-head h2{
+    margin:0;
+    font-size:1.18rem;
+    color:var(--blue-dark);
+  }
+  .threshold-pill{
+    font-size:.74rem;
+    font-weight:700;
+    color:var(--blue-dark);
+    background:#EAF1FB;
+    border:1px solid #C7D9F2;
+    padding:4px 11px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .instructions{
+    color:var(--grey);
+    font-size:.94rem;
+    margin:6px 0 18px;
+  }
+
+  /* Vrai/Faux */
+  table.vf{width:100%;border-collapse:collapse;font-size:.92rem;}
+  table.vf td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top;}
+  table.vf tr:last-child td{border-bottom:none;}
+  table.vf td.stmt{width:72%;}
+  table.vf td.choice{width:14%;text-align:center;white-space:nowrap;}
+  table.vf label{cursor:pointer;user-select:none;display:inline-flex;align-items:center;gap:4px;}
+  table.vf input[type=radio]{accent-color:var(--blue);width:16px;height:16px;cursor:pointer;}
+
+  /* Texte à trous */
+  .cloze-text{font-size:.96rem;text-align:justify;}
+  .cloze-text input{
+    border:none;
+    border-bottom:2px solid var(--orange);
+    background:#FFF7EA;
+    font:inherit;
+    font-weight:600;
+    color:var(--blue-dark);
+    width:150px;
+    padding:2px 4px;
+    text-align:center;
+    border-radius:4px 4px 0 0;
+  }
+  .cloze-text input:focus{outline:none;border-bottom-color:var(--blue);background:#EAF1FB;}
+  .word-bank{
+    background:#FFF3E0;
+    border:1px solid #F4D8A4;
+    border-radius:12px;
+    padding:14px 18px;
+    margin-bottom:18px;
+    font-size:.88rem;
+  }
+  .word-bank .wb-title{font-weight:700;color:var(--orange-dark);margin-bottom:8px;display:block;}
+  .word-bank .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .word-bank .chip{
+    background:#fff;
+    border:1px solid #F0C97A;
+    color:#7A5410;
+    padding:4px 11px;
+    border-radius:999px;
+    font-size:.82rem;
+  }
+
+  /* Classement */
+  table.classement{width:100%;border-collapse:collapse;font-size:.92rem;}
+  table.classement td{padding:9px 8px;border-bottom:1px solid var(--line);}
+  table.classement tr:last-child td{border-bottom:none;}
+  table.classement td.term{width:70%;}
+  table.classement select{
+    width:100%;
+    padding:6px 8px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    font:inherit;
+    background:#fff;
+    color:var(--ink);
+  }
+  .legend{font-size:.82rem;color:var(--grey);margin-bottom:14px;}
+  .legend b{color:var(--blue-dark);}
+
+  /* Expressions (matching par select) */
+  .match-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:9px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .match-row:last-child{border-bottom:none;}
+  .match-row .expr{flex:1;font-weight:600;color:var(--blue-dark);font-size:.94rem;}
+  .match-row .num{
+    background:var(--blue);
+    color:#fff;
+    font-weight:700;
+    font-size:.8rem;
+    width:26px;height:26px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .match-row select{
+    flex:1.4;
+    padding:6px 8px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    font:inherit;
+    background:#fff;
+  }
+
+  /* Boutons */
+  .actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
+  button.primary{
+    background:var(--blue);
+    color:#fff;
+    border:none;
+    font-weight:700;
+    font-size:.92rem;
+    padding:11px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:background .2s ease, transform .1s ease;
+  }
+  button.primary:hover{background:var(--blue-dark);}
+  button.primary:active{transform:scale(0.98);}
+  button.secondary{
+    background:#fff;
+    color:var(--blue);
+    border:1.5px solid var(--blue);
+    font-weight:700;
+    font-size:.9rem;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+  }
+  button.secondary:hover{background:#EAF1FB;}
+
+  /* Résultats */
+  .result{
+    margin-top:18px;
+    padding:14px 18px;
+    border-radius:12px;
+    font-size:.92rem;
+    font-weight:600;
+    display:none;
+  }
+  .result.locked{
+    background:var(--red-bg);
+    color:var(--red);
+    border:1px solid #F3C4C8;
+  }
+  .result.unlocked{
+    background:var(--green-bg);
+    color:var(--green);
+    border:1px solid #BFE3CC;
+  }
+  .result .score-line{font-size:1.02rem;margin-bottom:4px;}
+
+  .reveal-btn{
+    margin-top:14px;
+    border-color:var(--green);
+    color:var(--green);
+  }
+  .reveal-btn:hover{background:var(--green-bg);}
+
+  .correction{
+    display:none;
+    margin-top:16px;
+    padding:16px 18px;
+    background:#EAF7EE;
+    border:1px solid #BFE3CC;
+    border-radius:12px;
+    font-size:.88rem;
+  }
+  .correction h3{
+    margin:0 0 10px;
+    color:var(--green);
+    font-size:.92rem;
+  }
+  .correction ol, .correction ul{margin:0;padding-left:20px;}
+  .correction li{margin-bottom:6px;}
+  .correction .tag-ok{color:var(--green);font-weight:700;}
+
+  footer.note{
+    text-align:center;
+    color:var(--grey);
+    font-size:.8rem;
+    margin-top:10px;
+  }
+
+  @media (max-width:600px){
+    header.top{flex-direction:column;align-items:flex-start;}
+    table.vf td.stmt{width:60%;}
+    .match-row{flex-wrap:wrap;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <img src="data:image/png;base64,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" alt="CELFA">
+    <div class="title-block">
+      <h1>Travail, modes d'emploi</h1>
+      <span class="badge">C1 · CECRL</span>
+    </div>
+  </header>
+
+  <div class="progress-bar" id="progressBar">
+    <div class="seg" data-ex="4"></div>
+    <div class="seg" data-ex="5"></div>
+    <div class="seg" data-ex="6"></div>
+    <div class="seg" data-ex="3"></div>
+  </div>
+
+  <!-- ================= EXERCICE 4 : VRAI / FAUX ================= -->
+  <section class="exercise" id="exercise-4">
+    <div class="ex-head">
+      <h2>Exercice 1 - Les difficultés du travail</h2>
+      <span class="threshold-pill">Seuil pour débloquer le corrigé : 8 / 10 bonnes réponses</span>
+    </div>
+    <p class="instructions">Lisez chaque affirmation et cochez 'Vrai' ou 'Faux'.</p>
+
+    <table class="vf" id="vfTable"></table>
+
+    <div class="actions">
+      <button class="primary" onclick="checkVF()">Vérifier mes réponses</button>
+      <button class="secondary" onclick="resetVF()">Réessayer</button>
+    </div>
+    <div class="result" id="result-4"></div>
+    <button class="secondary reveal-btn" id="reveal-4" style="display:none" onclick="revealCorrection(4)">Voir le corrigé</button>
+    <div class="correction" id="correction-4">
+      <h3>✅ Correction — Exercice 1</h3>
+      <ol id="correction-4-list"></ol>
+    </div>
+  </section>
+
+  <!-- ================= EXERCICE 5 : TEXTE À TROUS ================= -->
+  <section class="exercise" id="exercise-5">
+    <div class="ex-head">
+      <h2>Exercice 2 - Une carrière bien remplie</h2>
+      <span class="threshold-pill">Seuil pour débloquer le corrigé : 10 / 12 bonnes réponses</span>
+    </div>
+    <p class="instructions">Complétez le texte avec les mots de la banque de mots. Faites les accords nécessaires (genre, nombre, conjugaison) ; l'orthographe exacte des accents n'est pas exigée.</p>
+
+    <div class="word-bank">
+      <span class="wb-title">Banque de mots</span>
+      <div class="chips" id="wordBankChips"></div>
+    </div>
+
+    <p class="cloze-text" id="clozeText"></p>
+
+    <div class="actions">
+      <button class="primary" onclick="checkCloze()">Vérifier mes réponses</button>
+      <button class="secondary" onclick="resetCloze()">Réessayer</button>
+    </div>
+    <div class="result" id="result-5"></div>
+    <button class="secondary reveal-btn" id="reveal-5" style="display:none" onclick="revealCorrection(5)">Voir le corrigé</button>
+    <div class="correction" id="correction-5">
+      <h3>✅ Correction — Exercice 2</h3>
+      <ol id="correction-5-list"></ol>
+    </div>
+  </section>
+
+  <!-- ================= EXERCICE 6 : CLASSEMENT ================= -->
+  <section class="exercise" id="exercise-6">
+    <div class="ex-head">
+      <h2>Exercice 3 - Classement par catégorie</h2>
+      <span class="threshold-pill">Seuil pour débloquer le corrigé : 10 / 12 bonnes réponses</span>
+    </div>
+    <p class="instructions">Classez chaque terme dans la bonne catégorie.</p>
+    <p class="legend"><b>A</b> = L'activité professionnelle &nbsp;·&nbsp; <b>B</b> = La hiérarchie &nbsp;·&nbsp; <b>C</b> = Les frais</p>
+
+    <table class="classement" id="classementTable"></table>
+
+    <div class="actions">
+      <button class="primary" onclick="checkClassement()">Vérifier mes réponses</button>
+      <button class="secondary" onclick="resetClassement()">Réessayer</button>
+    </div>
+    <div class="result" id="result-6"></div>
+    <button class="secondary reveal-btn" id="reveal-6" style="display:none" onclick="revealCorrection(6)">Voir le corrigé</button>
+    <div class="correction" id="correction-6">
+      <h3>✅ Correction — Exercice 3</h3>
+      <ul id="correction-6-list"></ul>
+    </div>
+  </section>
+
+  <!-- ================= EXERCICE 3 : EXPRESSIONS IMAGÉES (dernier) ================= -->
+  <section class="exercise" id="exercise-3">
+    <div class="ex-head">
+      <h2>Exercice 4 - Expressions imagées</h2>
+      <span class="threshold-pill">Seuil pour débloquer le corrigé : 6 / 8 bonnes réponses</span>
+    </div>
+    <p class="instructions">Pour chaque expression, choisissez la définition qui correspond.</p>
+
+    <div id="matchList"></div>
+
+    <div class="actions">
+      <button class="primary" onclick="checkMatch()">Vérifier mes réponses</button>
+      <button class="secondary" onclick="resetMatch()">Réessayer</button>
+    </div>
+    <div class="result" id="result-3"></div>
+    <button class="secondary reveal-btn" id="reveal-3" style="display:none" onclick="revealCorrection(3)">Voir le corrigé</button>
+    <div class="correction" id="correction-3">
+      <h3>✅ Correction — Exercice 4</h3>
+      <ul id="correction-3-list"></ul>
+    </div>
+  </section>
+
+  <footer class="note">CELFA - Vocabulaire : Le monde du travail (C1 CECRL)</footer>
+</div>
+
+<script>
+/* ============================================================
+   Utilitaires
+   ============================================================ */
+function normalize(str){
+  return (str || "")
+    .toString()
+    .trim()
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // enlève les accents
+    .replace(/\s+/g, " ")
+    .replace(/[.,;:!?'’"«»]/g, "");
+}
+
+function markProgress(exId, passed){
+  const seg = document.querySelector(`.progress-bar .seg[data-ex="${exId}"]`);
+  if(seg) seg.classList.toggle("done", !!passed);
+}
+
+function showResult(exId, score, total, threshold){
+  const el = document.getElementById(`result-${exId}`);
+  const corr = document.getElementById(`correction-${exId}`);
+  const revealBtn = document.getElementById(`reveal-${exId}`);
+  const passed = score >= threshold;
+  el.style.display = "block";
+  el.className = "result " + (passed ? "unlocked" : "locked");
+  // La correction ne s'affiche jamais automatiquement : il faut cliquer sur "Voir le corrigé".
+  corr.style.display = "none";
+  if(passed){
+    el.innerHTML = `<div class="score-line">🎉 Score : ${score} / ${total} - seuil atteint !</div>Vous pouvez maintenant consulter le corrigé.`;
+    revealBtn.style.display = "inline-block";
+    revealBtn.textContent = "Voir le corrigé";
+  } else {
+    el.innerHTML = `<div class="score-line">Score : ${score} / ${total}</div>Il faut au moins ${threshold} / ${total} pour débloquer la correction. Réessayez !`;
+    revealBtn.style.display = "none";
+  }
+  markProgress(exId, passed);
+}
+
+function revealCorrection(exId){
+  const corr = document.getElementById(`correction-${exId}`);
+  corr.style.display = "block";
+}
+
+/* ============================================================
+   EXERCICE 4 — VRAI / FAUX
+   ============================================================ */
+const vfData = [
+  { text: "Le chômage partiel permet à une entreprise de réduire temporairement le temps de travail de ses salariés tout en leur maintenant une partie de leur rémunération.", answer: true,
+    explain: "Vrai — le chômage partiel maintient une indemnisation pendant la réduction temporaire d'activité." },
+  { text: "Un départ volontaire est toujours imposé par l'employeur, sans l'accord du salarié.", answer: false,
+    explain: "Faux — un départ volontaire suppose au contraire l'accord, voire l'initiative, du salarié." },
+  { text: "La discrimination à l'embauche consiste à écarter un candidat pour des raisons autres que ses compétences professionnelles.", answer: true,
+    explain: "Vrai — c'est le fait d'écarter un candidat pour un critère non professionnel (âge, origine, sexe...)." },
+  { text: "L'égalité salariale signifie que deux postes différents doivent obligatoirement avoir le même salaire.", answer: false,
+    explain: "Faux — l'égalité salariale vise « à travail égal, salaire égal », pas l'uniformisation de tous les postes." },
+  { text: "Le harcèlement moral au travail peut être sanctionné par la loi.", answer: true,
+    explain: "Vrai — le harcèlement moral est un délit reconnu par le droit du travail." },
+  { text: "Un licenciement abusif est un licenciement jugé illégal par un tribunal.", answer: true,
+    explain: "Vrai — il est qualifié d'« abusif » lorsqu'il ne repose pas sur une cause réelle et sérieuse." },
+  { text: "Un plan social est mis en place par une entreprise qui souhaite embaucher massivement.", answer: false,
+    explain: "Faux — un plan social accompagne au contraire des suppressions de postes." },
+  { text: "Un reclassement permet à un salarié licencié d'être accompagné vers un nouvel emploi.", answer: true,
+    explain: "Vrai — le reclassement vise à retrouver un poste, en interne ou à l'extérieur de l'entreprise." },
+  { text: "Un redressement fiscal est une récompense versée par l'administration fiscale.", answer: false,
+    explain: "Faux — c'est au contraire une procédure par laquelle l'administration réclame des impôts non payés." },
+  { text: "Un travailleur pauvre est une personne qui a un emploi, mais dont le revenu reste sous le seuil de pauvreté.", answer: true,
+    explain: "Vrai — c'est la définition même de la catégorie « travailleur pauvre »." },
+];
+const VF_THRESHOLD = 8;
+
+function renderVF(){
+  const table = document.getElementById("vfTable");
+  table.innerHTML = "";
+  vfData.forEach((item, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="stmt">${i + 1}. ${item.text}</td>
+      <td class="choice"><label><input type="radio" name="vf${i}" value="true"> Vrai</label></td>
+      <td class="choice"><label><input type="radio" name="vf${i}" value="false"> Faux</label></td>
+    `;
+    table.appendChild(tr);
+  });
+}
+
+function checkVF(){
+  let score = 0;
+  vfData.forEach((item, i) => {
+    const sel = document.querySelector(`input[name="vf${i}"]:checked`);
+    if(sel && (sel.value === "true") === item.answer) score++;
+  });
+  showResult(4, score, vfData.length, VF_THRESHOLD);
+  const list = document.getElementById("correction-4-list");
+  list.innerHTML = vfData.map(it => `<li><span class="tag-ok">${it.answer ? "VRAI" : "FAUX"}</span> — ${it.explain}</li>`).join("");
+}
+
+function resetVF(){
+  document.querySelectorAll('input[name^="vf"]').forEach(i => i.checked = false);
+  document.getElementById("result-4").style.display = "none";
+  document.getElementById("correction-4").style.display = "none";
+  document.getElementById("reveal-4").style.display = "none";
+  markProgress(4, false);
+}
+
+/* ============================================================
+   EXERCICE 5 — TEXTE À TROUS
+   ============================================================ */
+const clozeBank = [
+  "stagiaire", "gravir les échelons", "bulletin de salaire / fiche de paye",
+  "la grille des salaires", "un congé de maternité", "être en disponibilité",
+  "être en formation", "la préretraite", "la retraite", "un parachute doré",
+  "une année sabbatique", "une prime",
+];
+
+const clozeBlanks = [
+  { accept: ["stagiaire"] },
+  { accept: ["gravir les echelons", "gravir des echelons", "grimper les echelons"] },
+  { accept: ["bulletin de salaire", "fiche de paye", "fiche de paie"] },
+  { accept: ["la grille des salaires", "grille des salaires", "la grille de remuneration"] },
+  { accept: ["un conge de maternite", "conge de maternite", "conge maternite"] },
+  { accept: ["etre en disponibilite", "en disponibilite", "disponibilite"] },
+  { accept: ["etre en formation", "en formation", "formation"] },
+  { accept: ["la preretraite", "preretraite", "une preretraite"] },
+  { accept: ["la retraite", "retraite"] },
+  { accept: ["un parachute dore", "parachute dore"] },
+  { accept: ["une annee sabbatique", "annee sabbatique", "une annee sabbatique de"] },
+  { accept: ["une prime", "prime"] },
+];
+const CLOZE_THRESHOLD = 10;
+
+const clozeTemplate = [
+  "Sophie a commencé sa carrière comme ", 0, " dans un grand groupe, avant de ",
+  1, " peu à peu. Chaque mois, elle vérifiait attentivement son ", 2,
+  " pour s'assurer que son salaire correspondait bien à ", 3,
+  " en vigueur. Après la naissance de son premier enfant, elle a pris ", 4,
+  ". Quelques années plus tard, elle a demandé à ", 5,
+  " pour se consacrer à un projet personnel, avant de reprendre son poste. Reconnue pour son expertise, elle a aussi passé plusieurs mois à ", 6,
+  " continue. À 58 ans, fatiguée par le rythme, elle a opté pour ", 7,
+  " progressive avant de partir définitivement à ", 8,
+  ". Son ancien directeur, lui, est parti avec un généreux ", 9,
+  " après la fusion de l'entreprise. Elle a également profité d'", 10,
+  " pour voyager six mois. Aujourd'hui à la retraite, Sophie profite chaque année d'", 11,
+  " versée pour ses bons résultats passés.",
+];
+
+function renderCloze(){
+  const chipsBox = document.getElementById("wordBankChips");
+  // L'ordre affiché des mots est mélangé pour ne pas correspondre à l'ordre des espaces à compléter.
+  const displayOrder = [5, 10, 0, 8, 3, 11, 1, 6, 9, 2, 7, 4];
+  chipsBox.innerHTML = displayOrder.map(i => `<span class="chip">${clozeBank[i]}</span>`).join("");
+
+  const p = document.getElementById("clozeText");
+  p.innerHTML = "";
+  clozeTemplate.forEach(piece => {
+    if(typeof piece === "number"){
+      const input = document.createElement("input");
+      input.type = "text";
+      input.id = `blank-${piece}`;
+      input.setAttribute("aria-label", `Espace à compléter ${piece + 1}`);
+      p.appendChild(input);
+    } else {
+      p.appendChild(document.createTextNode(piece));
+    }
+  });
+}
+
+function checkCloze(){
+  let score = 0;
+  clozeBlanks.forEach((b, i) => {
+    const input = document.getElementById(`blank-${i}`);
+    const val = normalize(input.value);
+    if(b.accept.some(a => normalize(a) === val)) score++;
+  });
+  showResult(5, score, clozeBlanks.length, CLOZE_THRESHOLD);
+  const list = document.getElementById("correction-5-list");
+  list.innerHTML = clozeBlanks.map((b, i) => `<li>Espace ${i + 1} : <span class="tag-ok">${b.accept[0]}</span></li>`).join("");
+}
+
+function resetCloze(){
+  clozeBlanks.forEach((b, i) => { document.getElementById(`blank-${i}`).value = ""; });
+  document.getElementById("result-5").style.display = "none";
+  document.getElementById("correction-5").style.display = "none";
+  document.getElementById("reveal-5").style.display = "none";
+  markProgress(5, false);
+}
+
+/* ============================================================
+   EXERCICE 6 — CLASSEMENT PAR CATÉGORIE
+   ============================================================ */
+const classementData = [
+  { term: "déclarer ses charges", cat: "C" },
+  { term: "bosser, bûcher, trimer", cat: "A" },
+  { term: "le coworking", cat: "B" },
+  { term: "une corvée, une besogne", cat: "A" },
+  { term: "les dividendes (m.)", cat: "C" },
+  { term: "un/une auto-entrepreneur / entrepreneuse", cat: "A" },
+  { term: "un/une DG, PDG", cat: "B" },
+  { term: "flexibilité, flexi-sécurité", cat: "A" },
+  { term: "le contribuable", cat: "C" },
+  { term: "un/une micro-entrepreneur / entrepreneuse", cat: "A" },
+  { term: "une prestation", cat: "A" },
+  { term: "les conditions de travail (f.)", cat: "A" },
+];
+const CLASSEMENT_THRESHOLD = 10;
+
+function renderClassement(){
+  const table = document.getElementById("classementTable");
+  table.innerHTML = "";
+  classementData.forEach((item, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="term">${item.term}</td>
+      <td>
+        <select id="cat-${i}">
+          <option value="">— choisir —</option>
+          <option value="A">A — L'activité professionnelle</option>
+          <option value="B">B — La hiérarchie</option>
+          <option value="C">C — Les frais</option>
+        </select>
+      </td>
+    `;
+    table.appendChild(tr);
+  });
+}
+
+function checkClassement(){
+  let score = 0;
+  classementData.forEach((item, i) => {
+    const sel = document.getElementById(`cat-${i}`);
+    if(sel.value === item.cat) score++;
+  });
+  showResult(6, score, classementData.length, CLASSEMENT_THRESHOLD);
+  const list = document.getElementById("correction-6-list");
+  list.innerHTML = classementData.map(it => `<li>${it.term} → <span class="tag-ok">${it.cat}</span></li>`).join("");
+}
+
+function resetClassement(){
+  classementData.forEach((_, i) => { document.getElementById(`cat-${i}`).value = ""; });
+  document.getElementById("result-6").style.display = "none";
+  document.getElementById("correction-6").style.display = "none";
+  document.getElementById("reveal-6").style.display = "none";
+  markProgress(6, false);
+}
+
+/* ============================================================
+   EXERCICE 3 — EXPRESSIONS IMAGÉES (matching, en dernier)
+   ============================================================ */
+const expressions = [
+  "arrondir ses fins de mois",
+  "avoir du pain sur la planche",
+  "avoir plusieurs casquettes / cordes à son arc",
+  "être à la botte de quelqu'un",
+  "être payé au lance-pierre",
+  "gagner sa croûte",
+  "obéir au doigt et à l'œil",
+  "travailler à la sueur de son front",
+];
+const definitions = [
+  "trouver un revenu complémentaire pour équilibrer son budget",
+  "avoir beaucoup de travail à accomplir",
+  "cumuler plusieurs fonctions ou compétences",
+  "être totalement soumis aux ordres de quelqu'un",
+  "être très mal payé",
+  "gagner sa vie, subvenir à ses besoins",
+  "obéir immédiatement et sans discuter",
+  "travailler très dur, avec beaucoup d'effort",
+];
+// index de la bonne définition pour chaque expression (0-based, aligné sur "definitions")
+const matchAnswers = [0, 1, 2, 3, 4, 5, 6, 7];
+const MATCH_THRESHOLD = 6;
+
+// on mélange l'ordre d'affichage des définitions dans chaque menu déroulant
+const shuffledDefOrder = [4, 1, 6, 0, 2, 7, 3, 5];
+
+function renderMatch(){
+  const box = document.getElementById("matchList");
+  box.innerHTML = "";
+  expressions.forEach((expr, i) => {
+    const row = document.createElement("div");
+    row.className = "match-row";
+    const options = shuffledDefOrder.map(defIdx =>
+      `<option value="${defIdx}">${definitions[defIdx]}</option>`
+    ).join("");
+    row.innerHTML = `
+      <span class="num">${i + 1}</span>
+      <span class="expr">${expr}</span>
+      <select id="match-${i}">
+        <option value="">— choisir une définition —</option>
+        ${options}
+      </select>
+    `;
+    box.appendChild(row);
+  });
+}
+
+function checkMatch(){
+  let score = 0;
+  expressions.forEach((_, i) => {
+    const sel = document.getElementById(`match-${i}`);
+    if(parseInt(sel.value, 10) === matchAnswers[i]) score++;
+  });
+  showResult(3, score, expressions.length, MATCH_THRESHOLD);
+  const list = document.getElementById("correction-3-list");
+  list.innerHTML = expressions.map((expr, i) =>
+    `<li>${expr} → <span class="tag-ok">${definitions[matchAnswers[i]]}</span></li>`
+  ).join("");
+}
+
+function resetMatch(){
+  expressions.forEach((_, i) => { document.getElementById(`match-${i}`).value = ""; });
+  document.getElementById("result-3").style.display = "none";
+  document.getElementById("correction-3").style.display = "none";
+  document.getElementById("reveal-3").style.display = "none";
+  markProgress(3, false);
+}
+
+/* ============================================================
+   Initialisation
+   ============================================================ */
+renderVF();
+renderCloze();
+renderClassement();
+renderMatch();
+</script>
+</body>
+</html>
