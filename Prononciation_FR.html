@@ -740,7 +740,7 @@
                 resultArea.classList.add('border-red-500', 'bg-red-50');
                 scoreBar.classList.add('bg-red-500');
                 scoreText.className = 'text-xl font-bold text-red-600';
-                feedbackMessage.textContent = "Essaye encore ! Có vẻ máy chưa nghe rõ, thử lại nào. 💪";
+                feedbackMessage.textContent = "Essayez encore ! Có vẻ máy chưa nghe rõ, thử lại nào. 💪";
                 feedbackMessage.className = "text-center mt-3 font-medium text-red-600";
             }
 
@@ -752,7 +752,7 @@
             aiFeedbackContent.innerHTML = '<div class="flex items-center gap-2 text-indigo-500"><div class="ai-loading" style="border-top-color: #6366f1;"></div> Đang phân tích âm điệu của bạn...</div>';
             
             if (roundedScore >= 95) {
-                 aiFeedbackContent.innerHTML = "Tuyệt cú mèo! Bạn phát âm chuẩn như người bản xứ rồi, không cần sửa gì thêm đâu! 🎉";
+                 aiFeedbackContent.innerHTML = "Tuyệt vời! Bạn phát âm chuẩn như người bản xứ rồi, không cần sửa gì thêm đâu! 🎉";
             } else {
                  let promptText = `Học viên muốn phát âm từ tiếng Pháp "${targetWord}", nhưng hệ thống nhận diện ra họ đã đọc thành "${spokenText}" (Độ chính xác ${roundedScore}%). `;
                  if (roundedScore >= 70) {
