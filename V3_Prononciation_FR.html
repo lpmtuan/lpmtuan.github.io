@@ -248,7 +248,6 @@
 
         let isRecording = false;
         let recognition = null;
-        let recognitionTimeout = null;
         let userName = "";
         let synthVoices = []; // Thêm biến lưu trữ danh sách giọng đọc
         let currentVoice = "Aoede"; // Mặc định là giọng Nữ (Aoede)
@@ -330,30 +329,14 @@
                     recordBtn.classList.replace('hover:bg-blue-700', 'hover:bg-red-600');
                     recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> <span>Đang nghe...</span>';
                     hideSystemMessage();
-
-                    // An toàn: nếu sau 8 giây không có onresult/onerror/onend nào
-                    // được bắn ra (bug hay gặp trên Safari iOS), tự động ngắt
-                    // để giải phóng mic và không bị treo mãi ở "Đang nghe...".
-                    clearTimeout(recognitionTimeout);
-                    recognitionTimeout = setTimeout(function() {
-                        if (isRecording) {
-                            try { recognition.abort(); } catch (e) {}
-                            stopRecordingUI();
-                            showSystemMessage('Không nhận được phản hồi từ dịch vụ nhận diện. Vui lòng thử lại.', 'warning');
-                            rebuildRecognitionInstance();
-                        }
-                    }, 8000);
                 };
 
                 recognition.onresult = function(event) {
-                    clearTimeout(recognitionTimeout);
                     const transcript = event.results[0][0].transcript;
                     processPronunciation(transcript);
-                    rebuildRecognitionInstance();
                 };
 
                 recognition.onerror = function(event) {
-                    clearTimeout(recognitionTimeout);
                     console.error("Speech recognition error", event.error);
                     stopRecordingUI();
                     
@@ -363,56 +346,21 @@
                         showSystemMessage('Lỗi mạng: Trình duyệt không thể kết nối tới máy chủ nhận diện giọng nói. Vui lòng kiểm tra Internet, tắt VPN, hoặc tốt nhất là thử dùng Google Chrome.', 'error');
                     } else if (event.error === 'no-speech') {
                         showSystemMessage('Không nghe thấy âm thanh nào. Vui lòng thử lại.', 'warning');
+                    } else if (event.error === 'service-not-allowed') {
+                        showSystemMessage('Bị chặn trên iPhone/iPad. Vui lòng dùng trình duyệt Safari (thay vì Chrome) và Bật "Đọc chính tả" trong Cài đặt máy > Cài đặt chung > Bàn phím.', 'error');
                     } else {
                         showSystemMessage(`Lỗi nhận diện: ${event.error}`, 'error');
                     }
-                    rebuildRecognitionInstance();
                 };
 
                 recognition.onend = function() {
-                    clearTimeout(recognitionTimeout);
                     stopRecordingUI();
                 };
-
-                // Đảm bảo giải phóng mic khi người dùng rời trang, chuyển tab,
-                // hoặc đóng Safari trong lúc đang ghi âm.
-                document.addEventListener('visibilitychange', function() {
-                    if (document.hidden && isRecording) {
-                        try { recognition.abort(); } catch (e) {}
-                        stopRecordingUI();
-                    }
-                    if (document.hidden) {
-                        rebuildRecognitionInstance();
-                    }
-                });
-                window.addEventListener('pagehide', function() {
-                    if (isRecording) {
-                        try { recognition.abort(); } catch (e) {}
-                    }
-                });
             } else {
                 showSystemMessage('Trình duyệt của bạn không hỗ trợ tính năng ghi âm (Speech Recognition). Vui lòng dùng Chrome hoặc Edge.', 'error');
                 recordBtn.disabled = true;
                 recordBtn.classList.add('opacity-50', 'cursor-not-allowed');
             }
-        }
-
-        // Safari (đặc biệt iOS) đôi khi giữ audio session của SpeechRecognition
-        // cũ ở tầng hệ điều hành ngay cả sau khi abort()/stop(), khiến icon
-        // micro trên thanh trạng thái không tắt cho tới khi tắt hẳn Safari.
-        // Cách giảm thiểu: hủy hoàn toàn instance cũ và dựng lại instance mới
-        // cho lần ghi âm tiếp theo, thay vì tái sử dụng cùng một object.
-        function rebuildRecognitionInstance() {
-            if (!recognition) return;
-            try {
-                recognition.onstart = null;
-                recognition.onresult = null;
-                recognition.onerror = null;
-                recognition.onend = null;
-                recognition.abort();
-            } catch (e) {}
-            recognition = null;
-            setTimeout(setupSpeechRecognition, 150);
         }
 
         function handleKeyPress(e) {
@@ -703,9 +651,10 @@
             }
 
             if (isRecording) {
-                clearTimeout(recognitionTimeout);
-                recognition.abort();
-                rebuildRecognitionInstance();
+                try {
+                    recognition.abort(); // Dùng abort() thay vì stop() để ngắt kết nối dứt khoát trên iOS
+                } catch(e) {}
+                stopRecordingUI();
             } else {
                 const wordToSay = vocabInput.value.trim();
                 if (!wordToSay) {
@@ -838,6 +787,28 @@
             loadVoices(); // Thử tải ngay lập tức
             window.speechSynthesis.onvoiceschanged = loadVoices; // Tải lại khi danh sách thay đổi/sẵn sàng
         }
+
+        // --- KHẮC PHỤC LỖI TREO MICRO TRÊN IOS SAFARI ---
+        // Lắng nghe khoảnh khắc người dùng ẩn tab, thoát ra màn hình chính
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && isRecording && recognition) {
+                try {
+                    recognition.abort(); // Cưỡng chế ngắt Micro ngay lập tức
+                    stopRecordingUI();
+                } catch (e) {
+                    console.error("Lỗi khi tắt micro ẩn:", e);
+                }
+            }
+        });
+
+        // Lắng nghe khoảnh khắc người dùng đóng hẳn tab hoặc tải lại trang
+        window.addEventListener('pagehide', function() {
+            if (isRecording && recognition) {
+                try {
+                    recognition.abort();
+                } catch (e) {}
+            }
+        });
     </script>
 </body>
 </html>
