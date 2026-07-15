@@ -98,7 +98,7 @@
                 <i class="fa-solid fa-language"></i>
             </div>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Bonjour ! Xin chào!</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Bonjour ! Xin chào !</h1>
         <p class="text-gray-500 mb-8">Donnez votre nom pour commencer.<br><span class="text-sm">(Nhập tên của bạn để bắt đầu.)</span></p>
         
         <div class="mb-6">
@@ -119,7 +119,7 @@
         <div class="flex justify-between items-center mb-8 border-b pb-4">
             <div>
                 <h2 class="text-xl font-bold text-gray-800">Salut, <span id="display-name" class="text-blue-600"></span> !</h2>
-                <p class="text-sm text-gray-500">Nào cùng luyện phát âm nhé!</p>
+                <p class="text-sm text-gray-500">Nào cùng luyện phát âm!</p>
             </div>
             <button onclick="goBack()" class="text-gray-400 hover:text-gray-600 transition-colors" title="Đổi tên">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -340,6 +340,7 @@
                             try { recognition.abort(); } catch (e) {}
                             stopRecordingUI();
                             showSystemMessage('Không nhận được phản hồi từ dịch vụ nhận diện. Vui lòng thử lại.', 'warning');
+                            rebuildRecognitionInstance();
                         }
                     }, 8000);
                 };
@@ -348,6 +349,7 @@
                     clearTimeout(recognitionTimeout);
                     const transcript = event.results[0][0].transcript;
                     processPronunciation(transcript);
+                    rebuildRecognitionInstance();
                 };
 
                 recognition.onerror = function(event) {
@@ -364,6 +366,7 @@
                     } else {
                         showSystemMessage(`Lỗi nhận diện: ${event.error}`, 'error');
                     }
+                    rebuildRecognitionInstance();
                 };
 
                 recognition.onend = function() {
@@ -378,6 +381,9 @@
                         try { recognition.abort(); } catch (e) {}
                         stopRecordingUI();
                     }
+                    if (document.hidden) {
+                        rebuildRecognitionInstance();
+                    }
                 });
                 window.addEventListener('pagehide', function() {
                     if (isRecording) {
@@ -389,6 +395,24 @@
                 recordBtn.disabled = true;
                 recordBtn.classList.add('opacity-50', 'cursor-not-allowed');
             }
+        }
+
+        // Safari (đặc biệt iOS) đôi khi giữ audio session của SpeechRecognition
+        // cũ ở tầng hệ điều hành ngay cả sau khi abort()/stop(), khiến icon
+        // micro trên thanh trạng thái không tắt cho tới khi tắt hẳn Safari.
+        // Cách giảm thiểu: hủy hoàn toàn instance cũ và dựng lại instance mới
+        // cho lần ghi âm tiếp theo, thay vì tái sử dụng cùng một object.
+        function rebuildRecognitionInstance() {
+            if (!recognition) return;
+            try {
+                recognition.onstart = null;
+                recognition.onresult = null;
+                recognition.onerror = null;
+                recognition.onend = null;
+                recognition.abort();
+            } catch (e) {}
+            recognition = null;
+            setTimeout(setupSpeechRecognition, 150);
         }
 
         function handleKeyPress(e) {
@@ -681,6 +705,7 @@
             if (isRecording) {
                 clearTimeout(recognitionTimeout);
                 recognition.abort();
+                rebuildRecognitionInstance();
             } else {
                 const wordToSay = vocabInput.value.trim();
                 if (!wordToSay) {
@@ -781,7 +806,7 @@
                 resultArea.classList.add('border-red-500', 'bg-red-50');
                 scoreBar.classList.add('bg-red-500');
                 scoreText.className = 'text-xl font-bold text-red-600';
-                feedbackMessage.textContent = "Essayez encore ! Có vẻ máy chưa nghe rõ, bạn thử lại nào. 💪";
+                feedbackMessage.textContent = "Essaye encore ! Có vẻ máy chưa nghe rõ, bạn thử lại nào. 💪";
                 feedbackMessage.className = "text-center mt-3 font-medium text-red-600";
             }
         }
