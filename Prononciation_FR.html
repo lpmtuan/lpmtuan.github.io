@@ -116,10 +116,10 @@
         <p class="text-gray-500 mb-8">Donnez votre nom pour commencer.<br><span class="text-sm">(Nhập tên của bạn để bắt đầu.)</span></p>
         
         <div class="mb-6">
-            <input type="text" id="user-name-input" placeholder="Tên của bạn..." 
+            <input type="text" id="user-name-input" placeholder="Votre nom... (Tên của bạn...)" 
                 class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#034EA1] focus:ring-2 focus:ring-[#034EA1]/25 transition-all text-center text-lg shadow-sm"
                 onkeypress="handleKeyPress(event)">
-            <p id="name-error" class="text-red-500 text-sm mt-2 hidden">Vui lòng nhập tên của bạn!</p>
+            <p id="name-error" class="text-red-500 text-sm mt-2 hidden">Veuillez entrer votre nom !<br><span class="text-xs opacity-75">(Vui lòng nhập tên của bạn!)</span></p>
         </div>
         
         <button onclick="startApp()" class="w-full bg-[#034EA1] hover:bg-[#023B78] text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
@@ -140,35 +140,35 @@
         <div class="flex justify-between items-center mb-8 border-b pb-4">
             <div>
                 <h2 class="text-xl font-bold text-gray-800">Salut, <span id="display-name" class="text-[#034EA1]"></span> !</h2>
-                <p class="text-sm text-gray-500">Nào cùng luyện phát âm nhé!</p>
+                <p class="text-sm text-gray-500">Entraînons-nous à la prononciation !<br><span class="text-xs text-gray-400">(Nào cùng luyện phát âm nhé!)</span></p>
             </div>
-            <button onclick="goBack()" class="text-gray-400 hover:text-gray-600 transition-colors" title="Đổi tên">
+            <button onclick="goBack()" class="text-gray-400 hover:text-gray-600 transition-colors" title="Changer de nom (Đổi tên)">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
             </button>
         </div>
 
         <!-- Thẻ nhập từ vựng (Flashcard) -->
         <div class="bg-[#034EA1]/5 rounded-2xl p-6 mb-8 relative border border-[#034EA1]/15 shadow-inner">
-            <div class="absolute top-2 left-4 text-xs text-[#034EA1]/60 font-semibold tracking-wider uppercase">Từ vựng / Câu ngắn</div>
+            <div class="absolute top-2 left-4 text-xs text-[#034EA1]/60 font-semibold tracking-wider uppercase">Mot / Phrase courte <span class="normal-case font-normal opacity-75">(Từ / Câu ngắn)</span></div>
             <div class="flex items-center justify-between mt-4">
                 <button onclick="prevWord()" class="w-10 h-10 rounded-full bg-white shadow hover:bg-gray-50 flex items-center justify-center text-gray-500 transition-colors">
                     <i class="fa-solid fa-chevron-left"></i>
                 </button>
                 
                 <div class="flex-1 px-4">
-                    <input type="text" id="vocabulary-input" class="word-input" value="Bonjour" placeholder="Nhập từ vựng...">
+                    <input type="text" id="vocabulary-input" class="word-input" value="Bonjour" placeholder="Saisissez un mot... (Nhập từ vựng...)">
                 </div>
                 
                 <button onclick="nextWord()" class="w-10 h-10 rounded-full bg-white shadow hover:bg-gray-50 flex items-center justify-center text-gray-500 transition-colors">
                     <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>
-            <p class="text-center text-sm text-gray-400 mt-2">Bạn có thể tự gõ từ mới hoặc dùng mũi tên</p>
+            <p class="text-center text-sm text-gray-400 mt-2">Vous pouvez taper un nouveau mot ou utiliser les flèches.<br><span class="text-xs">(Bạn có thể tự gõ từ mới hoặc dùng mũi tên.)</span></p>
             
             <!-- Thêm class 'hidden' vào div bên dưới để tạm ẩn phần AI tạo ví dụ -->
             <div class="hidden mt-4 pt-4 border-t border-[#034EA1]/25">
                 <button onclick="generateAIExample()" class="text-sm text-[#034EA1] font-medium hover:text-[#023B78] flex items-center justify-center gap-2 transition-colors w-full bg-white bg-opacity-50 py-2 rounded-lg border border-[#034EA1]/15 hover:bg-opacity-100">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Nhờ AI tạo câu ví dụ
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Demander à l'IA un exemple <span class="opacity-75">(Nhờ AI tạo câu ví dụ)</span>
                 </button>
                 <div id="ai-example-box" class="hidden mt-3 p-4 bg-white rounded-xl text-sm text-gray-700 shadow-sm border border-[#034EA1]/15 transition-all">
                     <!-- Nội dung AI sẽ hiển thị ở đây -->
@@ -179,44 +179,44 @@
         <!-- Tùy chọn giọng đọc -->
         <div class="flex justify-center mb-6">
             <div class="inline-flex bg-white rounded-xl p-1 border border-gray-200 shadow-sm">
-                <button id="voice-female" onclick="setVoice('Aoede')" class="px-6 py-2 rounded-lg text-sm font-bold transition-colors bg-[#034EA1]/10 text-[#034EA1]">
-                    <i class="fa-solid fa-person-dress mr-1"></i> Giọng Nữ
+                <button id="voice-female" onclick="setVoice('Aoede')" class="px-6 py-2 rounded-lg text-sm font-bold transition-colors bg-[#034EA1]/10 text-[#034EA1] leading-tight">
+                    <i class="fa-solid fa-person-dress mr-1"></i> Voix féminine<br><span class="text-[10px] font-normal opacity-75">(Giọng nữ)</span>
                 </button>
-                <button id="voice-male" onclick="setVoice('Charon')" class="px-6 py-2 rounded-lg text-sm font-bold transition-colors text-gray-500 hover:text-gray-700 hover:bg-gray-50">
-                    <i class="fa-solid fa-person mr-1"></i> Giọng Nam
+                <button id="voice-male" onclick="setVoice('Charon')" class="px-6 py-2 rounded-lg text-sm font-bold transition-colors text-gray-500 hover:text-gray-700 hover:bg-gray-50 leading-tight">
+                    <i class="fa-solid fa-person mr-1"></i> Voix masculine<br><span class="text-[10px] font-normal opacity-75">(Giọng nam)</span>
                 </button>
             </div>
         </div>
 
         <!-- Các nút chức năng -->
-        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8">
-            <button id="listen-btn" onclick="listenWord()" class="flex-1 w-full flex items-center justify-center gap-2 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                <i class="fa-solid fa-volume-high text-[#FAAF40]"></i> <span id="listen-text">Nghe</span>
+        <div class="flex flex-col sm:flex-row justify-center items-stretch gap-4 mb-8">
+            <button id="listen-btn" onclick="listenWord()" class="flex-1 w-full flex items-center justify-center gap-2 bg-[#FAAF40] hover:bg-[#E8961B] text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-[#FAAF40]/30 disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="fa-solid fa-volume-high text-white"></i> <span id="listen-text" class="flex flex-col leading-tight text-left"><span>Écouter</span><span class="text-[10px] font-normal opacity-80">(Nghe)</span></span>
             </button>
             
             <button id="record-btn" onclick="toggleRecording()" class="flex-1 w-full flex items-center justify-center gap-2 bg-[#034EA1] hover:bg-[#023B78] text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-[#034EA1]/30">
-                <i class="fa-solid fa-microphone"></i> <span id="record-text">Bắt đầu ghi âm</span>
+                <i class="fa-solid fa-microphone"></i> <span id="record-text" class="flex flex-col leading-tight text-left"><span>Enregistrer</span><span class="text-[10px] font-normal opacity-70">(Ghi âm)</span></span>
             </button>
         </div>
 
         <!-- Khu vực đối chiếu kết quả -->
         <div id="result-area" class="hidden rounded-xl p-5 border-2 transition-all">
-            <h3 class="font-semibold text-gray-700 mb-3 border-b pb-2">Kết quả phân tích:</h3>
+            <h3 class="font-semibold text-gray-700 mb-3 border-b pb-2">Résultat de l'analyse : <span class="font-normal text-sm opacity-75">(Kết quả phân tích)</span></h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <p class="text-xs text-gray-500 uppercase tracking-wider">Từ gốc</p>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider">Mot original<br><span class="normal-case font-normal opacity-75 text-[10px]">(Từ gốc)</span></p>
                     <p id="target-word" class="font-medium text-lg text-gray-800">Bonjour</p>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-500 uppercase tracking-wider">Bạn đã nói</p>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider">Vous avez prononcé<br><span class="normal-case font-normal opacity-75 text-[10px]">(Bạn đã phát âm)</span></p>
                     <p id="spoken-word" class="font-medium text-lg italic text-gray-600">-</p>
                 </div>
             </div>
 
             <div class="mt-4 pt-4 border-t">
                 <div class="flex justify-between items-end mb-1">
-                    <span class="text-sm font-medium text-gray-700">Độ chính xác:</span>
+                    <span class="text-sm font-medium text-gray-700">Précision <span class="opacity-75">(Độ chính xác)</span> :</span>
                     <span id="score-text" class="text-xl font-bold">0%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2.5">
@@ -356,7 +356,7 @@
                     recordBtn.classList.add('recording-pulse');
                     recordBtn.classList.replace('bg-[#034EA1]', 'bg-red-500');
                     recordBtn.classList.replace('hover:bg-[#023B78]', 'hover:bg-red-600');
-                    recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> <span>Đang nghe...</span>';
+                    recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> <span class="flex flex-col leading-tight text-left"><span>Écoute en cours...</span><span class="text-[10px] font-normal opacity-80">(Đang nghe...)</span></span>';
                     hideSystemMessage();
 
                     // An toàn: nếu sau 8 giây không có onresult/onerror/onend nào
@@ -367,7 +367,7 @@
                         if (isRecording) {
                             try { recognition.abort(); } catch (e) {}
                             stopRecordingUI();
-                            showSystemMessage('Không nhận được phản hồi từ dịch vụ nhận diện. Vui lòng thử lại.', 'warning');
+                            showSystemMessage('Aucune réponse du service de reconnaissance. Veuillez réessayer.', 'Không nhận được phản hồi từ dịch vụ nhận diện. Vui lòng thử lại.', 'warning');
                             rebuildRecognitionInstance();
                         }
                     }, 8000);
@@ -387,13 +387,13 @@
                     stopRecordingUI();
                     
                     if (event.error === 'not-allowed') {
-                        showSystemMessage('Vui lòng cấp quyền sử dụng Micro cho trình duyệt.', 'error');
+                        showSystemMessage('Veuillez autoriser l\'accès au microphone dans le navigateur.', 'Vui lòng cấp quyền sử dụng Micro cho trình duyệt.', 'error');
                     } else if (event.error === 'network') {
-                        showSystemMessage('Lỗi mạng: Trình duyệt không thể kết nối tới máy chủ nhận diện giọng nói. Vui lòng kiểm tra Internet, tắt VPN, hoặc tốt nhất là thử dùng Google Chrome.', 'error');
+                        showSystemMessage('Erreur réseau : le navigateur n\'a pas pu se connecter au serveur de reconnaissance vocale. Vérifiez votre connexion, désactivez le VPN, ou utilisez Google Chrome.', 'Lỗi mạng: Trình duyệt không thể kết nối tới máy chủ nhận diện giọng nói. Vui lòng kiểm tra Internet, tắt VPN, hoặc tốt nhất là thử dùng Google Chrome.', 'error');
                     } else if (event.error === 'no-speech') {
-                        showSystemMessage('Không nghe thấy âm thanh nào. Vui lòng thử lại.', 'warning');
+                        showSystemMessage('Aucun son détecté. Veuillez réessayer.', 'Không nghe thấy âm thanh nào. Vui lòng thử lại.', 'warning');
                     } else {
-                        showSystemMessage(`Lỗi nhận diện: ${event.error}`, 'error');
+                        showSystemMessage(`Erreur de reconnaissance : ${event.error}`, `Lỗi nhận diện: ${event.error}`, 'error');
                     }
                     rebuildRecognitionInstance();
                 };
@@ -420,7 +420,7 @@
                     }
                 });
             } else {
-                showSystemMessage('Trình duyệt của bạn không hỗ trợ tính năng ghi âm (Speech Recognition). Vui lòng dùng Chrome hoặc Edge.', 'error');
+                showSystemMessage('Votre navigateur ne prend pas en charge la reconnaissance vocale. Veuillez utiliser Chrome ou Edge.', 'Trình duyệt của bạn không hỗ trợ tính năng ghi âm (Speech Recognition). Vui lòng dùng Chrome hoặc Edge.', 'error');
                 recordBtn.disabled = true;
                 recordBtn.classList.add('opacity-50', 'cursor-not-allowed');
             }
@@ -523,20 +523,20 @@
 
             const aiExampleBox = document.getElementById('ai-example-box');
             aiExampleBox.classList.remove('hidden');
-            aiExampleBox.innerHTML = '<div class="flex justify-center items-center gap-2 font-medium text-[#034EA1]"><div class="ai-loading"></div> Đang nhờ AI suy nghĩ câu ví dụ...</div>';
+            aiExampleBox.innerHTML = '<div class="flex justify-center items-center gap-2 font-medium text-[#034EA1]"><div class="ai-loading"></div> L\'IA réfléchit à un exemple... <span class="text-xs font-normal opacity-70">(Đang nhờ AI suy nghĩ câu ví dụ...)</span></div>';
 
             const prompt = `Viết một câu ví dụ thật ngắn gọn và thông dụng trong đời sống bằng tiếng Pháp có chứa từ hoặc cụm từ "${word}". Sau đó cung cấp nghĩa tiếng Việt của câu đó. Format: [Câu tiếng Pháp] - [Nghĩa tiếng Việt]. Không cần giải thích dài dòng.`;
 
             callGeminiAPI(
                 prompt,
                 (text) => {
-                    aiExampleBox.innerHTML = `<strong>Ví dụ:</strong> ${text.replace(/\n/g, '<br>')}`;
+                    aiExampleBox.innerHTML = `<strong>Exemple : <span class="font-normal opacity-70">(Ví dụ)</span></strong> ${text.replace(/\n/g, '<br>')}`;
                 },
                 (error) => {
                     if (error.message === "MISSING_API_KEY") {
                         aiExampleBox.innerHTML = '<span class="text-orange-500"><i class="fa-solid fa-key mr-1"></i> <strong>Cần API Key:</strong> Vui lòng điền Gemini API Key vào mã nguồn (biến <code>geminiApiKey</code>) để sử dụng tính năng này.</span>';
                     } else {
-                        aiExampleBox.innerHTML = '<span class="text-red-500">Có lỗi khi kết nối AI. Vui lòng thử lại sau.</span>';
+                        aiExampleBox.innerHTML = '<span class="text-red-500">Erreur de connexion à l\'IA. Veuillez réessayer plus tard. <span class="text-xs opacity-70">(Có lỗi khi kết nối AI. Vui lòng thử lại sau.)</span></span>';
                     }
                 }
             );
@@ -618,7 +618,7 @@
 
             // Hiển thị trạng thái đang tải
             listenBtn.disabled = true;
-            listenBtn.innerHTML = '<div class="ai-loading border-gray-400 border-t-gray-700"></div> <span id="listen-text" class="text-gray-500">Đang xử lý âm thanh...</span>';
+            listenBtn.innerHTML = '<div class="ai-loading border-white/30 border-t-white"></div> <span id="listen-text" class="text-white">Traitement audio en cours... <span class="text-[10px] font-normal opacity-80">(Đang xử lý âm thanh...)</span></span>';
             hideSystemMessage(); // Ẩn thông báo lỗi cũ nếu có
 
             // Payload gọi Gemini TTS
@@ -687,14 +687,14 @@
             } finally {
                 // Khôi phục giao diện nút Nghe
                 listenBtn.disabled = false;
-                listenBtn.innerHTML = '<i class="fa-solid fa-volume-high text-[#FAAF40]"></i> <span id="listen-text">Nghe</span>';
+                listenBtn.innerHTML = '<i class="fa-solid fa-volume-high text-white"></i> <span id="listen-text" class="flex flex-col leading-tight text-left"><span>Écouter</span><span class="text-[10px] font-normal opacity-80">(Nghe)</span></span>';
             }
         }
 
         // Hàm phát âm dự phòng dùng bộ đọc tích hợp sẵn của máy tính/điện thoại
         function fallbackToBrowserTTS(text) {
             if (!('speechSynthesis' in window)) {
-                showSystemMessage("Trình duyệt của bạn không hỗ trợ phát âm.", "error");
+                showSystemMessage("Votre navigateur ne prend pas en charge la synthèse vocale.", "Trình duyệt của bạn không hỗ trợ phát âm.", "error");
                 return;
             }
 
@@ -722,12 +722,12 @@
             window.speechSynthesis.speak(utterance);
             
             // Hiện thông báo nhỏ cho biết đang dùng giọng cục bộ thay vì AI
-            showSystemMessage("Đang dùng giọng đọc offline của thiết bị do lỗi mạng/API.", "warning");
+            showSystemMessage("Utilisation de la voix hors-ligne de l'appareil (erreur réseau/API).", "Đang dùng giọng đọc ngoại tuyến của thiết bị do lỗi mạng/API.", "warning");
         }
 
         function toggleRecording() {
             if (!recognition) {
-                showSystemMessage('Tính năng nhận diện giọng nói không khả dụng.', 'error');
+                showSystemMessage('La reconnaissance vocale n\'est pas disponible.', 'Tính năng nhận diện giọng nói không khả dụng.', 'error');
                 return;
             }
 
@@ -738,7 +738,7 @@
             } else {
                 const wordToSay = vocabInput.value.trim();
                 if (!wordToSay) {
-                    showSystemMessage('Vui lòng nhập từ vựng trước khi đọc.', 'warning');
+                    showSystemMessage('Veuillez saisir un mot avant de l\'écouter.', 'Vui lòng nhập từ vựng trước khi đọc.', 'warning');
                     return;
                 }
                 recognition.start();
@@ -750,7 +750,7 @@
             recordBtn.classList.remove('recording-pulse');
             recordBtn.classList.replace('bg-red-500', 'bg-[#034EA1]');
             recordBtn.classList.replace('hover:bg-red-600', 'hover:bg-[#023B78]');
-            recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> <span>Bắt đầu ghi âm</span>';
+            recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> <span class="flex flex-col leading-tight text-left"><span>Enregistrer</span><span class="text-[10px] font-normal opacity-70">(Bắt đầu ghi âm)</span></span>';
         }
 
         // Hàm tính khoảng cách Levenshtein (So sánh sự giống nhau của 2 chuỗi)
@@ -840,8 +840,8 @@
             }
         }
 
-        function showSystemMessage(text, type) {
-            systemMessage.textContent = text;
+        function showSystemMessage(textFr, textVi, type) {
+            systemMessage.innerHTML = `${textFr}<br><span class="text-xs opacity-75">(${textVi})</span>`;
             systemMessage.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-yellow-100', 'text-yellow-700');
             
             if (type === 'error') {
