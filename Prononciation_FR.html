@@ -98,7 +98,7 @@
                 <i class="fa-solid fa-language"></i>
             </div>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Bonjour ! Xin chào!</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Bonjour ! Xin chào !</h1>
         <p class="text-gray-500 mb-8">Donnez votre nom pour commencer.<br><span class="text-sm">(Nhập tên của bạn để bắt đầu.)</span></p>
         
         <div class="mb-6">
@@ -144,6 +144,7 @@
             </div>
             <p class="text-center text-sm text-gray-400 mt-2">Bạn có thể tự gõ từ mới hoặc dùng mũi tên</p>
             
+            <!-- Thêm class 'hidden' vào div bên dưới để tạm ẩn phần AI tạo ví dụ -->
             <div class="hidden mt-4 pt-4 border-t border-blue-200">
                 <button onclick="generateAIExample()" class="text-sm text-blue-600 font-medium hover:text-blue-800 flex items-center justify-center gap-2 transition-colors w-full bg-white bg-opacity-50 py-2 rounded-lg border border-blue-100 hover:bg-opacity-100">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Nhờ AI tạo câu ví dụ
@@ -258,11 +259,17 @@
         let synthVoices = []; // Thêm biến lưu trữ danh sách giọng đọc
         let currentVoice = "Aoede"; // Mặc định là giọng Nữ (Aoede)
 
-        const geminiApiKey = ""; // Để trống, Canvas sẽ tự động cấp phát khi chạy
-        const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`;
+        // BẠN HÃY DÁN API KEY CỦA BẠN VÀO GIỮA 2 DẤU NGOẶC KÉP BÊN DƯỚI
+        const geminiApiKey = ""; 
+        const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`;
 
         // Hàm gọi Gemini API dùng chung
         async function callGeminiAPI(prompt, successCallback, errorCallback) {
+            if (!geminiApiKey || geminiApiKey.trim() === "") {
+                errorCallback(new Error("MISSING_API_KEY"));
+                return;
+            }
+
             const payload = {
                 contents: [{ parts: [{ text: prompt }] }],
                 systemInstruction: {
@@ -277,6 +284,10 @@
                     body: JSON.stringify(payload)
                 });
                 
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
                 const result = await response.json();
                 if (result.candidates && result.candidates[0].content.parts[0].text) {
                     successCallback(result.candidates[0].content.parts[0].text);
@@ -338,6 +349,8 @@
                     
                     if (event.error === 'not-allowed') {
                         showSystemMessage('Vui lòng cấp quyền sử dụng Micro cho trình duyệt.', 'error');
+                    } else if (event.error === 'network') {
+                        showSystemMessage('Lỗi mạng: Trình duyệt không thể kết nối tới máy chủ nhận diện giọng nói. Vui lòng kiểm tra Internet, tắt VPN, hoặc tốt nhất là thử dùng Google Chrome.', 'error');
                     } else if (event.error === 'no-speech') {
                         showSystemMessage('Không nghe thấy âm thanh nào. Vui lòng thử lại.', 'warning');
                     } else {
@@ -444,7 +457,11 @@
                     aiExampleBox.innerHTML = `<strong>Ví dụ:</strong> ${text.replace(/\n/g, '<br>')}`;
                 },
                 (error) => {
-                    aiExampleBox.innerHTML = '<span class="text-red-500">Có lỗi khi kết nối AI. Vui lòng thử lại sau.</span>';
+                    if (error.message === "MISSING_API_KEY") {
+                        aiExampleBox.innerHTML = '<span class="text-orange-500"><i class="fa-solid fa-key mr-1"></i> <strong>Cần API Key:</strong> Vui lòng điền Gemini API Key vào mã nguồn (biến <code>geminiApiKey</code>) để sử dụng tính năng này.</span>';
+                    } else {
+                        aiExampleBox.innerHTML = '<span class="text-red-500">Có lỗi khi kết nối AI. Vui lòng thử lại sau.</span>';
+                    }
                 }
             );
         }
@@ -740,39 +757,45 @@
                 resultArea.classList.add('border-red-500', 'bg-red-50');
                 scoreBar.classList.add('bg-red-500');
                 scoreText.className = 'text-xl font-bold text-red-600';
-                feedbackMessage.textContent = "Essayez encore ! Có vẻ máy chưa nghe rõ, bạn thử lại nào. 💪";
+                feedbackMessage.textContent = "Essaye encore ! Có vẻ máy chưa nghe rõ, bạn thử lại nào. 💪";
                 feedbackMessage.className = "text-center mt-3 font-medium text-red-600";
             }
 
-            const aiFeedbackBox = document.getElementById('ai-feedback-box');
-            const aiFeedbackContent = document.getElementById('ai-feedback-content');
-            aiFeedbackBox.classList.remove('hidden');
-            
-            // Xóa nội dung cũ và hiển thị loading
-            aiFeedbackContent.innerHTML = '<div class="flex items-center gap-2 text-indigo-500"><div class="ai-loading" style="border-top-color: #6366f1;"></div> Đang phân tích âm điệu của bạn...</div>';
-            
-            if (roundedScore >= 95) {
-                 aiFeedbackContent.innerHTML = "Tuyệt vời! Bạn phát âm chuẩn như người bản xứ rồi, không cần sửa gì thêm đâu! 🎉";
-            } else {
-                 let promptText = `Học viên muốn phát âm từ tiếng Pháp "${targetWord}", nhưng hệ thống nhận diện ra họ đã đọc thành "${spokenText}" (Độ chính xác ${roundedScore}%). `;
-                 if (roundedScore >= 70) {
-                     promptText += `Họ phát âm khá tốt nhưng chưa hoàn hảo. Chỉ ra lỗi sai nhỏ giữa âm gốc và âm họ đọc, và chỉ cho họ cách khắc phục ngắn gọn (tối đa 2 câu).`;
-                 } else {
-                     promptText += `Phát âm của họ khá sai lệch. Hãy so sánh âm gốc và âm họ đọc sai, đồng thời hướng dẫn cách đặt khẩu hình miệng, cách phát âm đúng bằng tiếng Việt (tối đa 3 câu). Tập trung vào sự khác biệt.`;
-                 }
-
-                 callGeminiAPI(
-                     promptText,
-                     (text) => {
-                         // Chuyển markdown in đậm cơ bản thành HTML
-                         let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                         aiFeedbackContent.innerHTML = formattedText.replace(/\n/g, '<br>');
-                     },
-                     (error) => {
-                         aiFeedbackContent.innerHTML = '<span class="text-red-500 text-xs">Không thể kết nối với Trợ lý AI lúc này.</span>';
-                     }
-                 );
-            }
+            // --- ĐÃ TẠM ẨN PHẦN TRỢ LÝ AI NHẬN XÉT THEO YÊU CẦU ---
+            // const aiFeedbackBox = document.getElementById('ai-feedback-box');
+            // const aiFeedbackContent = document.getElementById('ai-feedback-content');
+            // aiFeedbackBox.classList.remove('hidden');
+            // 
+            // // Xóa nội dung cũ và hiển thị loading
+            // aiFeedbackContent.innerHTML = '<div class="flex items-center gap-2 text-indigo-500"><div class="ai-loading" style="border-top-color: #6366f1;"></div> Đang phân tích âm điệu của bạn...</div>';
+            // 
+            // if (roundedScore >= 95) {
+            //      aiFeedbackContent.innerHTML = "Tuyệt cú mèo! Bạn phát âm chuẩn như người bản xứ rồi, không cần sửa gì thêm đâu! 🎉";
+            // } else {
+            //      let promptText = `Học viên muốn phát âm từ tiếng Pháp "${targetWord}", nhưng hệ thống nhận diện ra họ đã đọc thành "${spokenText}" (Độ chính xác ${roundedScore}%). `;
+            //      if (roundedScore >= 70) {
+            //          promptText += `Họ phát âm khá tốt nhưng chưa hoàn hảo. Chỉ ra lỗi sai nhỏ giữa âm gốc và âm họ đọc, và chỉ cho họ cách khắc phục ngắn gọn (tối đa 2 câu).`;
+            //      } else {
+            //          promptText += `Phát âm của họ khá sai lệch. Hãy so sánh âm gốc và âm họ đọc sai, đồng thời hướng dẫn cách đặt khẩu hình miệng, cách phát âm đúng bằng tiếng Việt (tối đa 3 câu). Tập trung vào sự khác biệt.`;
+            //      }
+            // 
+            //      callGeminiAPI(
+            //          promptText,
+            //          (text) => {
+            //              // Chuyển markdown in đậm cơ bản thành HTML
+            //              let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            //              aiFeedbackContent.innerHTML = formattedText.replace(/\n/g, '<br>');
+            //          },
+            //          (error) => {
+            //              if (error.message === "MISSING_API_KEY") {
+            //                  aiFeedbackContent.innerHTML = '<span class="text-orange-500 font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i> Tính năng nhận xét AI đang tạm tắt vì chưa thiết lập API Key.</span>';
+            //              } else {
+            //                  aiFeedbackContent.innerHTML = '<span class="text-red-500 text-xs">Không thể kết nối với Trợ lý AI lúc này.</span>';
+            //              }
+            //          }
+            //      );
+            // }
+            // ------------------------------------------------------
         }
 
         function showSystemMessage(text, type) {
