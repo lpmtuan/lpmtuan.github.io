@@ -119,7 +119,7 @@
         <div class="flex justify-between items-center mb-8 border-b pb-4">
             <div>
                 <h2 class="text-xl font-bold text-gray-800">Salut, <span id="display-name" class="text-blue-600"></span> !</h2>
-                <p class="text-sm text-gray-500">Luyện phát âm</p>
+                <p class="text-sm text-gray-500">Nào cùng luyện phát âm!</p>
             </div>
             <button onclick="goBack()" class="text-gray-400 hover:text-gray-600 transition-colors" title="Đổi tên">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -202,13 +202,6 @@
                     <div id="score-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-1000" style="width: 0%"></div>
                 </div>
                 <p id="feedback-message" class="text-center mt-3 font-medium"></p>
-                
-                <div id="ai-feedback-box" class="hidden mt-4 p-4 bg-indigo-50 rounded-xl shadow-inner border border-indigo-100 text-sm">
-                    <div class="flex items-center gap-2 text-indigo-700 font-bold mb-2">
-                        <i class="fa-solid fa-robot"></i> Trợ lý AI nhận xét:
-                    </div>
-                    <div id="ai-feedback-content" class="text-gray-700 leading-relaxed font-medium"></div>
-                </div>
             </div>
         </div>
         
@@ -760,42 +753,6 @@
                 feedbackMessage.textContent = "Essaye encore ! Có vẻ máy chưa nghe rõ, bạn thử lại nào. 💪";
                 feedbackMessage.className = "text-center mt-3 font-medium text-red-600";
             }
-
-            // --- ĐÃ TẠM ẨN PHẦN TRỢ LÝ AI NHẬN XÉT THEO YÊU CẦU ---
-            // const aiFeedbackBox = document.getElementById('ai-feedback-box');
-            // const aiFeedbackContent = document.getElementById('ai-feedback-content');
-            // aiFeedbackBox.classList.remove('hidden');
-            // 
-            // // Xóa nội dung cũ và hiển thị loading
-            // aiFeedbackContent.innerHTML = '<div class="flex items-center gap-2 text-indigo-500"><div class="ai-loading" style="border-top-color: #6366f1;"></div> Đang phân tích âm điệu của bạn...</div>';
-            // 
-            // if (roundedScore >= 95) {
-            //      aiFeedbackContent.innerHTML = "Tuyệt cú mèo! Bạn phát âm chuẩn như người bản xứ rồi, không cần sửa gì thêm đâu! 🎉";
-            // } else {
-            //      let promptText = `Học viên muốn phát âm từ tiếng Pháp "${targetWord}", nhưng hệ thống nhận diện ra họ đã đọc thành "${spokenText}" (Độ chính xác ${roundedScore}%). `;
-            //      if (roundedScore >= 70) {
-            //          promptText += `Họ phát âm khá tốt nhưng chưa hoàn hảo. Chỉ ra lỗi sai nhỏ giữa âm gốc và âm họ đọc, và chỉ cho họ cách khắc phục ngắn gọn (tối đa 2 câu).`;
-            //      } else {
-            //          promptText += `Phát âm của họ khá sai lệch. Hãy so sánh âm gốc và âm họ đọc sai, đồng thời hướng dẫn cách đặt khẩu hình miệng, cách phát âm đúng bằng tiếng Việt (tối đa 3 câu). Tập trung vào sự khác biệt.`;
-            //      }
-            // 
-            //      callGeminiAPI(
-            //          promptText,
-            //          (text) => {
-            //              // Chuyển markdown in đậm cơ bản thành HTML
-            //              let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            //              aiFeedbackContent.innerHTML = formattedText.replace(/\n/g, '<br>');
-            //          },
-            //          (error) => {
-            //              if (error.message === "MISSING_API_KEY") {
-            //                  aiFeedbackContent.innerHTML = '<span class="text-orange-500 font-medium"><i class="fa-solid fa-circle-exclamation mr-1"></i> Tính năng nhận xét AI đang tạm tắt vì chưa thiết lập API Key.</span>';
-            //              } else {
-            //                  aiFeedbackContent.innerHTML = '<span class="text-red-500 text-xs">Không thể kết nối với Trợ lý AI lúc này.</span>';
-            //              }
-            //          }
-            //      );
-            // }
-            // ------------------------------------------------------
         }
 
         function showSystemMessage(text, type) {
