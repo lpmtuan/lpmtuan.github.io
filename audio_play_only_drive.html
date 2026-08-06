@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Nghe file âm thanh</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #f4f6fa;
+  }
+  #wrapper { text-align: center; }
+  #playBtn {
+    background: #034EA1;
+    color: #fff;
+    border: none;
+    padding: 18px 48px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s ease;
+  }
+  #playBtn:hover:not(:disabled) { background: #023d80; }
+  #playBtn:disabled {
+    background: #FAAF40;
+    color: #333;
+    cursor: not-allowed;
+  }
+  #status {
+    margin-top: 14px;
+    font-size: 14px;
+    color: #555;
+    min-height: 18px;
+  }
+</style>
+</head>
+<body>
+
+<div id="wrapper">
+  <button id="playBtn" onclick="playAudio()">▶ Play</button>
+  <div id="status"></div>
+</div>
+
+<!--
+  THAY ID FILE GOOGLE DRIVE Ở DÒNG DƯỚI (giữ nguyên phần còn lại của link).
+  Lấy ID từ link chia sẻ Drive, ví dụ:
+  https://drive.google.com/file/d/1B2m1mjT2dD8jolu2vJqdtbZDCCvBLKRo/view
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ đây là ID
+  File PHẢI ở chế độ chia sẻ "Bất kỳ ai có đường liên kết" (Anyone with the link).
+-->
+<audio id="audioPlayer" preload="none"
+  src="https://drive.usercontent.google.com/download?id=1B2m1mjT2dD8jolu2vJqdtbZDCCvBLKRo&export=download&authuser=0&confirm=t">
+</audio>
+
+<script>
+  var btn = document.getElementById('playBtn');
+  var audio = document.getElementById('audioPlayer');
+  var status = document.getElementById('status');
+
+  function playAudio() {
+    btn.disabled = true;
+    btn.innerText = "Đang phát...";
+    status.innerText = "";
+    audio.play().catch(function (err) {
+      status.innerText = "Không thể phát file. Vui lòng thử lại hoặc liên hệ giảng viên.";
+      btn.disabled = false;
+      btn.innerText = "▶ Play";
+    });
+  }
+
+  audio.addEventListener('ended', function () {
+    btn.innerText = "Đã phát xong";
+    status.innerText = "";
+  });
+
+  audio.addEventListener('error', function () {
+    status.innerText = "Không thể tải file âm thanh từ Google Drive. Vui lòng kiểm tra lại đường dẫn hoặc quyền chia sẻ.";
+    btn.disabled = false;
+    btn.innerText = "▶ Play";
+  });
+
+  // Chặn menu chuột phải để hạn chế thao tác khác (tua, tải xuống...)
+  audio.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+</script>
+
+</body>
+</html>
