@@ -1,4 +1,4 @@
-<title>QR CELFA</title>
+<title>Tạo mã QR CELFA</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
   :root{
@@ -395,34 +395,21 @@
   }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
-  .contact-panel{ margin-top:20px; }
-  .link-list{ display:flex; flex-direction:column; gap:8px; }
-  @media (min-width: 560px){
-    .link-list{ flex-direction:row; }
-    .link-row{ flex:1; }
+  .header-links{
+    display:flex; align-items:center; gap:8px;
+    margin-left:auto;
   }
-  .link-row{
-    display:flex; align-items:center; gap:12px;
-    padding:10px;
-    border-radius:var(--radius-md);
-    border:1px solid var(--line-soft);
-    text-decoration:none;
-    color:var(--ink);
-    transition:background .15s ease, border-color .15s ease;
-  }
-  .link-row:hover{ background:var(--paper); border-color:var(--line); }
-  .link-row:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
-  .link-icon{
-    flex:none; width:38px; height:38px; border-radius:50%;
+  .header-link{
+    flex:none; width:34px; height:34px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
+    text-decoration:none;
+    transition:transform .12s ease, filter .12s ease;
   }
-  .link-icon svg{ width:19px; height:19px; }
-  .link-icon--blue{ background:var(--blue-100); color:var(--blue-600); }
-  .link-icon--orange{ background:var(--orange-100); color:var(--orange-600); }
-  .link-text{ display:flex; flex-direction:column; min-width:0; flex:1; }
-  .link-title{ font-size:13.5px; font-weight:600; }
-  .link-sub{ font-size:12px; color:var(--ink-soft); }
-  .link-go{ flex:none; width:15px; height:15px; color:var(--ink-soft); }
+  .header-link svg{ width:16px; height:16px; }
+  .header-link:hover{ transform:translateY(-1px); filter:brightness(.96); }
+  .header-link:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
+  .header-link--blue{ background:var(--blue-100); color:var(--blue-600); }
+  .header-link--orange{ background:var(--orange-100); color:var(--orange-600); }
 
   footer.note{
     margin-top:26px;
@@ -444,6 +431,14 @@
     <div>
       <h1>Tạo mã QR CELFA</h1>
       <p>Công cụ nội bộ - tạo mã QR cho liên kết, văn bản, Wifi và danh thiếp.</p>
+    </div>
+    <div class="header-links">
+      <a href="https://www.facebook.com/ttcelfa" target="_blank" rel="noopener" class="header-link header-link--blue" title="Fanpage CELFA" aria-label="Fanpage CELFA">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg>
+      </a>
+      <a href="https://celfa.vn/" target="_blank" rel="noopener" class="header-link header-link--orange" title="Website CELFA" aria-label="Website CELFA">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3z"/></svg>
+      </a>
     </div>
     <div class="accent-strip" aria-hidden="true"><span></span><span></span></div>
   </header>
@@ -625,32 +620,6 @@
       </section>
     </div>
   </div>
-
-  <section class="panel contact-panel">
-    <h2>Liên hệ CELFA</h2>
-    <div class="link-list">
-      <a class="link-row" href="https://www.facebook.com/ttcelfa" target="_blank" rel="noopener">
-        <span class="link-icon link-icon--blue">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg>
-        </span>
-        <span class="link-text">
-          <span class="link-title">Fanpage</span>
-          <span class="link-sub">facebook.com/ttcelfa</span>
-        </span>
-        <svg class="link-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-      </a>
-      <a class="link-row" href="https://celfa.vn/" target="_blank" rel="noopener">
-        <span class="link-icon link-icon--orange">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3z"/></svg>
-        </span>
-        <span class="link-text">
-          <span class="link-title">Website</span>
-          <span class="link-sub">celfa.vn</span>
-        </span>
-        <svg class="link-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-      </a>
-    </div>
-  </section>
 
   <footer class="note">CELFA - Trung tâm Ngoại ngữ Pháp Anh Ứng Dụng</footer>
 </div>
