@@ -1,4 +1,4 @@
-<title>Code QR CELFA</title>
+<title>Tạo mã QR CELFA</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
   :root{
@@ -782,6 +782,13 @@
   }
 
   // ---------- QR matrix ----------
+  // The library's default text encoder keeps only the low 8 bits of each
+  // character, which garbles Vietnamese (and any non-ASCII) text once scanned.
+  // Encode as UTF-8 instead, which phone scanners read correctly.
+  qrcode.stringToBytes = function(s){
+    return Array.prototype.slice.call(new TextEncoder().encode(s));
+  };
+
   function getMatrix(payload, ecLevel){
     var qr = qrcode(0, ecLevel);
     qr.addData(payload);
