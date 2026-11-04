@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tra cứu điểm - 2611FRAN182201 (Ứng dụng CNTT&TT trong dịch thuật)</title>
+<style>
+  :root {
+    --primary: #1b365d;
+    --primary-light: #004b87;
+    --accent: #d97706;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #cbd5e1;
+    --success-bg: #ecfdf5;
+    --success-text: #065f46;
+    --error-bg: #fef2f2;
+    --error-text: #991b1b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    padding: 24px 16px;
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  .header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+    padding: 24px 28px;
+  }
+  .header h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .meta-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.92rem;
+    opacity: 0.95;
+    margin-top: 10px;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 36px;
+    align-items: center;
+  }
+  .notice {
+    background: #fffbeb;
+    border-left: 4px solid var(--accent);
+    padding: 12px 28px;
+    font-size: 0.88rem;
+    color: #92400e;
+    text-align: justify;
+    text-align-last: justify;
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    padding: 16px 20px 28px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+  th {
+    background-color: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    padding: 12px 10px;
+    border: 1px solid #334155;
+    white-space: nowrap;
+  }
+  th.sub-score {
+    background-color: var(--primary-light);
+  }
+  td {
+    padding: 10px 10px;
+    border: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  tr:nth-child(even) { background-color: #f8fafc; }
+  tr:hover { background-color: #f1f5f9; }
+  tr.unlocked-row {
+    background-color: var(--success-bg) !important;
+  }
+  .text-center { text-align: center; }
+  .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; }
+  .dob-input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .dob-input {
+    width: 125px;
+    padding: 6px 10px;
+    border: 1px solid #94a3b8;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    text-align: center;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .dob-input:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(0, 75, 135, 0.2);
+  }
+  .btn-unlock {
+    background-color: var(--primary-light);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  .btn-unlock:hover {
+    background-color: var(--primary);
+  }
+  .btn-lock {
+    background-color: #64748b;
+  }
+  .masked {
+    color: #94a3b8;
+    letter-spacing: 2px;
+    font-weight: 600;
+    user-select: none;
+  }
+  .score-val {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1rem;
+  }
+  .score-total {
+    font-weight: 800;
+    color: var(--success-text);
+    font-size: 1.05rem;
+    background: #d1fae5;
+    padding: 3px 10px;
+    border-radius: 999px;
+    display: inline-block;
+  }
+  .error-msg {
+    color: var(--error-text);
+    font-size: 0.78rem;
+    margin-top: 4px;
+    display: none;
+    text-align: center;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>BẢNG TRA CỨU ĐIỂM HỌC PHẦN</h1>
+    <div class="meta-grid">
+      <div class="meta-row">
+        <div><strong>Học phần:</strong> Ứng dụng CNTT&amp;TT trong dịch thuật</div>
+        <div><strong>Mã lớp học phần:</strong> 2611FRAN182201</div>
+        <div><strong>Năm học:</strong> 2026-2027 (Học kỳ 1)</div>
+      </div>
+      <div class="meta-row">
+        <div><strong>Giảng viên:</strong> Lê Phạm Minh Tuấn - (0827)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice">
+    <div>🔒 <strong>Bảo mật thông tin cá nhân:</strong> Điểm số đã được mã hóa. Sinh viên nhập đúng <strong>Ngày sinh (dd/mm/yyyy)</strong> tại dòng của mình rồi nhấn <strong>Xem</strong> (hoặc Enter) để mở khóa.</div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 50px;">STT</th>
+          <th style="width: 130px;">Mã SV</th>
+          <th>Họ lót</th>
+          <th style="width: 90px;">Tên</th>
+          <th style="width: 220px;">Xác thực Ngày sinh</th>
+          <th class="sub-score" style="width: 120px;">Activité 1<br><small>(/6)</small></th>
+          <th class="sub-score" style="width: 120px;">Activité 2<br><small>(/4)</small></th>
+          <th style="width: 150px;">Điểm KTTX 1<br><small>(20%)</small></th>
+          <th style="width: 130px;">Điểm KTTX 2<br><small>(20%)</small></th>
+        </tr>
+      </thead>
+      <tbody id="student-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+const STUDENTS = [{"stt": 1, "masv": "49.01.753.002", "holot": "Đinh Thị Lan", "ten": "Anh", "verify": "c44a5a51236d6531bec020fcafe8612dcc66145f39aa9e9f82d470609c79d1eb", "cipher": "OCl+78+kTY27GBRQ42YocCohqb7wvr+VnyXKvQ/aHfAof2v0irdVl7kDD07xaCRyYzS+svC+v5WfUozRWMYMsHNqP+/n4F+H/QkDAw=="}, {"stt": 2, "masv": "49.01.753.008", "holot": "Huỳnh Thị Diễm", "ten": "Châu", "verify": "bd42f8100eb9e731580cb4f6e29fe6a993eb3133a081d12c3243b41eb9d1252e", "cipher": "4FDd06K24qPlDlYbE++oSBrg3fo0n711P1BEl2Jpq9bwBsjI56X6uecVTQUB4aRKU/XK9jSfvXU/JwL7NXW6lqsTnNOK8vCpox9BSA=="}, {"stt": 3, "masv": "49.01.753.044", "holot": "Nguyễn Hồ Ngọc", "ten": "Diệp", "verify": "d0fec0b210e689e4ea2decc81f4977fca82f0d3ab6f4af4d5a47df0f26a11e35", "cipher": "yIlnn9tbkNR0kkcdKbmSnBlnlMoqlVTxebXNasm6857Y33KEnkiIznaJXAY+t56eUHKDxiqVVPF5wosGnqbi3oPKJp/zH4LeMoNQTg=="}, {"stt": 4, "masv": "49.01.753.012", "holot": "Đặng Thị Ngọc", "ten": "Diệu", "verify": "46cf10d53fe106be7e6997fb5bba99db10afbc70e78e0ae65c2cb03b8a79d86f", "cipher": "NcjPdfVRB2jTQildVLEjUb1dri4YtOjk2itmAznlE0ElntpusEIfctFWM0NGvy9T9Ei5Ihi06OTaWiBvbvkCAX6LjnXdFRVilVM/Dg=="}, {"stt": 5, "masv": "49.01.753.017", "holot": "Cao Thanh", "ten": "Hà", "verify": "6e2e5dd67cdb1f9a3775d74a4375ca7504d8e86c3568f1e8985471b820a21820", "cipher": "kAPYda3VxWa5Njskuz5MQo328aw2tnUO3WNDrJ2yHGCAVc1u6MbdfLsjIDqpMEBAxOPmoDa2dQ7dEgXAyq4NINtAmXWFkdds/ycsdw=="}, {"stt": 6, "masv": "48.01.753.033", "holot": "Trần Cao Ngọc", "ten": "Lâm", "verify": "f217c861b46a99cc9dfe0f2009b880443a23ff0d7816647c5fa45e516bf3743c", "cipher": "8wrkZJPvqd5ORk7MMHhaCTXfNs13632C/jmTg2LCMP/jXPF/1vyxxExUUNIidlYLfMohwXfrfYL+StXvNd4hv7hJpWS7q7vUCFdcnw=="}, {"stt": 7, "masv": "49.01.753.039", "holot": "Lý Song", "ten": "Ngân", "verify": "404efd3fae325218bc1a0c82887918f056f87b01c826eca124a7ed9d4da39a2c", "cipher": "WoObCQS0R26YhiFAPdrBmhVMgB2NXnet3kZaKpcvMTVK1Y4SQadfdJqcOlsv1M2YXFmXEY1ed63eNhxDwDMgdRHA2gks8FVk3pc2Ew=="}, {"stt": 8, "masv": "49.01.753.043", "holot": "Trần Thị Bảo", "ten": "Nguyên", "verify": "df3abf7f1320729e89957798b7c19104f5a02687adc8c2d51c6f5ab729abf9dd", "cipher": "+KgbqdHdVF9pOgBwxdOjLKyyIihkcSygdZMz4GlTNZTo/g6ylM5MRWshG27X3a8u5ac1JGRxLKB15HWMPk8k1LPrWqn5mUZVLysXIw=="}, {"stt": 9, "masv": "49.01.753.060", "holot": "Nguyễn Hồng", "ten": "Thanh", "verify": "8a3691eb4b6061b3df23124ba7fb3b2c83400c28374ac6daa9d54f645952c00d", "cipher": "oDdMnXWipJN2ZR7TPkXKJuVIl3/c2u3BHbsaMZxSiNuwYVmGMLG8iXR/Bc0sS8YkrF2Ac9za7cEdy1xdy06Zm+t0DZ1d5raZMHQJgA=="}, {"stt": 10, "masv": "49.01.753.065", "holot": "Huỳnh Kim", "ten": "Thơ", "verify": "f5622090de0f43d978252255b1081029716a58df3cfbb3317b94a6920c45910d", "cipher": "hi0o8Man+MH+ZlpJHKNm8GFr+UkhjrLDXZtAl4FxY2WWez3rg7Tg2/x9QVcOrWryKH7uRSGOssNd7Ab71m1yJc1uafDu4+rLuHdNGg=="}, {"stt": 11, "masv": "49.01.753.068", "holot": "Đinh Thị Hương", "ten": "Thùy", "verify": "e34d80cc4479d9a9cbb49c2e1cee64ff099baa06741f5def87dae0da286812c4", "cipher": "EXprHn/LDzG8EIyvS7YL2p+y0FtPppE8p9t5ON7OzZcBLH4FOtgXK74KlrFcuAfY1qfHV0+mkTynqz9RidLc11o5Kh5Xjx07+gGa/A=="}, {"stt": 12, "masv": "49.01.753.069", "holot": "Vũ Thị Ngọc", "ten": "Thùy", "verify": "ea27573f476f0029047abb281a946626d21ae86911fa414eb1121172841303b3", "cipher": "a1HMQKp0HcLAdUfrt80hnCLc2VxZWJQsnhfKBTFWIId7B9lb72cF2MJvXPClwy2ea8nOUFlYlCyeZ4xsZkoxxyASjUCCMA/IhmRQuA=="}, {"stt": 13, "masv": "49.01.753.086", "holot": "Nguyễn Lê Hoàng Minh", "ten": "Tuệ", "verify": "179a2c5dead0933c413f982ed54052ed51635183936535d516b99f544847abd0", "cipher": "O6g+fDj5DslLZdGXwCNYkpcwgJNZcvLebic1BNciFgMr/itnfeoW00lwy4nXLVSQ3iWXn1ly8t5uVnNtgD4HQ3Drf3wQvRzDDXTHxA=="}, {"stt": 14, "masv": "49.01.753.087", "holot": "Nguyễn Trần Anh", "ten": "Tuyền", "verify": "408137478a72cad3f227a2fafb862b1a5165a399480b2d05f84946c03dd13a0f", "cipher": "QnCjcPMOPebLgEgn30DytYVty/SC+D0SsXdEnL9gx9lSJrZrth0l/MmVUjzITv63zHjc+IL4PRKxBwLw6HzWmQkz4nDbSi/sjZFedA=="}, {"stt": 15, "masv": "49.01.753.094", "holot": "Đặng Hoàng", "ten": "Vy", "verify": "a52adfa1d75c2a084e3407e035d707e291d3a329931dc0d3d25b526dd63ba7ac", "cipher": "EVEGSYgaaJJtx7j0DZeI9m5e8zCI5bf8Il6KUfrznUsBBxNSzQlwiG/To+8amYT0J0vkPIjlt/wiLMw9re+MC1oSR0mgXnqYK9avpw=="}, {"stt": 16, "masv": "49.01.753.095", "holot": "Nguyễn Hoàng Khánh", "ten": "Vy", "verify": "e1b4aad08a3178adbe36b6201e96b0a9397e6a93b42625ba59a7636c65b73c2b", "cipher": "QsAYaDeoBnMMCR1h4pEmvhMr+yGDQNIILsfIRM/71BdSlg1zcrseaQ4SBn/wnyq8Wj7sLYNA0ggusI4omOfFVwmDWWgf7BR5ShgKMg=="}, {"stt": 17, "masv": "49.01.753.097", "holot": "Trần Nguyễn Yến", "ten": "Vy", "verify": "e93b9da3740beadcfbefa59b1f20062481460a0637aec70253e60ad793bb0c6d", "cipher": "u16ljjWw60r8FOHTwrFadlzZzv2fwkWlklqVf75nAM2rCLCVcKPzUP4O+sjQv1Z0FczZ8Z/CRaWSKtMW6XsRjfAd5I4d9PlAugX2gA=="}, {"stt": 18, "masv": "49.01.753.098", "holot": "Nguyễn Hà Xinh", "ten": "Xinh", "verify": "e05f4a5daac79f40384e02f2516b7f525336aae7d24bc30958ee1cec0113495f", "cipher": "BHTuHXMOt3hDQAZIeN8vX25x31kye4qRcsHnKYryl6kUIvsGNh2vYkFbHlNq0SNdJ2TIVTJ7ipFysaFA3e6G6U83rx1bSqVyBVESGw=="}];
+
+// Normalize date input: accepts "15/03/2005", "15-03-2005", "15032005", "15/3/2005" -> "15/03/2005"
+function normalizeDOB(raw) {
+  let s = raw.trim().replace(/[\.\-\s]/g, '/');
+  if (/^\d{8}$/.test(s)) {
+    return s.slice(0,2) + '/' + s.slice(2,4) + '/' + s.slice(4,8);
+  }
+  let parts = s.split('/');
+  if (parts.length === 3) {
+    let d = parts[0].padStart(2, '0');
+    let m = parts[1].padStart(2, '0');
+    let y = parts[2];
+    return `${d}/${m}/${y}`;
+  }
+  return s;
+}
+
+async function sha256Bytes(str) {
+  const buf = new TextEncoder().encode(str);
+  const hashBuf = await crypto.subtle.digest('SHA-256', buf);
+  return new Uint8Array(hashBuf);
+}
+
+async function sha256Hex(str) {
+  const bytes = await sha256Bytes(str);
+  return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function decryptScore(cipherB64, keyStr) {
+  const keyHash = await sha256Bytes(keyStr);
+  const binStr = atob(cipherB64);
+  const encBytes = new Uint8Array(binStr.length);
+  for (let i = 0; i < binStr.length; i++) {
+    encBytes[i] = binStr.charCodeAt(i) ^ keyHash[i % keyHash.length];
+  }
+  const jsonStr = new TextDecoder().decode(encBytes);
+  return JSON.parse(jsonStr);
+}
+
+function renderTable() {
+  const tbody = document.getElementById('student-tbody');
+  tbody.innerHTML = STUDENTS.map((sv, idx) => `
+    <tr id="row-${idx}">
+      <td class="text-center">${sv.stt}</td>
+      <td class="text-center font-mono">${sv.masv}</td>
+      <td>${sv.holot}</td>
+      <td><strong>${sv.ten}</strong></td>
+      <td>
+        <div class="dob-input-group">
+          <input type="text" id="dob-${idx}" class="dob-input" placeholder="dd/mm/yyyy" maxlength="10"
+                 onkeydown="if(event.key==='Enter') toggleUnlock(${idx})" />
+          <button id="btn-${idx}" class="btn-unlock" onclick="toggleUnlock(${idx})">Xem</button>
+        </div>
+        <div id="err-${idx}" class="error-msg">Ngày sinh chưa đúng!</div>
+      </td>
+      <td class="text-center" id="act1-${idx}"><span class="masked">•••</span></td>
+      <td class="text-center" id="act2-${idx}"><span class="masked">•••</span></td>
+      <td class="text-center" id="kttx1-${idx}"><span class="masked">•••</span></td>
+      <td class="text-center" id="kttx2-${idx}"><span class="masked">•••</span></td>
+    </tr>
+  `).join('');
+}
+
+async function toggleUnlock(idx) {
+  const sv = STUDENTS[idx];
+  const row = document.getElementById(`row-${idx}`);
+  const btn = document.getElementById(`btn-${idx}`);
+  const input = document.getElementById(`dob-${idx}`);
+  const err = document.getElementById(`err-${idx}`);
+
+  if (row.dataset.unlocked === '1') {
+    row.dataset.unlocked = '0';
+    row.classList.remove('unlocked-row');
+    input.value = '';
+    input.disabled = false;
+    btn.textContent = 'Xem';
+    btn.classList.remove('btn-lock');
+    document.getElementById(`act1-${idx}`).innerHTML = '<span class="masked">•••</span>';
+    document.getElementById(`act2-${idx}`).innerHTML = '<span class="masked">•••</span>';
+    document.getElementById(`kttx1-${idx}`).innerHTML = '<span class="masked">•••</span>';
+    document.getElementById(`kttx2-${idx}`).innerHTML = '<span class="masked">•••</span>';
+    return;
+  }
+
+  const dobNorm = normalizeDOB(input.value);
+  const keyStr = `${sv.masv}|${dobNorm}`;
+  const checkHash = await sha256Hex(keyStr + "|VERIFY_SALT_2026");
+
+  if (checkHash !== sv.verify) {
+    err.style.display = 'block';
+    input.style.borderColor = '#dc2626';
+    return;
+  }
+
+  err.style.display = 'none';
+  input.style.borderColor = '#10b981';
+  input.value = dobNorm;
+  input.disabled = true;
+
+  const data = await decryptScore(sv.cipher, keyStr);
+  row.dataset.unlocked = '1';
+  row.classList.add('unlocked-row');
+  btn.textContent = 'Ẩn';
+  btn.classList.add('btn-lock');
+
+  document.getElementById(`act1-${idx}`).innerHTML = `<span class="score-val">${data.act1}</span>`;
+  document.getElementById(`act2-${idx}`).innerHTML = `<span class="score-val">${data.act2}</span>`;
+  document.getElementById(`kttx1-${idx}`).innerHTML = `<span class="score-total">${data.kttx1}</span>`;
+  document.getElementById(`kttx2-${idx}`).innerHTML = `<span style="color:#64748b;font-size:0.85rem;">${data.kttx2}</span>`;
+}
+
+renderTable();
+</script>
+</body>
+</html>
